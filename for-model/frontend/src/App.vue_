@@ -1,0 +1,98 @@
+fileName: App.vue
+---
+<template>
+    <v-app id="inspire">
+        <SNSApp />
+    </v-app>
+</template>
+
+<script>
+import SNSApp from './SNSApp.vue'
+
+export default {
+
+    components: {
+        SNSApp
+    },
+    name: "App",
+    data: () => ({
+        useComponent: "",
+        drawer: true,
+        components: [],
+        sideBar: true,
+        urlPath: null,
+        {{#if (isSelectedSecurity options.rootModel.toppingPlatforms)}}
+        username: '',
+        {{else}}
+        {{/if}}
+    }),
+    
+    async created() {
+      var path = document.location.href.split("#/")
+      this.urlPath = path[1];
+
+      {{#if (isSelectedSecurity options.rootModel.toppingPlatforms)}}
+      var me = this
+      me.username = me.$OAuth.idTokenParsed.preferred_username
+
+      if(!me.username){
+          location.reload()
+      }
+      {{else}}
+      {{/if}}
+    },
+
+    mounted() {
+        var me = this;
+        me.components = this.$ManagerLists;
+    },
+
+    methods: {
+        openSideBar(){
+            this.sideBar = !this.sideBar
+        },
+        changeUrl() {
+            var path = document.location.href.split("#/")
+            this.urlPath = path[1];
+        },
+        goHome() {
+            this.urlPath = null;
+        },
+        {{#if (isSelectedSecurity options.rootModel.toppingPlatforms)}}
+        logout(){
+            //const keycloak = new Keycloak();
+
+            //keycloak.logout;
+            if(confirm("로그아웃 하시겠습니까?")){
+                localStorage.clear()
+                location.href = 'http://localhost:9090/realms/master/protocol/openid-connect/logout'
+            }
+        },
+        {{else}}
+        {{/if}}
+    }
+};
+</script>
+<style>
+*{
+    font-family: {{options.rootModel.uiStyle.font.fontFamilyName}} !important;
+}
+</style>
+
+<function>
+window.$HandleBars.registerHelper('isSelectedSecurity', function (toppingPlatforms) {
+    var selectedSecurity = false;
+    try{
+        for(var i=0; i<toppingPlatforms.length; i++){
+            if(toppingPlatforms[i] == "keycloak-security" || toppingPlatforms[i] == "spring-security"){
+                selectedSecurity =  true;
+            }
+        }
+
+        return selectedSecurity;
+
+    } catch(e){
+        console.log(e)
+    }
+});
+</function>
