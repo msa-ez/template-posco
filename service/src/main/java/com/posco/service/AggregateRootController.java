@@ -22,6 +22,11 @@ public class {{namePascalCase}}Controller {
         this.{{nameCamelCase}}RepositoryService = {{nameCamelCase}}RepositoryService;
     }
 
+    @GetMapping(path = "/{{namePlural}}")
+    public ResponseEntity<List<{{namePascalCase}}>> findAll() {
+        return ResponseEntity.ok({{nameCamelCase}}RepositoryService.findAll());
+    }
+
     {{#commands}}
     {{#if isRestRepository}}
     {{#ifEquals restRepositoryInfo.method 'POST'}}
