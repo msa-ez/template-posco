@@ -65,8 +65,4 @@ public class {{namePascalCase}}RepositoryService {
         return {{nameCamelCase}}Repository.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "{{namePascalCase}} not found"));
     }
-
-    public {{namePascalCase}} save({{namePascalCase}} {{nameCamelCase}}) {
-        return {{nameCamelCase}}Repository.save({{nameCamelCase}});
-    }
 }
