@@ -1,23 +1,36 @@
 path: {{name}}/s20a01-store
 fileName: pom.xml
----<?xml version="1.0" encoding="UTF-8"?>
+---
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.posco.{{name}}</groupId>
-        <artifactId>s20a01-{{name}}</artifactId>
+        <groupId>com.posco.base</groupId>
+        <artifactId>posco-comp-jar</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
+
+    <groupId>com.posco.carmng</groupId>
     <artifactId>s20a01-store</artifactId>
-    <name>s20a01-store</name>
-    <description>Store module for POSCO {{name}} project</description>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <properties>
+    </properties>
 
     <dependencies>
         <dependency>
-            <groupId>com.posco.{{name}}</groupId>
+            <groupId>com.poscoict.base.share</groupId>
+            <artifactId>share-store</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.posco.reuse</groupId>
+            <artifactId>posco-reuse-compensation-util</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.posco.carmng</groupId>
             <artifactId>s20a01-domain</artifactId>
-            <version>${project.version}</version>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -26,7 +39,37 @@ fileName: pom.xml
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>2.1.0</version>
         </dependency>
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.posco.reuse</groupId>
+                <artifactId>reuse-dependencies</artifactId>
+                <version>${posco-reuse.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>
