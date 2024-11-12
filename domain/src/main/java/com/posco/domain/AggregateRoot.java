@@ -5,17 +5,17 @@ path: {{boundedContext.name}}/s20a01-domain/src/main/java/com/posco/{{boundedCon
 ---
 package com.posco.{{boundedContext.name}}.s20a01.domain.{{nameCamelCase}};
 
-import javax.persistence.*;
-import java.util.List;
-import lombok.Data;
-import java.util.Date;
-import java.time.LocalDate;
 {{#aggregateRoot.fieldDescriptors}}
 {{#isVO}}
 import com.posco.{{boundedContext.name}}.s20a01.domain.{{namePascalCase}};
 {{/isVO}}
 {{/aggregateRoot.fieldDescriptors}}
 {{#checkBigDecimal aggregateRoot.fieldDescriptors}}{{/checkBigDecimal}}
+import javax.persistence.*;
+import java.util.List;
+import lombok.Data;
+import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name="{{namePascalCase}}_table")
