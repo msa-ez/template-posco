@@ -10,6 +10,11 @@ import java.util.List;
 import lombok.Data;
 import java.util.Date;
 import java.time.LocalDate;
+{{#aggregateRoot.fieldDescriptors}}
+{{#isVO}}
+import com.posco.{{boundedContext.name}}.s20a01.domain.{{namePascalCase}};
+{{/isVO}}
+{{/aggregateRoot.fieldDescriptors}}
 {{#checkBigDecimal aggregateRoot.fieldDescriptors}}{{/checkBigDecimal}}
 
 @Entity
