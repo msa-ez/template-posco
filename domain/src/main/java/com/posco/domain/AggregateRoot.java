@@ -23,13 +23,13 @@ import java.time.LocalDate;
 {{#setDiscriminator aggregateRoot.entities.relations nameCamelCase}}{{/setDiscriminator}}
 public class {{namePascalCase}} {{#checkExtends aggregateRoot.entities.relations namePascalCase}}{{/checkExtends}} {
 
-    {{#aggregateRoot.fieldDescriptors}}
-    {{~#if isKey}}    @Id
-    {{/if~}}{{~#if isLob}}    @Lob
-    {{/if~}}{{~#checkFieldType className isVO isKey}}{{#if .}}    {{.}}{{/if}}{{/checkFieldType}}
+{{#aggregateRoot.fieldDescriptors}}
+    {{~#if isKey}}    @Id{{/if}}
+    {{~#if isLob}}    @Lob{{/if}}
+    {{~#checkFieldType className isVO isKey}}    {{.}}{{/checkFieldType}}
     private {{{className}}} {{nameCamelCase}};
 
-    {{/aggregateRoot.fieldDescriptors}}
+{{/aggregateRoot.fieldDescriptors}}
 
     {{#commands}}
     {{#if isRestRepository}}
