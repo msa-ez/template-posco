@@ -24,11 +24,11 @@ import java.time.LocalDate;
 public class {{namePascalCase}} {{#checkExtends aggregateRoot.entities.relations namePascalCase}}{{/checkExtends}} {
 
 {{#aggregateRoot.fieldDescriptors}}
-    {{~#if isKey}}    @Id{{/if}}
-    {{~#if isLob}}    @Lob{{/if}}
-    {{~#checkFieldType className isVO isKey}}    {{.}}{{/checkFieldType}}
+    {{#if isKey}}    @Id{{/if}}
+    {{#if isLob}}    @Lob{{/if}}
+    {{#checkFieldType className isVO isKey}}    {{.}}{{/checkFieldType}}
     private {{{className}}} {{nameCamelCase}};
-
+    
 {{/aggregateRoot.fieldDescriptors}}
 
     {{#commands}}
