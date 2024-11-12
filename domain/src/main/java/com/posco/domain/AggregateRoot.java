@@ -26,8 +26,8 @@ public class {{namePascalCase}} {{#checkExtends aggregateRoot.entities.relations
     {{#aggregateRoot.fieldDescriptors}}
     {{~#if isKey}}    @Id
     {{/if~}}{{~#if isLob}}    @Lob
-    {{/if~}}{{~#checkFieldType className isVO isKey}}{{#if .}}    {{.}}
-    {{/if}}{{/checkFieldType}}    private {{{className}}} {{nameCamelCase}};
+    {{/if~}}{{~#checkFieldType className isVO isKey}}{{#if .}}    {{.}}{{/if}}{{/checkFieldType}}
+    private {{{className}}} {{nameCamelCase}};
 
     {{/aggregateRoot.fieldDescriptors}}
 
