@@ -13,7 +13,7 @@ import java.util.List;
 import javax.validation.Valid;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 {{#commands}}
-import com.posco.{{boundedContext.name}}.s20a01.domain.{{nameCamelCase}}.{{namePascalCase}}Command;
+import com.posco.{{boundedContext.name}}.s20a01.domain.{{../nameCamelCase}}.{{namePascalCase}}Command;
 {{/commands}}
 
 @RepositoryRestController
