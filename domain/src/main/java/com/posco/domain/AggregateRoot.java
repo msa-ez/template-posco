@@ -19,15 +19,15 @@ import java.time.LocalDate;
 {{#setDiscriminator aggregateRoot.entities.relations nameCamelCase}}{{/setDiscriminator}}
 public class {{namePascalCase}} {{#checkExtends aggregateRoot.entities.relations namePascalCase}}{{/checkExtends}} {
 
-    {{#aggregateRoot.fieldDescriptors}}
+{{#aggregateRoot.fieldDescriptors}}
     {{^isVO}}{{#isKey}}
-    @Id
-    {{/isKey}}{{/isVO}}
+    @Id{{/isKey}}{{/isVO}}
     {{#isLob}}@Lob{{/isLob}}
     {{#if (isPrimitive className)}}{{#isList}}{{/isList}}{{/if}}
     {{#checkFieldType className isVO isKey}}{{/checkFieldType}}
     private {{{className}}} {{nameCamelCase}};
-    {{/aggregateRoot.fieldDescriptors}}
+
+{{/aggregateRoot.fieldDescriptors}}
 
     {{#commands}}
     {{#if isRestRepository}}
