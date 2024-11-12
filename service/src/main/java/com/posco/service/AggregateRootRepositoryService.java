@@ -5,14 +5,17 @@ path: {{boundedContext.name}}/s20a01-service/src/main/java/com/posco/{{boundedCo
 ---
 package com.posco.{{boundedContext.name}}.s20a01.service;
 
-import com.posco.{{boundedContext.name}}.s20a01.domain.{{namePascalCase}};
-import com.posco.{{boundedContext.name}}.s20a01.domain.{{namePascalCase}}Repository;
+import com.posco.{{boundedContext.name}}.s20a01.domain.{{nameCamelCase}}.{{namePascalCase}};
+import com.posco.{{boundedContext.name}}.s20a01.domain.{{nameCamelCase}}.{{namePascalCase}}Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
+{{#commands}}
+import com.posco.{{boundedContext.name}}.s20a01.domain.{{nameCamelCase}}.{{namePascalCase}}Command;
+{{/commands}}
 
 @Service
 @Transactional

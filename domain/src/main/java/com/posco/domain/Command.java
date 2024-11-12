@@ -1,9 +1,9 @@
 forEach: Command
 representativeFor: Command
 fileName: {{namePascalCase}}Command.java
-path: {{boundedContext.name}}/s20a01-service/src/main/java/com/posco/{{boundedContext.name}}/s20a01/service
+path: {{boundedContext.name}}/s20a01-domain/src/main/java/com/posco/{{boundedContext.name}}/s20a01/domain/{{aggregate.nameCamelCase}}
 ---
-package com.posco.{{boundedContext.name}}.s20a01.service;
+package com.posco.{{boundedContext.name}}.s20a01.domain;
 
 import java.util.*;
 import lombok.Data;

@@ -12,6 +12,9 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
+{{#commands}}
+import com.posco.{{boundedContext.name}}.s20a01.domain.{{nameCamelCase}}.{{namePascalCase}}Command;
+{{/commands}}
 
 @RepositoryRestController
 public class {{namePascalCase}}Controller {
@@ -62,11 +65,7 @@ public class {{namePascalCase}}Controller {
         
         // 도메인 포트 메서드 직접 호출
         {{../nameCamelCase}}.{{nameCamelCase}}(
-            {{#fieldDescriptors}}
-            {{^isKey}}
-            command.get{{pascalCase nameCamelCase}}(){{^@last}},{{/@last}}
-            {{/isKey}}
-            {{/fieldDescriptors}}
+            {{nameCamelCase}}Command
         );
         
         return ResponseEntity.ok({{../nameCamelCase}}RepositoryService.save({{../nameCamelCase}}));

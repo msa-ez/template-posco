@@ -1,7 +1,7 @@
 forEach: Aggregate
 representativeFor: Aggregate
 fileName: {{namePascalCase}}.java
-path: {{boundedContext.name}}/s20a01-domain/src/main/java/com/posco/{{boundedContext.name}}/s20a01/domain
+path: {{boundedContext.name}}/s20a01-domain/src/main/java/com/posco/{{boundedContext.name}}/s20a01/domain/{{nameCamelCase}}
 ---
 package com.posco.{{boundedContext.name}}.s20a01.domain;
 
@@ -31,7 +31,7 @@ public class {{namePascalCase}} {{#checkExtends aggregateRoot.entities.relations
     {{#commands}}
     {{#if isRestRepository}}
     {{else}}
-    public void {{nameCamelCase}}({{#fieldDescriptors}}{{^isKey}}{{{className}}} {{nameCamelCase}}{{^@last}}, {{/@last}}{{/isKey}}{{/fieldDescriptors}}){
+    public void {{nameCamelCase}}({{namePascalCase}}Command command){
         // 비즈니스 로직 구현
     }
     {{/if}}
