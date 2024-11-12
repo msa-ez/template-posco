@@ -10,56 +10,48 @@ fileName: pom2.xml
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.posco.{{name}}</groupId>
-    <artifactId>s20a01-service</artifactId>
+    <groupId>com.posco.carmng</groupId>
+    <artifactId>s20a01-store</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>s20a01-service</name>
-    <description>Service module for POSCO {{name}} project</description>
 
     <properties>
     </properties>
 
     <dependencies>
-        <!-- 내부 모듈 의존성 -->
         <dependency>
-            <groupId>com.posco.{{name}}</groupId>
-            <artifactId>s20a01-store</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.poscoict.base.share</groupId>
+            <artifactId>share-store</artifactId>
         </dependency>
-
-        <!-- Spring 관련 의존성 -->
+        <dependency>
+            <groupId>com.posco.reuse</groupId>
+            <artifactId>posco-reuse-compensation-util</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.posco.carmng</groupId>
+            <artifactId>s20a01-domain</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>2.1.0</version>
+        </dependency>
+
+        <!-- MSAez 추가 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-log4j2</artifactId>
-        </dependency>
-
-        <!-- Spring Cloud 관련 의존성 -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
-        </dependency>
-
-        <!-- 유틸리티 의존성 -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
     </dependencies>
 
-    <!-- 의존성 관리 추가 -->
     <dependencyManagement>
         <dependencies>
             <dependency>
