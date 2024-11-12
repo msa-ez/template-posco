@@ -1,7 +1,7 @@
 forEach: Command
 representativeFor: Command
 fileName: {{namePascalCase}}Command.java
-path: {{boundedContext.name}}/s20a01-domain/src/main/java/com/posco/{{boundedContext.name}}/s20a01/domain/{{nameCamelCase}}
+path: {{boundedContext.name}}/s20a01-domain/src/main/java/com/posco/{{boundedContext.name}}/s20a01/domain/{{aggregate.nameCamelCase}}
 ---
 package com.posco.{{boundedContext.name}}.s20a01.domain.{{aggregate.nameCamelCase}};
 
