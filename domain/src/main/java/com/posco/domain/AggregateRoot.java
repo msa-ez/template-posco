@@ -6,9 +6,7 @@ path: {{boundedContext.name}}/s20a01-domain/src/main/java/com/posco/{{boundedCon
 package com.posco.{{boundedContext.name}}.s20a01.domain.{{nameCamelCase}};
 
 {{#aggregateRoot.fieldDescriptors}}
-{{#isVO}}
-import com.posco.{{boundedContext.name}}.s20a01.domain.{{namePascalCase}};
-{{/isVO}}
+{{#isVO}}import com.posco.{{boundedContext.name}}.s20a01.domain.{{namePascalCase}};{{/isVO}}
 {{/aggregateRoot.fieldDescriptors}}
 {{#checkBigDecimal aggregateRoot.fieldDescriptors}}{{/checkBigDecimal}}
 import javax.persistence.*;
@@ -23,12 +21,15 @@ import java.time.LocalDate;
 {{#setDiscriminator aggregateRoot.entities.relations nameCamelCase}}{{/setDiscriminator}}
 public class {{namePascalCase}} {{#checkExtends aggregateRoot.entities.relations namePascalCase}}{{/checkExtends}} {
 
-{{#aggregateRoot.fieldDescriptors}}
-    {{#if isKey}}@Id{{/if}}
-    {{#if isLob}}@Lob{{/if}}
+    {{#aggregateRoot.fieldDescriptors}}
+    {{^isVO}}{{#isKey}}
+    @Id
+    {{/isKey}}{{/isVO}}
+    {{#isLob}}@Lob{{/isLob}}
+    {{#if (isPrimitive className)}}{{#isList}}{{/isList}}{{/if}}
     {{#checkFieldType className isVO isKey}}{{/checkFieldType}}
     private {{{className}}} {{nameCamelCase}};
-{{/aggregateRoot.fieldDescriptors}}
+    {{/aggregateRoot.fieldDescriptors}}
 
     {{#commands}}
     {{#if isRestRepository}}
