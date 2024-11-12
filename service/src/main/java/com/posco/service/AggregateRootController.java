@@ -5,7 +5,7 @@ path: {{boundedContext.name}}/s20a01-service/src/main/java/com/posco/{{boundedCo
 ---
 package com.posco.{{boundedContext.name}}.s20a01.service;
 
-import com.posco.{{boundedContext.name}}.s20a01.domain.{{namePascalCase}};
+import com.posco.{{boundedContext.name}}.s20a01.domain.{{nameCamelCase}}.{{namePascalCase}};
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
@@ -65,7 +65,7 @@ public class {{namePascalCase}}Controller {
         
         // 도메인 포트 메서드 직접 호출
         {{../nameCamelCase}}.{{nameCamelCase}}(
-            {{nameCamelCase}}Command
+            command
         );
         
         return ResponseEntity.ok({{../nameCamelCase}}RepositoryService.save({{../nameCamelCase}}));

@@ -27,10 +27,6 @@ public class {{namePascalCase}}RepositoryService {
         this.{{nameCamelCase}}Repository = {{nameCamelCase}}Repository;
     }
 
-    public List<{{namePascalCase}}> findAll() {
-        return {{nameCamelCase}}Repository.findAll();
-    }
-
     {{#commands}}
     {{#if isRestRepository}}
     {{#ifEquals restRepositoryInfo.method 'POST'}}
@@ -63,6 +59,14 @@ public class {{namePascalCase}}RepositoryService {
     {{/ifEquals}}
     {{/if}}
     {{/commands}}
+
+    public {{namePascalCase}} save({{namePascalCase}} {{nameCamelCase}}) {
+        return {{nameCamelCase}}Repository.save({{nameCamelCase}});
+    }
+
+    public List<{{namePascalCase}}> findAll() {
+        return {{nameCamelCase}}Repository.findAll();
+    }
 
     public {{namePascalCase}} findById({{keyFieldDescriptor.className}} id) {
         return {{nameCamelCase}}Repository.findById(id)
