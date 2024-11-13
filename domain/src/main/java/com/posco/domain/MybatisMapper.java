@@ -1,7 +1,7 @@
 forEach: Aggregate
 representativeFor: Aggregate
 fileName: {{namePascalCase}}Mapper.java
-path: {{boundedContext.name}}/s20a01-domain/src/main/java/com/posco/{{boundedContext.name}}/s20a01/domain/mybatis
+path: {{boundedContext.name}}/s20a01-domain/src/main/java/com/posco/{{boundedContext.name}}/s20a01/domain/{{nameCamelCase}}/mybatis
 ---
 package com.posco.{{boundedContext.name}}.s20a01.domain.{{nameCamelCase}}.mybatis;
 

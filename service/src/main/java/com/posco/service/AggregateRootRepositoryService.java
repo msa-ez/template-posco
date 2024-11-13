@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
+import com.posco.{{boundedContext.name}}.s20a01.domain.{{nameCamelCase}}.mybatis.{{namePascalCase}}Mapper;
 {{#commands}}
 import com.posco.{{boundedContext.name}}.s20a01.domain.{{../nameCamelCase}}.{{namePascalCase}}Command;
 {{/commands}}
