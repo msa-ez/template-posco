@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
+import java.util.stream.Collectors;
+import com.posco.{{boundedContext.name}}.s20a01.domain.{{nameCamelCase}}.mybatis.{{namePascalCase}}MybatisEntity;
 import com.posco.{{boundedContext.name}}.s20a01.domain.{{nameCamelCase}}.mybatis.{{namePascalCase}}Mapper;
 {{#commands}}
 import com.posco.{{boundedContext.name}}.s20a01.domain.{{../nameCamelCase}}.{{namePascalCase}}Command;
@@ -29,7 +31,7 @@ public class {{namePascalCase}}RepositoryService {
         {{namePascalCase}}Repository {{nameCamelCase}}Repository,
         {{namePascalCase}}Mapper mybatisMapper) {
         this.{{nameCamelCase}}Repository = {{nameCamelCase}}Repository;
-        this.mybatisMapper = mybatisMapper;
+        this.mybatisMapper = {{namePascalCase}}Mapper;
     }
 
     {{#commands}}
@@ -80,7 +82,29 @@ public class {{namePascalCase}}RepositoryService {
 
 
     //// mybatis
+    private {{namePascalCase}} convertToEntity({{namePascalCase}}MybatisEntity mybatisEntity) {
+        {{namePascalCase}} entity = new {{namePascalCase}}();
+        {{#fieldDescriptors}}
+        entity.set{{pascalCase nameCamelCase}}(mybatisEntity.get{{pascalCase nameCamelCase}}());
+        {{/fieldDescriptors}}
+        return entity;
+    }
+    
+    private {{namePascalCase}}MybatisEntity convertToMybatisEntity({{namePascalCase}} entity) {
+        {{namePascalCase}}MybatisEntity mybatisEntity = new {{namePascalCase}}MybatisEntity();
+        {{#fieldDescriptors}}
+        mybatisEntity.set{{pascalCase nameCamelCase}}(entity.get{{pascalCase nameCamelCase}}());
+        {{/fieldDescriptors}}
+        return mybatisEntity;
+    }
+
+    
     // 예시
-    // mybatisMapper.select{{namePascalCase}}List();
-    // mybatisMapper.select{{namePascalCase}}({{keyFieldDescriptor.className}} id);
+    // mybatisMapper.select{{namePascalCase}}List().stream()
+    //     .map(this::convertToEntity)
+    //     .collect(Collectors.toList());
+
+    // mybatisMapper.select{{namePascalCase}}({{keyFieldDescriptor.className}} id)
+    //     .map(this::convertToEntity)
+    //     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "{{namePascalCase}} not found"));
 }
