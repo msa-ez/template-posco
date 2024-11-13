@@ -84,17 +84,11 @@ public class {{namePascalCase}}RepositoryService {
     //// mybatis
     private {{namePascalCase}} convertToEntity({{namePascalCase}}MybatisEntity mybatisEntity) {
         {{namePascalCase}} entity = new {{namePascalCase}}();
-        {{#aggregateRoot.fieldDescriptors}}
-        entity.set{{pascalCase nameCamelCase}}(mybatisEntity.get{{pascalCase nameCamelCase}}());
-        {{/aggregateRoot.fieldDescriptors}}
         return entity;
     }
     
     private {{namePascalCase}}MybatisEntity convertToMybatisEntity({{namePascalCase}} entity) {
         {{namePascalCase}}MybatisEntity mybatisEntity = new {{namePascalCase}}MybatisEntity();
-        {{#aggregateRoot.fieldDescriptors}}
-        mybatisEntity.set{{pascalCase nameCamelCase}}(entity.get{{pascalCase nameCamelCase}}());
-        {{/aggregateRoot.fieldDescriptors}}
         return mybatisEntity;
     }
 
