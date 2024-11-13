@@ -10,7 +10,7 @@ import java.util.Date;
 
 @Data
 public class {{namePascalCase}}MybatisEntity {
-    {{#fieldDescriptors}}
+    {{#aggregateRoot.fieldDescriptors}}
     private {{className}} {{nameCamelCase}};
-    {{/fieldDescriptors}}
+    {{/aggregateRoot.fieldDescriptors}}
 }

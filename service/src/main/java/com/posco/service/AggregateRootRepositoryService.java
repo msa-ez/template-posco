@@ -84,27 +84,33 @@ public class {{namePascalCase}}RepositoryService {
     //// mybatis
     private {{namePascalCase}} convertToEntity({{namePascalCase}}MybatisEntity mybatisEntity) {
         {{namePascalCase}} entity = new {{namePascalCase}}();
-        {{#fieldDescriptors}}
+        {{#aggregateRoot.fieldDescriptors}}
         entity.set{{pascalCase nameCamelCase}}(mybatisEntity.get{{pascalCase nameCamelCase}}());
-        {{/fieldDescriptors}}
+        {{/aggregateRoot.fieldDescriptors}}
         return entity;
     }
     
     private {{namePascalCase}}MybatisEntity convertToMybatisEntity({{namePascalCase}} entity) {
         {{namePascalCase}}MybatisEntity mybatisEntity = new {{namePascalCase}}MybatisEntity();
-        {{#fieldDescriptors}}
+        {{#aggregateRoot.fieldDescriptors}}
         mybatisEntity.set{{pascalCase nameCamelCase}}(entity.get{{pascalCase nameCamelCase}}());
-        {{/fieldDescriptors}}
+        {{/aggregateRoot.fieldDescriptors}}
         return mybatisEntity;
     }
 
-    
-    // 예시
-    // mybatisMapper.select{{namePascalCase}}List().stream()
-    //     .map(this::convertToEntity)
-    //     .collect(Collectors.toList());
 
-    // mybatisMapper.select{{namePascalCase}}({{keyFieldDescriptor.className}} id)
-    //     .map(this::convertToEntity)
-    //     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "{{namePascalCase}} not found"));
+    // 예시
+    // public List<{{namePascalCase}}> findAllByMapper() {
+    //     return mybatisMapper.select{{namePascalCase}}List().stream()
+    //         .map(this::convertToEntity)
+    //         .collect(Collectors.toList());
+    // }
+
+    // public {{namePascalCase}} findByIdMapper({{keyFieldDescriptor.className}} id) {
+    //     {{namePascalCase}}MybatisEntity mybatisEntity = mybatisMapper.select{{namePascalCase}}(id);
+    //     if (mybatisEntity == null) {
+    //         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "{{namePascalCase}} not found");
+    //     }
+    //     return convertToEntity(mybatisEntity);
+    // }
 }
