@@ -21,10 +21,14 @@ import com.posco.{{boundedContext.name}}.s20a01.domain.{{../nameCamelCase}}.{{na
 @Transactional
 public class {{namePascalCase}}RepositoryService {
     private final {{namePascalCase}}Repository {{nameCamelCase}}Repository;
-
+    private final {{namePascalCase}}Mapper mybatisMapper;
+    
     @Autowired
-    public {{namePascalCase}}RepositoryService({{namePascalCase}}Repository {{nameCamelCase}}Repository) {
+    public {{namePascalCase}}RepositoryService(
+        {{namePascalCase}}Repository {{nameCamelCase}}Repository,
+        {{namePascalCase}}Mapper mybatisMapper) {
         this.{{nameCamelCase}}Repository = {{nameCamelCase}}Repository;
+        this.mybatisMapper = mybatisMapper;
     }
 
     {{#commands}}
@@ -72,4 +76,10 @@ public class {{namePascalCase}}RepositoryService {
         return {{nameCamelCase}}Repository.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "{{namePascalCase}} not found"));
     }
+
+
+    //// mybatis
+    // 예시
+    // mybatisMapper.select{{namePascalCase}}List();
+    // mybatisMapper.select{{namePascalCase}}({{keyFieldDescriptor.className}} id);
 }
