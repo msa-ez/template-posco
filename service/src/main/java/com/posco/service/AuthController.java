@@ -1,7 +1,7 @@
-path: {{boundedContext.name}}/s20a01-service/src/main/java/com/posco/{{boundedContext.name}}/s20a01/service
+path: {{name}}/s20a01-service/src/main/java/com/posco/{{name}}/s20a01/service
 fileName: AuthController.java
 ---
-package com.posco.{{boundedContext.name}}.s20a01.service;
+package com.posco.{{name}}.s20a01.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
