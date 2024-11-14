@@ -37,6 +37,7 @@ import java.util.Map;
 @EnableAuthorizationServer
 public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
+	// 클라이언트를 사용할 떄의 설정값
 	public static final String CLIENT_ID = "uengine-client";
 	public static final String CLIENT_SECRET = "uengine-secret";
 	static final String GRANT_TYPE_PASSWORD = "password";
@@ -47,8 +48,8 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
 	static final String SCOPE_READ = "read";
 	static final String SCOPE_WRITE = "write";
 	static final String TRUST = "trust";
-	static final int ACCESS_TOKEN_VALIDITY_SECONDS = 24*60*60; 	// 24시간
-	static final int FREFRESH_TOKEN_VALIDITY_SECONDS = 6*60*60;
+	static final int ACCESS_TOKEN_VALIDITY_SECONDS = 3600; // 1시간
+    static final int REFRESH_TOKEN_VALIDITY_SECONDS = 86400; // 24시간
 
 	@Autowired
 	@Qualifier("authenticationManagerBean")

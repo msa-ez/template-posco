@@ -89,37 +89,37 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	 * @throws Exception
 	 */
 	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		
-		http
-			.cors()
-		.and()
-			.authorizeRequests()
-				.antMatchers("/login").permitAll()
-			.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-			.anyRequest().authenticated()
-		.and()
-				.csrf()
-			  .disable()
-		;
-	}
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .cors()
+        .and()
+            .authorizeRequests()
+				.antMatchers("/api/auth/**", "/login.html").permitAll()
+                .antMatchers("/login", "/signup", "/public/**").permitAll()
+                .antMatchers("/actuator/**").hasRole("ADMIN")
+                .antMatchers("/api/**").authenticated()
+            .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+            .anyRequest().authenticated()
+        .and()
+            .csrf().disable()
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        ;
+    }
 
-	/**
-	 * CORS 셋팅
-	 * 만약 gateway 를 통해서 oauth 서버를 접근한다면 삭제해 줘야함
-	 * @return
-	 */
-	@Bean
-	public CorsConfigurationSource corsConfigurationSource() {
-		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.addAllowedOrigin("*");
-		configuration.addAllowedMethod("*");
-		configuration.addAllowedHeader("*");
-		configuration.setAllowCredentials(true);
-		configuration.setMaxAge(3600L);
-		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", configuration);
-		return source;
-	}
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:{{portGenerated}}", "https://your-production-domain.com"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        configuration.setExposedHeaders(Arrays.asList("Authorization"));
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
+        
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 
 }
