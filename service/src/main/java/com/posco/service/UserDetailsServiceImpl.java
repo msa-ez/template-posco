@@ -12,11 +12,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import com.posco.{{name}}.s20a01.domain.User;
-import com.posco.{{name}}.s20a01.repository.UserRepository;
+import com.posco.{{name}}.s20a01.domain.UserRepository;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.PostConstruct;
-
+import java.util.Optional;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -33,7 +33,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
-		User user = repository.findByUsername(username);
+		Optional<User> user = repository.findByUsername(username);
 		
 		if(ObjectUtils.isEmpty(user)) {
 			throw new UsernameNotFoundException("Invalid resource owner, please check resource owner info !");

@@ -10,6 +10,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import com.posco.service.config.OAuth2AuthorizationServerConfig;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.core.AuthenticationException;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -24,9 +27,8 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestParam String username, @RequestParam String password) {
         try {
-            // OAuth2 토큰 발급 로직 활용
             OAuth2AccessToken accessToken = oAuth2Config.getTokenEndpoint()
-                .postAccessToken(loginRequest.getUsername(), loginRequest.getPassword());
+                .postAccessToken(username, password);
             
             return ResponseEntity.ok(new JwtAuthenticationResponse(
                 accessToken.getValue(),
@@ -36,6 +38,70 @@ public class AuthController {
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(new ApiResponse(false, "Invalid username or password"));
+        }
+    }
+
+    public static class JwtAuthenticationResponse {
+        private String accessToken;
+        private String tokenType;
+        private int expiresIn;
+
+        public JwtAuthenticationResponse(String accessToken, String tokenType, int expiresIn) {
+            this.accessToken = accessToken;
+            this.tokenType = tokenType;
+            this.expiresIn = expiresIn;
+        }
+
+        // Getters and setters
+        public String getAccessToken() {
+            return accessToken;
+        }
+
+        public void setAccessToken(String accessToken) {
+            this.accessToken = accessToken;
+        }
+
+        public String getTokenType() {
+            return tokenType;
+        }
+
+        public void setTokenType(String tokenType) {
+            this.tokenType = tokenType;
+        }
+
+        public int getExpiresIn() {
+            return expiresIn;
+        }
+
+        public void setExpiresIn(int expiresIn) {
+            this.expiresIn = expiresIn;
+        }
+    }
+
+    public static class ApiResponse {
+        private boolean success;
+        private String message;
+
+        public ApiResponse(boolean success, String message) {
+            this.success = success;
+            this.message = message;
+        }
+
+        // Getters and setters
+        public boolean isSuccess() {
+            return success;
+        }
+
+        public void setSuccess(boolean success) {
+            this.success = success;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
         }
     }
 }

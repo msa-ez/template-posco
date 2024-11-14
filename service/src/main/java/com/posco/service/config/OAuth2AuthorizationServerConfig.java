@@ -1,10 +1,10 @@
-path: {{name}}/s20a01-service/src/main/java/com/posco/{{name}}/s20a01/config
+path: {{name}}/s20a01-service/src/main/java/com/posco/{{name}}/s20a01/service/config
 fileName: OAuth2AuthorizationServerConfig.java
 ---
-package com.posco.{{name}}.s20a01.config;
+package com.posco.{{name}}.s20a01.service.config;
 
-import com.posco.{{name}}.s20a01.entity.User;
-import com.posco.{{name}}.s20a01.repository.UserRepository;
+import com.posco.{{name}}.s20a01.domain.User;
+import com.posco.{{name}}.s20a01.domain.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -101,7 +101,7 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
 				.scopes(SCOPE_READ, SCOPE_WRITE, TRUST)
 				.authorities("ROLE_CLIENT","ROLE_TRUSTED_CLIENT")
 				.accessTokenValiditySeconds(ACCESS_TOKEN_VALIDITY_SECONDS).
-				refreshTokenValiditySeconds(FREFRESH_TOKEN_VALIDITY_SECONDS);
+				refreshTokenValiditySeconds(REFRESH_TOKEN_VALIDITY_SECONDS);
 	}
 
 	@Override

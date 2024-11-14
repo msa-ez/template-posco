@@ -1,7 +1,7 @@
-path: {{name}}/s20a01-service/src/main/java/com/posco/{{name}}/s20a01/config
+path: {{name}}/s20a01-service/src/main/java/com/posco/{{name}}/s20a01/service/config
 fileName: JwkSetEndpointConfiguration.java
 ---
-package com.posco.{{name}}.s20a01.config;
+package com.posco.{{name}}.s20a01.service.config;
 
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;

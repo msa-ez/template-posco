@@ -1,7 +1,7 @@
 path: {{name}}/s20a01-domain/src/main/java/com/posco/{{name}}/s20a01/domain
 fileName: UserRepository.java
 ---
-package com.posco.{{name}}.s20a01.repository;
+package com.posco.{{name}}.s20a01.domain;
 
 import com.posco.{{name}}.s20a01.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;

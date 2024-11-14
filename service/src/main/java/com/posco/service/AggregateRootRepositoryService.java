@@ -24,14 +24,14 @@ import com.posco.{{boundedContext.name}}.s20a01.domain.{{../nameCamelCase}}.{{na
 @Transactional
 public class {{namePascalCase}}RepositoryService {
     private final {{namePascalCase}}Repository {{nameCamelCase}}Repository;
-    private final {{namePascalCase}}Mapper mybatisMapper;
+    private final {{namePascalCase}}Mapper {{nameCamelCase}}Mapper;
     
     @Autowired
     public {{namePascalCase}}RepositoryService(
         {{namePascalCase}}Repository {{nameCamelCase}}Repository,
-        {{namePascalCase}}Mapper mybatisMapper) {
+        {{namePascalCase}}Mapper {{nameCamelCase}}Mapper) {
         this.{{nameCamelCase}}Repository = {{nameCamelCase}}Repository;
-        this.mybatisMapper = {{namePascalCase}}Mapper;
+        this.{{nameCamelCase}}Mapper = {{nameCamelCase}}Mapper;
     }
 
     {{#commands}}
