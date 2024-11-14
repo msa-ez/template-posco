@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
 import com.posco.{{name}}.s20a01.domain.User;
 import com.posco.{{name}}.s20a01.domain.UserRepository;
@@ -32,16 +31,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		
-		Optional<User> user = repository.findByUsername(username);
-		
-		if(ObjectUtils.isEmpty(user)) {
-			throw new UsernameNotFoundException("Invalid resource owner, please check resource owner info !");
-		}
-		
-		user.setAuthorities(AuthorityUtils.createAuthorityList(String.valueOf(user.getRole())));
-		
-		return user;
-	}
+        return repository.findByUsername(username)
+            .map(user -> {
+                user.setAuthorities(AuthorityUtils.createAuthorityList(String.valueOf(user.getRole())));
+                return user;
+            })
+            .orElseThrow(() -> new UsernameNotFoundException("Invalid resource owner, please check resource owner info !"));
+    }
 
 }

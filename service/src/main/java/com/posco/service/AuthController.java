@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import com.posco.service.config.OAuth2AuthorizationServerConfig;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.OAuth2Request;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -27,8 +31,27 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestParam String username, @RequestParam String password) {
         try {
-            OAuth2AccessToken accessToken = oAuth2Config.getTokenEndpoint()
-                .postAccessToken(username, password);
+            UsernamePasswordAuthenticationToken authToken = 
+                new UsernamePasswordAuthenticationToken(username, password);
+            
+            Authentication authentication = authenticationManager.authenticate(authToken);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            // OAuth2 토큰 생성
+            OAuth2Request oAuth2Request = new OAuth2Request(null, 
+                OAuth2AuthorizationServerConfig.CLIENT_ID, 
+                null, true, null, null, null, null, null);
+            
+            OAuth2Authentication oAuth2Authentication = 
+                new OAuth2Authentication(oAuth2Request, authentication);
+
+            OAuth2AccessToken accessToken = oAuth2Config.tokenStore()
+                .getAccessToken(oAuth2Authentication);
+
+            if (accessToken == null) {
+                accessToken = oAuth2Config.accessTokenConverter()
+                    .enhance(new DefaultOAuth2AccessToken(""), oAuth2Authentication);
+            }
             
             return ResponseEntity.ok(new JwtAuthenticationResponse(
                 accessToken.getValue(),
