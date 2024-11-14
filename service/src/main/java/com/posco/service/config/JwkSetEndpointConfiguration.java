@@ -1,4 +1,4 @@
-path: {{name}}/s20a01-boot/src/main/java/com/posco/{{name}}/s20a01/config
+path: {{name}}/s20a01-service/src/main/java/com/posco/{{name}}/s20a01/config
 fileName: JwkSetEndpointConfiguration.java
 ---
 package com.posco.{{name}}.s20a01.config;

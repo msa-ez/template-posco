@@ -10,7 +10,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -23,7 +22,7 @@ public class AuthController {
     private OAuth2AuthorizationServerConfig oAuth2Config;
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> authenticateUser(@RequestParam String username, @RequestParam String password) {
         try {
             // OAuth2 토큰 발급 로직 활용
             OAuth2AccessToken accessToken = oAuth2Config.getTokenEndpoint()
