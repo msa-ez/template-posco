@@ -19,7 +19,7 @@ public class ResourceServerConfiguration {
                 .cors().and()
                 .csrf().disable()
                 .authorizeExchange()
-                .pathMatchers("/products/**","/goods/**","/oauth/**","/login/**").permitAll()
+                .pathMatchers("/.well-known/**","/api/auth/**", "/login/**").permitAll()
                 .anyExchange().authenticated()
                 .and()
                 .oauth2ResourceServer()

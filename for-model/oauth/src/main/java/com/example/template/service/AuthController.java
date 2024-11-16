@@ -1,7 +1,7 @@
-path: {{name}}/s20a01-service/src/main/java/com/posco/{{name}}/s20a01/service
+path: oauth/src/main/java/com/example/template/service
 fileName: AuthController.java
 ---
-package com.posco.{{name}}.s20a01.service;
+package com.example.template.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +10,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import com.posco.service.config.OAuth2AuthorizationServerConfig;
+import com.example.template.config.OAuth2AuthorizationServerConfig;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

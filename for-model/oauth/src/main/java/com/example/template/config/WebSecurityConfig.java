@@ -1,9 +1,6 @@
-path: {{name}}/s20a01-boot/src/main/java/com/posco/{{name}}/s20a01/config
-fileName: WebSecurityConfig.java
----
-package com.posco.{{name}}.s20a01.config;
+package com.example.template.config;
 
-import com.posco.{{name}}.s20a01.service.UserDetailsServiceImpl;
+import com.example.template.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +14,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -94,8 +92,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
             .cors()
         .and()
             .authorizeRequests()
-				.antMatchers("/api/auth/**", "/login.html").permitAll()
-                .antMatchers("/login", "/signup", "/public/**").permitAll()
+                .antMatchers("/.well-known/**","/api/auth/**", "/login/**").permitAll()
                 .antMatchers("/actuator/**").hasRole("ADMIN")
                 .antMatchers("/api/**").authenticated()
             .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
@@ -110,7 +107,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:{{portGenerated}}", "https://your-production-domain.com"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080", "https://your-production-domain.com"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         configuration.setExposedHeaders(Arrays.asList("Authorization"));

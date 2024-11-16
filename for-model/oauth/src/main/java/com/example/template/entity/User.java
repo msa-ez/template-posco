@@ -1,7 +1,4 @@
-path: {{name}}/s20a01-domain/src/main/java/com/posco/{{name}}/s20a01/domain
-fileName: User.java
----
-package com.posco.{{name}}.s20a01.domain;
+package com.example.template.entity;
 
 import java.util.Collection;
 
