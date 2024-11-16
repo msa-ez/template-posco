@@ -34,6 +34,15 @@ import java.util.Map;
 @EnableAuthorizationServer
 public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
+	public static final String CLIENT_ID = "client";
+	public static final String CLIENT_SECRET = "secret";
+	static final String GRANT_TYPE_PASSWORD = "password";
+	static final String CLIENT_CREDENTIALS = "client_credentials";
+	static final String REFRESH_TOKEN = "refresh_token";
+	static final String IMPLICIT = "implicit";
+	static final String SCOPE_READ = "read";
+	static final String SCOPE_WRITE = "write";
+	static final String TRUST = "trust";
 	static final int ACCESS_TOKEN_VALIDITY_SECONDS = 3600; // 1시간
     static final int REFRESH_TOKEN_VALIDITY_SECONDS = 86400; // 24시간
 
@@ -87,7 +96,7 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
 				.scopes(SCOPE_READ, SCOPE_WRITE, TRUST)
 				.authorities("ROLE_CLIENT","ROLE_TRUSTED_CLIENT")
 				.accessTokenValiditySeconds(ACCESS_TOKEN_VALIDITY_SECONDS).
-				refreshTokenValiditySeconds(FREFRESH_TOKEN_VALIDITY_SECONDS);
+				refreshTokenValiditySeconds(REFRESH_TOKEN_VALIDITY_SECONDS);
 	}
 
 	@Override

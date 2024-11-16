@@ -17,6 +17,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Request;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
+import java.util.Arrays;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -45,13 +48,10 @@ public class AuthController {
             OAuth2Authentication oAuth2Authentication = 
                 new OAuth2Authentication(oAuth2Request, authentication);
 
-            OAuth2AccessToken accessToken = oAuth2Config.tokenStore()
-                .getAccessToken(oAuth2Authentication);
-
-            if (accessToken == null) {
-                accessToken = oAuth2Config.accessTokenConverter()
-                    .enhance(new DefaultOAuth2AccessToken(""), oAuth2Authentication);
-            }
+            TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+            tokenEnhancerChain.setTokenEnhancers(Arrays.asList(oAuth2Config.tokenEnhancer(), oAuth2Config.accessTokenConverter()));
+            
+            OAuth2AccessToken accessToken = tokenEnhancerChain.enhance(new DefaultOAuth2AccessToken(UUID.randomUUID().toString()), oAuth2Authentication);
             
             return ResponseEntity.ok(new JwtAuthenticationResponse(
                 accessToken.getValue(),

@@ -44,6 +44,15 @@ spring:
         format_sql: true
         implicit_naming_strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
 
+eureka:
+  client:
+    enabled: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    enabled: false
+    fetch-registry: false
+    register-with-eureka: false
+
 mybatis:
   type-aliases-package: com.posco.{{boundedContext.name}}.s20a01.domain.{{nameCamelCase}}.mybatis
   mapper-locations: classpath:mybatis.mapper/*.xml
