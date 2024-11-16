@@ -11,6 +11,39 @@ spring:
 ---
 spring:
   profiles: default
+  datasource:
+    url: ${datasource.url}
+    username: ${datasource.username}
+    password: ${datasource.password}
+    driver-class-name: ${datasource.driver-class-name}
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        implicit_naming_strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
+
+eureka:
+  client:
+    enabled: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    enabled: false
+    fetch-registry: false
+    register-with-eureka: false
+
+mybatis:
+  type-aliases-package: com.example.template.entity.mybatis
+  mapper-locations: classpath:mybatis.mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    default-fetch-size: 250
+
+logging:
+  level:
+    org.hibernate.type: trace
+    org.springframework.cloud: debug
+
 server:
   port: 8090
 

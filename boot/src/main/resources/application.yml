@@ -32,6 +32,11 @@ spring:
 ---
 spring:
   profiles: default
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8090/.well-known/jwks.json
   datasource:
     url: ${datasource.url}
     username: ${datasource.username}
