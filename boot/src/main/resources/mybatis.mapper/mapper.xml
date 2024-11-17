@@ -3,7 +3,6 @@ representativeFor: Aggregate
 fileName: {{namePascalCase}}Mapper.xml
 path: {{boundedContext.name}}/s20a01-boot/src/main/resources/mybatis.mapper
 ---
-
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.posco.{{boundedContext.name}}.s20a01.domain.{{nameCamelCase}}.mybatis.{{namePascalCase}}Mapper">

@@ -31,16 +31,26 @@ public class AuthController {
     @Autowired
     private OAuth2AuthorizationServerConfig oAuth2Config;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestParam String username, @RequestParam String password) {
         try {
+            // 인증 처리
             UsernamePasswordAuthenticationToken authToken = 
                 new UsernamePasswordAuthenticationToken(username, password);
             
             Authentication authentication = authenticationManager.authenticate(authToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            // OAuth2 토큰 생성
+            // 여기서 추가 정보 조회
+            // Optional<User> userDetails = userMapper.findByUsernameWithRoles(username);
+            // if (!userDetails.isPresent()) {
+            //     return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+            //         .body(new ApiResponse(false, "User details not found"));
+            // }
+
             OAuth2Request oAuth2Request = new OAuth2Request(null, 
                 OAuth2AuthorizationServerConfig.CLIENT_ID, 
                 null, true, null, null, null, null, null);
@@ -49,9 +59,15 @@ public class AuthController {
                 new OAuth2Authentication(oAuth2Request, authentication);
 
             TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
-            tokenEnhancerChain.setTokenEnhancers(Arrays.asList(oAuth2Config.tokenEnhancer(), oAuth2Config.accessTokenConverter()));
+            tokenEnhancerChain.setTokenEnhancers(Arrays.asList(
+                oAuth2Config.tokenEnhancer(), 
+                oAuth2Config.accessTokenConverter()
+            ));
             
-            OAuth2AccessToken accessToken = tokenEnhancerChain.enhance(new DefaultOAuth2AccessToken(UUID.randomUUID().toString()), oAuth2Authentication);
+            OAuth2AccessToken accessToken = tokenEnhancerChain.enhance(
+                new DefaultOAuth2AccessToken(UUID.randomUUID().toString()), 
+                oAuth2Authentication
+            );
             
             return ResponseEntity.ok(new JwtAuthenticationResponse(
                 accessToken.getValue(),
