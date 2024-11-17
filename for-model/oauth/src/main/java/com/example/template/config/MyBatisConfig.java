@@ -11,7 +11,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @MapperScan(basePackages = "com.example.template.repository.mybatis")
-public class MyBatisConfiguration {
+public class MyBatisConfig {
 
     @Bean
     public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
