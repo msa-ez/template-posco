@@ -1,15 +1,5 @@
-/**
- * 제 품: IBSheet8 - Dialog Plugin
- * 버 전: v1.0.23 (20240926-15)
- * 회 사: (주)아이비리더스
- * 주 소: https://www.ibsheet.com
- * 전 화: 1644-5615
- */
 (function(window, document) {
-/*
- * ibsheet 내에 다이얼로그 (피봇,찾기,상세보기 등)
- * 해당 파일은 반드시 ibsheet.js 파일보다 뒤에 include 되어야 합니다.
- */
+
 var _IBSheet = window['IBSheet'];
 if (_IBSheet == null) {
   throw new Error('[ibsheet-dialog] undefined global object: IBSheet');
