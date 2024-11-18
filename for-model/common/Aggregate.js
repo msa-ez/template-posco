@@ -1,6 +1,6 @@
 forEach: Aggregate
-fileName: {{namePascalCase}}.html
-path: static/ibsheet
+fileName: {{namePascalCase}}.js
+path: common
 ---
 $(document).ready(function(){
     var OPT = {
