@@ -9,13 +9,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.WebApplicationContext;
 
 import com.example.template.entity.User;
 import com.example.template.repository.UserRepository;
-import org.springframework.web.context.WebApplicationContext;
+import com.example.template.repository.mybatis.UserMapper;
 
 import javax.annotation.PostConstruct;
 import java.util.Optional;
+
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
