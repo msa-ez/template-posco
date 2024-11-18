@@ -1,0 +1,28 @@
+forEach: Aggregate
+fileName: {{namePascalCase}}.html
+path: static/ibsheet
+---
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{namePascalCase}}</title>
+        <script src="/l9a01f-members/common/plugins/ibsheet8/ibsheet.js"></script>
+        <script src="/l9a01f-members/common/plugins/ibsheet8/ibleaders.js"></script>
+        <link rel="stylesheet" type="text/css" href="/l9a01f-members/common/plugins/ibsheet8/css/default/main.css">
+        <script src="/l9a01f-members/common/plugins/ibsheet8/locale/ko.js"></script>
+        <script src="/l9a01f-members/common/plugins/jquery-3.4.1.js"></script>
+        <script src="/l9a01f-members/l9a01f/js/members.js"></script>
+        <script src="/l9a01f-members/common/plugins/i18next.min.js"></script>
+        <script src="/l9a01f-members/l9a01f/js/i18n-members-en.js"></script>
+        <script src="/l9a01f-members/l9a01f/js/i18n-members-ko.js"></script>
+    </head>
+    <body>
+        <h1>{{boundedContext.namePascalCase}}</h1>
+        <p>{{namePascalCase}}</p>
+        <button type="button" class='buttonLabelSearch' onclick="retrieve()">조회</button>
+        <button type="button" class='buttonLabelSave' onclick="save()">저장</button>
+        <button type="button" class='buttonLabelAddRow' onclick="addData()">신규</button>
+        <button type="button" class='buttonLabelDeleteRow' onclick="deleteData()">삭제</button>
+        <div id="sheet_DIV" style="width:100%;height:500px"></div>
+    </body>
+</html>
