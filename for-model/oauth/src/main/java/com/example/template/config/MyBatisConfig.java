@@ -1,4 +1,6 @@
-package com.example.template.config;
+path: /src/main/java/{{options.package}}/config
+---
+package {{options.package}}.config;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
