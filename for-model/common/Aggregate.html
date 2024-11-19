@@ -1,20 +1,20 @@
 forEach: Aggregate
 fileName: {{namePascalCase}}.html
-path: common
 ---
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="UTF-8">
         <title>{{namePascalCase}}</title>
-        <script src="/l9a01f-members/common/plugins/ibsheet8/ibsheet.js"></script>
-        <script src="/l9a01f-members/common/plugins/ibsheet8/ibleaders.js"></script>
-        <link rel="stylesheet" type="text/css" href="/l9a01f-members/common/plugins/ibsheet8/css/default/main.css">
-        <script src="/l9a01f-members/common/plugins/ibsheet8/locale/ko.js"></script>
-        <script src="/l9a01f-members/common/plugins/jquery-3.4.1.js"></script>
-        <script src="/l9a01f-members/l9a01f/js/members.js"></script>
-        <script src="/l9a01f-members/common/plugins/i18next.min.js"></script>
-        <script src="/l9a01f-members/l9a01f/js/i18n-members-en.js"></script>
-        <script src="/l9a01f-members/l9a01f/js/i18n-members-ko.js"></script>
+        <script src="/common/plugins/ibsheet8/ibsheet.js"></script>
+        <script src="/common/plugins/ibsheet8/ibleaders.js"></script>
+        <link rel="stylesheet" type="text/css" href="/common/plugins/ibsheet8/css/default/main.css">
+        <script src="/common/plugins/ibsheet8/locale/ko.js"></script>
+        <script src="/common/plugins/jquery-3.4.1.js"></script>
+        <script src="/common/plugins/i18next.min.js"></script>
+        <script src="/common/js/{{namePascalCase}}.js"></script>
+        <!-- <script src="/l9a01f-members/l9a01f/js/i18n-members-en.js"></script>
+        <script src="/l9a01f-members/l9a01f/js/i18n-members-ko.js"></script> -->
     </head>
     <body>
         <h1>{{boundedContext.namePascalCase}}</h1>

@@ -40,28 +40,28 @@ public class {{namePascalCase}}Controller {
     {{/ifEquals}}
 
     {{#ifEquals restRepositoryInfo.method 'PATCH'}}
-    @PatchMapping(path = "{{../namePlural}}/{id}")
+    @PatchMapping(path = "{{../namePlural}}/{{#addMustache ../keyFieldDescriptor.className}}{{/addMustache}}")
     public ResponseEntity<{{../namePascalCase}}> update(
-        @PathVariable {{../keyFieldDescriptor.className}} id,
+        @PathVariable {{../keyFieldDescriptor.className}} {{../keyFieldDescriptor.nameCamelCase}},
         @Valid @RequestBody {{namePascalCase}}Command command) {
-        return ResponseEntity.ok({{../nameCamelCase}}RepositoryService.update(id, command));
+        return ResponseEntity.ok({{../nameCamelCase}}RepositoryService.update({{../keyFieldDescriptor.nameCamelCase}}, command));
     }
     {{/ifEquals}}
 
     {{#ifEquals restRepositoryInfo.method 'DELETE'}}
-    @DeleteMapping(path = "{{../namePlural}}/{id}")
-    public ResponseEntity<Void> delete(@PathVariable {{../keyFieldDescriptor.className}} id) {
-        {{../nameCamelCase}}RepositoryService.delete(id);
+    @DeleteMapping(path = "{{../namePlural}}/{{#addMustache ../keyFieldDescriptor.className}}{{/addMustache}}")
+    public ResponseEntity<Void> delete(@PathVariable {{../keyFieldDescriptor.className}} {{../keyFieldDescriptor.nameCamelCase}}) {
+        {{../nameCamelCase}}RepositoryService.delete({{../keyFieldDescriptor.nameCamelCase}});
         return ResponseEntity.noContent().build();
     }
     {{/ifEquals}}
     
     {{else}}
-    @PostMapping(path = "{{../namePlural}}/{id}/{{nameCamelCase}}")
+    @PostMapping(path = "{{../namePlural}}/{{#addMustache ../keyFieldDescriptor.className}}{{/addMustache}}/{{nameCamelCase}}")
     public ResponseEntity<{{../namePascalCase}}> {{nameCamelCase}}(
-        @PathVariable("id") {{../keyFieldDescriptor.className}} id,
+        @PathVariable("{{../keyFieldDescriptor.nameCamelCase}}") {{../keyFieldDescriptor.className}} {{../keyFieldDescriptor.nameCamelCase}},
         @Valid @RequestBody {{namePascalCase}}Command command) {
-        {{../namePascalCase}} {{../nameCamelCase}} = {{../nameCamelCase}}RepositoryService.findById(id);
+        {{../namePascalCase}} {{../nameCamelCase}} = {{../nameCamelCase}}RepositoryService.findById({{../keyFieldDescriptor.nameCamelCase}});
         
         // 도메인 포트 메서드 직접 호출
         {{../nameCamelCase}}.{{nameCamelCase}}(
@@ -73,3 +73,10 @@ public class {{namePascalCase}}Controller {
     {{/if}}
     {{/commands}}
 }
+<function>
+window.$HandleBars.registerHelper('addMustache', function (id) {
+    var result = '';
+    result = "{" + id + "}"
+    return result;
+});
+</function>
