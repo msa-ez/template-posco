@@ -6,7 +6,7 @@ path: {{boundedContext.name}}/s20a01-domain/src/main/java/com/posco/{{boundedCon
 package com.posco.{{boundedContext.name}}.s20a01.domain.{{nameCamelCase}};
 
 {{#aggregateRoot.fieldDescriptors}}{{#isVO}}import com.posco.{{../boundedContext.name}}.s20a01.domain.{{namePascalCase}};{{/isVO}}{{/aggregateRoot.fieldDescriptors}}
-{{#aggregateRoot.fieldDescriptors}}{{#if (isPrimitive className)}}import com.posco.{{../boundedContext.name}}.s20a01.domain.{{namePascalCase}};{{/if}}{{/aggregateRoot.fieldDescriptors}}
+{{#aggregateRoot.fieldDescriptors}}{{^if (isPrimitive className)}}import com.posco.{{../boundedContext.name}}.s20a01.domain.{{namePascalCase}};{{/if}}{{/aggregateRoot.fieldDescriptors}}
 
 import javax.persistence.*;
 import java.util.List;
@@ -137,7 +137,7 @@ window.$HandleBars.registerHelper('checkBigDecimal', function (fieldDescriptors)
 
 window.$HandleBars.registerHelper('isPrimitive', function (className) {
     if(className.includes("String") || className.includes("Integer") || className.includes("Long") || className.includes("Double") || className.includes("Float")
-            || className.includes("Boolean") || className.includes("Date")){
+            || className.includes("Boolean") || className.includes("Date") || className.includes("int")){
         return true;
     } else {
         return false;

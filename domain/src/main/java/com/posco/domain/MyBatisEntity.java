@@ -8,7 +8,7 @@ package com.posco.{{boundedContext.name}}.s20a01.domain.{{aggregate.nameCamelCas
 import lombok.Data;
 import java.util.Date;
 
-{{#queryParameters}}{{#if (isPrimitive className)}}import com.posco.{{../boundedContext.name}}.s20a01.domain.{{namePascalCase}};{{/if}}{{/queryParameters}}
+{{#queryParameters}}{{^if (isPrimitive className)}}import com.posco.{{../boundedContext.name}}.s20a01.domain.{{namePascalCase}};{{/if}}{{/queryParameters}}
 
 
 @Data
@@ -21,7 +21,7 @@ public class {{namePascalCase}}MybatisEntity {
 <function>
 window.$HandleBars.registerHelper('isPrimitive', function (className) {
     if(className.includes("String") || className.includes("Integer") || className.includes("Long") || className.includes("Double") || className.includes("Float")
-            || className.includes("Boolean") || className.includes("Date")){
+            || className.includes("Boolean") || className.includes("Date") || className.includes("int")){
         return true;
     } else {
         return false;
