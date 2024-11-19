@@ -32,8 +32,8 @@ public class {{namePascalCase}}RepositoryService {
     
     @Autowired
     public {{namePascalCase}}RepositoryService(
-        {{namePascalCase}}Repository {{nameCamelCase}}Repository,
-        {{#attached 'View' this}}{{namePascalCase}}Mapper {{nameCamelCase}}Mapper{{/attached}}) {
+        {{namePascalCase}}Repository {{nameCamelCase}}Repository
+        {{#attached 'View' this}},{{namePascalCase}}Mapper {{nameCamelCase}}Mapper{{/attached}}) {
         this.{{nameCamelCase}}Repository = {{nameCamelCase}}Repository;
         {{#attached 'View' this}}
         this.{{nameCamelCase}}Mapper = {{nameCamelCase}}Mapper;
