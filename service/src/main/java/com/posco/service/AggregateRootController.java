@@ -72,6 +72,15 @@ public class {{namePascalCase}}Controller {
     }
     {{/if}}
     {{/commands}}
+
+    {{#attached 'View' this}}
+    {{#if queryParameters}}
+    @GetMapping(path = "{{../namePlural}}/{{#addMustache ../keyFieldDescriptor.nameCamelCase}}{{/addMustache}}")
+    public ResponseEntity<{{../namePascalCase}}> {{nameCamelCase}}(@PathVariable {{../keyFieldDescriptor.className}} {{../keyFieldDescriptor.nameCamelCase}}) {
+        return ResponseEntity.ok({{../nameCamelCase}}RepositoryService.{{nameCamelCase}}({{../keyFieldDescriptor.nameCamelCase}}));
+    }
+    {{/if}}
+    {{/attached}}
 }
 <function>
 window.$HandleBars.registerHelper('addMustache', function (id) {
