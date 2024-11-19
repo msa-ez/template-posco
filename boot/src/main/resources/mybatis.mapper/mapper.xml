@@ -9,7 +9,7 @@ path: {{boundedContext.name}}/s20a01-boot/src/main/resources/mybatis.mapper
     
     {{#attached 'View' this}}
     {{#if queryParameters}}
-    <select id="{{namePascalCase}}" resultType="{{namePascalCase}}MybatisEntity">
+    <select id="{{nameCamelCase}}" resultType="{{namePascalCase}}MybatisEntity">
         SELECT * FROM {{../namePascalCase}}_table WHERE {{keyFieldDescriptor.nameCamelCase}} = #{id}
     </select>
     {{/if}}

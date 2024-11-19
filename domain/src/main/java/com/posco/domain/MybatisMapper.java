@@ -13,7 +13,7 @@ public interface {{namePascalCase}}Mapper {
 
 {{#attached 'View' this}}
     {{#if queryParameters}}
-        {{nameCamelCase}}MybatisEntity {{namePascalCase}}({{keyFieldDescriptor.className}} id);
+        {{namePascalCase}}MybatisEntity {{nameCamelCase}}({{keyFieldDescriptor.className}} id);
     {{/if}}
 {{/attached}}
 }
