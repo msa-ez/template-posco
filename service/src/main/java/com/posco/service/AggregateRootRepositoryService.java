@@ -84,12 +84,12 @@ public class {{namePascalCase}}RepositoryService {
 
 
     //// mybatis
+    {{#attached 'View' this}}
     private {{namePascalCase}} convertToEntity({{namePascalCase}}MybatisEntity mybatisEntity) {
         {{namePascalCase}} entity = new {{namePascalCase}}();
         return entity;
     }
     
-    {{#attached 'View' this}}
     private {{namePascalCase}}MybatisEntity convertToMybatisEntity({{namePascalCase}} entity) {
         {{namePascalCase}}MybatisEntity mybatisEntity = new {{namePascalCase}}MybatisEntity();
         return mybatisEntity;
@@ -97,7 +97,7 @@ public class {{namePascalCase}}RepositoryService {
     {{/attached}}
     {{#attached 'View' this}}
     {{#if queryParameters}}
-    public {{namePascalCase}} select{{namePascalCase}}({{keyFieldDescriptor.className}} id) {
+    public {{namePascalCase}} {{namePascalCase}}({{keyFieldDescriptor.className}} id) {
         {{namePascalCase}}MybatisEntity mybatisEntity = {{nameCamelCase}}Mapper.{{namePascalCase}}(id);
         if (mybatisEntity == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "{{namePascalCase}} not found");

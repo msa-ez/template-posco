@@ -58,7 +58,7 @@ eureka:
     register-with-eureka: false
 
 mybatis:
-  type-aliases-package: com.posco.{{boundedContext.name}}.s20a01.domain.{{nameCamelCase}}.mybatis
+  type-aliases-package: com.posco.{{nameCamelCase}}.s20a01.domain.{{nameCamelCase}}.mybatis
   mapper-locations: classpath:mybatis.mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true
