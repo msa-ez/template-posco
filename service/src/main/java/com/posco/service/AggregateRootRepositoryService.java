@@ -27,7 +27,7 @@ import com.posco.{{boundedContext.name}}.s20a01.domain.{{../nameCamelCase}}.{{na
 public class {{namePascalCase}}RepositoryService {
     private final {{namePascalCase}}Repository {{nameCamelCase}}Repository;
     {{#attached 'View' this}}
-    private final {{namePascalCase}}Mapper {{nameCamelCase}}Mapper;
+    private final {{../namePascalCase}}Mapper {{../nameCamelCase}}Mapper;
     {{/attached}}
     
     @Autowired
