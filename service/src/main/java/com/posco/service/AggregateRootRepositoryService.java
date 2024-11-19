@@ -103,7 +103,7 @@ public class {{namePascalCase}}RepositoryService {
     {{/attached}}
     {{#attached 'View' this}}
     {{#if queryParameters}}
-    public {{namePascalCase}} {{nameCamelCase}}({{keyFieldDescriptor.className}} id) {
+    public {{namePascalCase}}MybatisEntity {{nameCamelCase}}({{keyFieldDescriptor.className}} id) {
         {{namePascalCase}}MybatisEntity mybatisEntity = {{../nameCamelCase}}Mapper.{{nameCamelCase}}(id);
         if (mybatisEntity == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "{{namePascalCase}} not found");
