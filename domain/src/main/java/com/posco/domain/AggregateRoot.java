@@ -6,7 +6,7 @@ path: {{boundedContext.name}}/s20a01-domain/src/main/java/com/posco/{{boundedCon
 package com.posco.{{boundedContext.name}}.s20a01.domain.{{nameCamelCase}};
 
 {{#aggregateRoot.fieldDescriptors}}{{#isVO}}import com.posco.{{../boundedContext.name}}.s20a01.domain.{{namePascalCase}};{{/isVO}}{{/aggregateRoot.fieldDescriptors}}
-{{#aggregateRoot.fieldDescriptors}}{{#isPrimitive className}}import com.posco.{{../boundedContext.name}}.s20a01.domain.{{namePascalCase}};{{/isPrimitive}}{{/aggregateRoot.fieldDescriptors}}
+{{#aggregateRoot.fieldDescriptors}}{{#if (isPrimitive className)}}import com.posco.{{../boundedContext.name}}.s20a01.domain.{{namePascalCase}};{{/if}}{{/aggregateRoot.fieldDescriptors}}
 
 import javax.persistence.*;
 import java.util.List;
