@@ -2,6 +2,7 @@ forEach: ViewEventInfo
 representativeFor: View
 fileName: {{namePascalCase}}.java
 path: {{boundedContext.name}}/domain/{{{options.packagePath}}}/domain
+except: true
 ---
 package {{options.package}}.domain;
 
