@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.beans.BeanUtils;
 {{#attached 'View' this}}
 import com.posco.{{boundedContext.name}}.s20a01.domain.{{aggregate.nameCamelCase}}.mybatis.{{namePascalCase}}MybatisEntity;
 import com.posco.{{boundedContext.name}}.s20a01.domain.{{aggregate.nameCamelCase}}.mybatis.{{../namePascalCase}}Mapper;
@@ -103,7 +104,7 @@ public class {{namePascalCase}}RepositoryService {
     {{/attached}}
     {{#attached 'View' this}}
     {{#if queryParameters}}
-    public {{namePascalCase}}MybatisEntity {{nameCamelCase}}({{keyFieldDescriptor.className}} id) {
+    public {{../namePascalCase}} {{nameCamelCase}}({{keyFieldDescriptor.className}} id) {
         {{namePascalCase}}MybatisEntity mybatisEntity = {{../nameCamelCase}}Mapper.{{nameCamelCase}}(id);
         if (mybatisEntity == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "{{namePascalCase}} not found");
