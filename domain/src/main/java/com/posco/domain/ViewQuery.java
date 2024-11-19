@@ -1,7 +1,7 @@
 forEach: View
 fileName: {{namePascalCase}}Query.java
 path: {{boundedContext.name}}/domain/{{{options.packagePath}}}/domain
-except: {{#checkExtend this}}{{/checkExtend}}
+except: true
 ---
 package {{options.package}}.domain;
 
