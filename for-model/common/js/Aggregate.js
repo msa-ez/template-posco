@@ -1,6 +1,6 @@
 forEach: Aggregate
 fileName: {{namePascalCase}}.js
-path: common
+path: common/js
 ---
 $(document).ready(function(){
     var OPT = {
@@ -19,7 +19,7 @@ $(document).ready(function(){
 });
 
 function retrieve(){
-    fetch("http://internal-k8s-ftl-ingress1-eafee7ab24-1743142653.ap-northeast-2.elb.amazonaws.com/l9a990-sample{{namePlural}}/{{namePlural}}/all", {
+    fetch("/{{namePlural}}", {
         method: 'GET',
         headers: {
             "Cache-Control": "no-cache",
@@ -50,44 +50,38 @@ function save(){
         switch(rows[i].STATUS){
             case "Added":
                 var saveRow = rows[i];
-                saveRow["createdObjectType"] =  "C";
-                saveRow["createdObjectId"] =  "L9A01001";
-                saveRow["createdProgramId"] =  "L9A01001";
-                saveRow["creationTimestamp"] =  1643330024000;
-                saveRow["lastUpdatedObjectType"] =  "C";
-                saveRow["lastUpdatedObjectId"] =  "L9A01001";
-                saveRow["lastUpdateProgramId"] =  "L9A01001";
-                saveRow["lastUpdateTimestamp"] =  1643330024000;
                 $.ajax({
-                    url:"http://ap-northeast-2.elb.amazonaws.com/l9a990-sample{{namePlural}}/{{namePlural}}",
-                    method:"POST",
-                    contentType :"application/json",
-                    data:JSON.stringify(saveRow)
+                    url: "/{{namePlural}}",
+                    method: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(saveRow)
                 });
                 break;
             case "Changed":
                 var rowObj = sheet.getRowById(rows[i].id);
                 var changedData = JSON.parse(sheet.getChangedData(rowObj))["Changes"][0];
-                var nameValueData = {};
-                var saveArr = Object.keys(changedData).map((key,idx)=>{
-                    return {"name":key , "value": changedData[key]}
-                })
-                nameValueData["nameValues"] = saveArr;
                 var id = rows[i].seq;
                 $.ajax({
-                    url:`http://ap-northeast-2.elb.amazonaws.com/l9a990-sample{{namePlural}}/{{namePlural}}/${id}`,
-                    method:"PUT",
-                    contentType :"application/json",
-                    data:JSON.stringify(nameValueData),
+                    url: `/{{namePlural}}/${id}`,
+                    method: "PATCH",
+                    contentType: "application/json",
+                    data: JSON.stringify(changedData)
                 });
                 break;
             case "Deleted":
                 var id = rows[i].seq;
                 $.ajax({
-                    url:`http://ap-northeast-2.elb.amazonaws.com/l9a990-sampl{{namePlural}}/{{namePlural}}/${id}`,
-                    method:"DELETE",
+                    url: `/{{namePlural}}/${id}`,
+                    method: "DELETE",
                 });
                 break;
         }     
     }           
 }
+<function>
+window.$HandleBars.registerHelper('addMustache', function (id) {
+    var result = '';
+    result = "{" + id + "}"
+    return result;
+});
+</function>
