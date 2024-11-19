@@ -33,10 +33,10 @@ public class {{namePascalCase}}RepositoryService {
     @Autowired
     public {{namePascalCase}}RepositoryService(
         {{namePascalCase}}Repository {{nameCamelCase}}Repository
-        {{#attached 'View' this}},{{namePascalCase}}Mapper {{nameCamelCase}}Mapper{{/attached}}) {
+        {{#attached 'View' this}},{{../namePascalCase}}Mapper {{../nameCamelCase}}Mapper{{/attached}}) {
         this.{{nameCamelCase}}Repository = {{nameCamelCase}}Repository;
         {{#attached 'View' this}}
-        this.{{nameCamelCase}}Mapper = {{nameCamelCase}}Mapper;
+        this.{{../nameCamelCase}}Mapper = {{../nameCamelCase}}Mapper;
         {{/attached}}
     }
 
@@ -89,20 +89,22 @@ public class {{namePascalCase}}RepositoryService {
 
     //// mybatis
     {{#attached 'View' this}}
-    private {{namePascalCase}} convertToEntity({{namePascalCase}}MybatisEntity mybatisEntity) {
-        {{namePascalCase}} entity = new {{namePascalCase}}();
+    private {{../namePascalCase}} convertToEntity({{namePascalCase}}MybatisEntity mybatisEntity) {
+        {{../namePascalCase}} entity = new {{../namePascalCase}}();
+        BeanUtils.copyProperties(mybatisEntity, entity);
         return entity;
     }
     
-    private {{namePascalCase}}MybatisEntity convertToMybatisEntity({{namePascalCase}} entity) {
+    private {{namePascalCase}}MybatisEntity convertToMybatisEntity({{../namePascalCase}} entity) {
         {{namePascalCase}}MybatisEntity mybatisEntity = new {{namePascalCase}}MybatisEntity();
+        BeanUtils.copyProperties(entity, mybatisEntity);
         return mybatisEntity;
     }
     {{/attached}}
     {{#attached 'View' this}}
     {{#if queryParameters}}
     public {{namePascalCase}} {{nameCamelCase}}({{keyFieldDescriptor.className}} id) {
-        {{namePascalCase}}MybatisEntity mybatisEntity = {{nameCamelCase}}Mapper.{{nameCamelCase}}(id);
+        {{namePascalCase}}MybatisEntity mybatisEntity = {{../nameCamelCase}}Mapper.{{nameCamelCase}}(id);
         if (mybatisEntity == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "{{namePascalCase}} not found");
         }
