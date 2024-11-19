@@ -10,7 +10,10 @@ import java.util.List;
 
 @Mapper
 public interface {{namePascalCase}}Mapper {
-    // 예시
-    // List<{{namePascalCase}}MybatisEntity> select{{namePascalCase}}List();
-    // {{namePascalCase}}MybatisEntity select{{namePascalCase}}({{keyFieldDescriptor.className}} id);
+
+{{#attached 'View' this}}
+    {{#if queryParameters}}
+        {{nameCamelCase}}MybatisEntity select{{namePascalCase}}({{keyFieldDescriptor.className}} id);
+    {{/if}}
+{{/attached}}
 }

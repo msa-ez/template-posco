@@ -14,8 +14,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.stream.Collectors;
+{{#attached 'View' this}}
 import com.posco.{{boundedContext.name}}.s20a01.domain.{{nameCamelCase}}.mybatis.{{namePascalCase}}MybatisEntity;
 import com.posco.{{boundedContext.name}}.s20a01.domain.{{nameCamelCase}}.mybatis.{{namePascalCase}}Mapper;
+{{/attached}}
 {{#commands}}
 import com.posco.{{boundedContext.name}}.s20a01.domain.{{../nameCamelCase}}.{{namePascalCase}}Command;
 {{/commands}}
@@ -92,19 +94,15 @@ public class {{namePascalCase}}RepositoryService {
         return mybatisEntity;
     }
 
-
-    // 예시
-    // public List<{{namePascalCase}}> findAllByMapper() {
-    //     return mybatisMapper.select{{namePascalCase}}List().stream()
-    //         .map(this::convertToEntity)
-    //         .collect(Collectors.toList());
-    // }
-
-    // public {{namePascalCase}} findByIdMapper({{keyFieldDescriptor.className}} id) {
-    //     {{namePascalCase}}MybatisEntity mybatisEntity = mybatisMapper.select{{namePascalCase}}(id);
-    //     if (mybatisEntity == null) {
-    //         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "{{namePascalCase}} not found");
-    //     }
-    //     return convertToEntity(mybatisEntity);
-    // }
+    {{#attached 'View' this}}
+    {{#if queryParameters}}
+    public {{namePascalCase}} select{{namePascalCase}}({{keyFieldDescriptor.className}} id) {
+        {{namePascalCase}}MybatisEntity mybatisEntity = {{nameCamelCase}}Mapper.select{{namePascalCase}}(id);
+        if (mybatisEntity == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "{{namePascalCase}} not found");
+        }
+        return convertToEntity(mybatisEntity);
+    }
+    {{/if}}
+    {{/attached}}
 }
