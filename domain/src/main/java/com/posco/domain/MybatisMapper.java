@@ -7,7 +7,7 @@ package com.posco.{{boundedContext.name}}.s20a01.domain.{{nameCamelCase}}.mybati
 
 {{#attached 'View' this}}
 {{#if queryParameters}}
-import com.posco.{{boundedContext.name}}.s20a01.domain.{{aggregate.nameCamelCase}}.{{namePascalCase}}MybatisEntity;
+import com.posco.{{boundedContext.name}}.s20a01.domain.{{aggregate.nameCamelCase}}.mybatis.{{namePascalCase}}MybatisEntity;
 {{/if}}
 {{/attached}}
 
