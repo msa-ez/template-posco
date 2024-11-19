@@ -89,11 +89,12 @@ public class {{namePascalCase}}RepositoryService {
         return entity;
     }
     
+    {{#attached 'View' this}}
     private {{namePascalCase}}MybatisEntity convertToMybatisEntity({{namePascalCase}} entity) {
         {{namePascalCase}}MybatisEntity mybatisEntity = new {{namePascalCase}}MybatisEntity();
         return mybatisEntity;
     }
-
+    {{/attached}}
     {{#attached 'View' this}}
     {{#if queryParameters}}
     public {{namePascalCase}} select{{namePascalCase}}({{keyFieldDescriptor.className}} id) {
