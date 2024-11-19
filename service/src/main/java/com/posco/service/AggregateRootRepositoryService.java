@@ -57,15 +57,9 @@ public class {{namePascalCase}}RepositoryService {
     public {{../namePascalCase}} update({{../keyFieldDescriptor.className}} id, {{namePascalCase}}Command command) {
         {{../namePascalCase}} existing = findById(id);
         {{#fieldDescriptors}}
-        {{#equals className 'int'}}
-        if (command.get{{pascalCase nameCamelCase}}() != 0) {
-            existing.set{{pascalCase nameCamelCase}}(command.get{{pascalCase nameCamelCase}}());
-        }
-        {{else}}
         if (command.get{{pascalCase nameCamelCase}}() != null) {
             existing.set{{pascalCase nameCamelCase}}(command.get{{pascalCase nameCamelCase}}());
         }
-        {{/equals}}
         {{/fieldDescriptors}}
         return {{../nameCamelCase}}Repository.save(existing);
     }
