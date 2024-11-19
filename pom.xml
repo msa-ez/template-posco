@@ -7,7 +7,7 @@
     <version>1.0.0-SNAPSHOT</version>
   </parent>
   <groupId>com.posco.carmng</groupId>
-  <artifactId>s20a01-{{name}}</artifactId>
+  <artifactId>s20a01-carmng</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <properties>
@@ -21,9 +21,9 @@
     <spring-cloud-stream.version>Germantown.SR1</spring-cloud-stream.version>
   </properties>
   <modules>
-    <module>s20a01-{{name}}-domain</module>
-    <module>s20a01-{{name}}-store</module>
-    <module>s20a01-{{name}}-service</module>
-    <module>s20a01-{{name}}-boot</module>
+    <module>s20a01-domain</module>
+    <module>s20a01-store</module>
+    <module>s20a01-service</module>
+    <module>s20a01-boot</module>
   </modules>
 </project>
