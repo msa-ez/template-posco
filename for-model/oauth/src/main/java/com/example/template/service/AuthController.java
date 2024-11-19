@@ -10,7 +10,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import com.example.template.config.OAuth2AuthorizationServerConfig;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,6 +19,8 @@ import org.springframework.security.oauth2.provider.OAuth2Request;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import java.util.Arrays;
 import java.util.UUID;
+import com.example.template.config.OAuth2AuthorizationServerConfig;
+import com.example.template.repository.mybatis.UserMapper;
 
 @RestController
 @RequestMapping("/auth")
