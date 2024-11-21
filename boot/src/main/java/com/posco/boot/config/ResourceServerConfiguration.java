@@ -20,6 +20,9 @@ public class ResourceServerConfiguration extends WebSecurityConfigurerAdapter {
         http
             .cors()
             .and()
+            .authorizeRequests()
+            .antMatchers("/api-name/**")
+            .permitAll()
             .csrf().disable()
             .authorizeRequests()
             .anyRequest().authenticated()

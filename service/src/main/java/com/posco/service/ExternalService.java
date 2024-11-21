@@ -1,7 +1,7 @@
 forEach: Relation
 fileName: {{target.aggregate.namePascalCase}}Service.java
 path: {{source.boundedContext.name}}/s20a01-service/src/main/java/com/posco/{{source.boundedContext.name}}/s20a01/service
-except: {{contexts.except}}
+except: true
 ifDuplicated: merge
 ---
 package com.posco.{{source.boundedContext.name}}.s20a01.service;

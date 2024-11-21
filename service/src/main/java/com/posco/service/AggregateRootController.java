@@ -40,7 +40,7 @@ public class {{namePascalCase}}Controller {
     {{/ifEquals}}
 
     {{#ifEquals restRepositoryInfo.method 'PATCH'}}
-    @PatchMapping(path = "{{../namePlural}}/{{#addMustache ../keyFieldDescriptor.nameCamelCase}}{{/addMustache}}")
+    @PatchMapping(path = "/{{../namePlural}}/{{#addMustache ../keyFieldDescriptor.nameCamelCase}}{{/addMustache}}")
     public ResponseEntity<{{../namePascalCase}}> update(
         @PathVariable {{../keyFieldDescriptor.className}} {{../keyFieldDescriptor.nameCamelCase}},
         @Valid @RequestBody {{namePascalCase}}Command command) {
@@ -49,7 +49,7 @@ public class {{namePascalCase}}Controller {
     {{/ifEquals}}
 
     {{#ifEquals restRepositoryInfo.method 'DELETE'}}
-    @DeleteMapping(path = "{{../namePlural}}/{{#addMustache ../keyFieldDescriptor.nameCamelCase}}{{/addMustache}}")
+    @DeleteMapping(path = "/{{../namePlural}}/{{#addMustache ../keyFieldDescriptor.nameCamelCase}}{{/addMustache}}")
     public ResponseEntity<Void> delete(@PathVariable {{../keyFieldDescriptor.className}} {{../keyFieldDescriptor.nameCamelCase}}) {
         {{../nameCamelCase}}RepositoryService.delete({{../keyFieldDescriptor.nameCamelCase}});
         return ResponseEntity.noContent().build();
@@ -57,7 +57,7 @@ public class {{namePascalCase}}Controller {
     {{/ifEquals}}
     
     {{else}}
-    @PostMapping(path = "{{../namePlural}}/{{#addMustache ../keyFieldDescriptor.nameCamelCase}}{{/addMustache}}/{{nameCamelCase}}")
+    @PostMapping(path = "/{{../namePlural}}/{{#addMustache ../keyFieldDescriptor.nameCamelCase}}{{/addMustache}}/{{nameCamelCase}}")
     public ResponseEntity<{{../namePascalCase}}> {{nameCamelCase}}(
         @PathVariable("{{../keyFieldDescriptor.nameCamelCase}}") {{../keyFieldDescriptor.className}} {{../keyFieldDescriptor.nameCamelCase}},
         @Valid @RequestBody {{namePascalCase}}Command command) {
@@ -75,7 +75,7 @@ public class {{namePascalCase}}Controller {
 
     {{#attached 'View' this}}
     {{#if queryParameters}}
-    @GetMapping(path = "{{../namePlural}}/{{#addMustache ../keyFieldDescriptor.nameCamelCase}}{{/addMustache}}")
+    @GetMapping(path = "/{{../namePlural}}/{{#addMustache ../keyFieldDescriptor.nameCamelCase}}{{/addMustache}}")
     public ResponseEntity<{{../namePascalCase}}> {{nameCamelCase}}(@PathVariable {{../keyFieldDescriptor.className}} {{../keyFieldDescriptor.nameCamelCase}}) {
         return ResponseEntity.ok({{../nameCamelCase}}RepositoryService.{{nameCamelCase}}({{../keyFieldDescriptor.nameCamelCase}}));
     }
