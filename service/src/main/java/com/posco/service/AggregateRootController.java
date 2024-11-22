@@ -6,6 +6,7 @@ path: {{boundedContext.name}}/s20a01-service/src/main/java/com/posco/{{boundedCo
 package com.posco.{{boundedContext.name}}.s20a01.service;
 
 import com.posco.{{boundedContext.name}}.s20a01.domain.{{nameCamelCase}}.{{namePascalCase}};
+import com.posco.{{boundedContext.name}}.s20a01.domain.{{nameCamelCase}}.{{namePascalCase}}Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
@@ -18,16 +19,16 @@ import com.posco.{{boundedContext.name}}.s20a01.domain.{{../nameCamelCase}}.{{na
 
 @RepositoryRestController
 public class {{namePascalCase}}Controller {
-    private final {{namePascalCase}}RepositoryService {{nameCamelCase}}RepositoryService;
+    private final {{namePascalCase}}Service {{nameCamelCase}}Service;
 
     @Autowired
-    public {{namePascalCase}}Controller({{namePascalCase}}RepositoryService {{nameCamelCase}}RepositoryService) {
-        this.{{nameCamelCase}}RepositoryService = {{nameCamelCase}}RepositoryService;
+    public {{namePascalCase}}Controller({{namePascalCase}}Service {{nameCamelCase}}Service) {
+        this.{{nameCamelCase}}Service = {{nameCamelCase}}Service;
     }
 
     @GetMapping(path = "/{{namePlural}}")
     public ResponseEntity<List<{{namePascalCase}}>> findAll() {
-        return ResponseEntity.ok({{nameCamelCase}}RepositoryService.findAll());
+        return ResponseEntity.ok({{nameCamelCase}}Service.findAll());
     }
 
     {{#commands}}
@@ -35,7 +36,7 @@ public class {{namePascalCase}}Controller {
     {{#ifEquals restRepositoryInfo.method 'POST'}}
     @PostMapping(path = "/{{../namePlural}}")
     public ResponseEntity<{{../namePascalCase}}> create(@Valid @RequestBody {{namePascalCase}}Command command) {
-        return ResponseEntity.ok({{../nameCamelCase}}RepositoryService.create(command));
+        return ResponseEntity.ok({{../nameCamelCase}}Service.create(command));
     }
     {{/ifEquals}}
 
@@ -44,31 +45,31 @@ public class {{namePascalCase}}Controller {
     public ResponseEntity<{{../namePascalCase}}> update(
         @PathVariable {{../keyFieldDescriptor.className}} {{../keyFieldDescriptor.nameCamelCase}},
         @Valid @RequestBody {{namePascalCase}}Command command) {
-        return ResponseEntity.ok({{../nameCamelCase}}RepositoryService.update({{../keyFieldDescriptor.nameCamelCase}}, command));
+        return ResponseEntity.ok({{../nameCamelCase}}Service.update({{../keyFieldDescriptor.nameCamelCase}}, command));
     }
     {{/ifEquals}}
 
     {{#ifEquals restRepositoryInfo.method 'DELETE'}}
     @DeleteMapping(path = "/{{../namePlural}}/{{#addMustache ../keyFieldDescriptor.nameCamelCase}}{{/addMustache}}")
     public ResponseEntity<Void> delete(@PathVariable {{../keyFieldDescriptor.className}} {{../keyFieldDescriptor.nameCamelCase}}) {
-        {{../nameCamelCase}}RepositoryService.delete({{../keyFieldDescriptor.nameCamelCase}});
+        {{../nameCamelCase}}Service.delete({{../keyFieldDescriptor.nameCamelCase}});
         return ResponseEntity.noContent().build();
     }
     {{/ifEquals}}
     
     {{else}}
-    @PostMapping(path = "/{{../namePlural}}/{{#addMustache ../keyFieldDescriptor.nameCamelCase}}{{/addMustache}}/{{nameCamelCase}}")
+    @PostMapping(path = "/{{../namePlural}}/{{namePascalCase}}/{{#addMustache ../keyFieldDescriptor.nameCamelCase}}{{/addMustache}}/{{nameCamelCase}}")
     public ResponseEntity<{{../namePascalCase}}> {{nameCamelCase}}(
         @PathVariable("{{../keyFieldDescriptor.nameCamelCase}}") {{../keyFieldDescriptor.className}} {{../keyFieldDescriptor.nameCamelCase}},
         @Valid @RequestBody {{namePascalCase}}Command command) {
-        {{../namePascalCase}} {{../nameCamelCase}} = {{../nameCamelCase}}RepositoryService.findById({{../keyFieldDescriptor.nameCamelCase}});
+        {{../namePascalCase}} {{../nameCamelCase}} = {{../nameCamelCase}}Service.findById({{../keyFieldDescriptor.nameCamelCase}});
         
         // 도메인 포트 메서드 직접 호출
         {{../nameCamelCase}}.{{nameCamelCase}}(
             command
         );
         
-        return ResponseEntity.ok({{../nameCamelCase}}RepositoryService.save({{../nameCamelCase}}));
+        return ResponseEntity.ok({{../nameCamelCase}}Service.save({{../nameCamelCase}}));
     }
     {{/if}}
     {{/commands}}
@@ -77,7 +78,7 @@ public class {{namePascalCase}}Controller {
     {{#if queryParameters}}
     @GetMapping(path = "/{{../namePlural}}/{{#addMustache ../keyFieldDescriptor.nameCamelCase}}{{/addMustache}}")
     public ResponseEntity<{{../namePascalCase}}> {{nameCamelCase}}(@PathVariable {{../keyFieldDescriptor.className}} {{../keyFieldDescriptor.nameCamelCase}}) {
-        return ResponseEntity.ok({{../nameCamelCase}}RepositoryService.{{nameCamelCase}}({{../keyFieldDescriptor.nameCamelCase}}));
+        return ResponseEntity.ok({{../nameCamelCase}}Service.{{nameCamelCase}}({{../keyFieldDescriptor.nameCamelCase}}));
     }
     {{/if}}
     {{/attached}}

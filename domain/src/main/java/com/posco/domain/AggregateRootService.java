@@ -1,7 +1,7 @@
 forEach: Aggregate
 representativeFor: Aggregate
-fileName: {{namePascalCase}}RepositoryService.java
-path: {{boundedContext.name}}/s20a01-service/src/main/java/com/posco/{{boundedContext.name}}/s20a01/service
+fileName: {{namePascalCase}}Service.java
+path: {{boundedContext.name}}/s20a01-domain/src/main/java/com/posco/{{boundedContext.name}}/s20a01/domain/{{nameCamelCase}}
 ---
 package com.posco.{{boundedContext.name}}.s20a01.service;
 
@@ -25,14 +25,14 @@ import com.posco.{{boundedContext.name}}.s20a01.domain.{{../nameCamelCase}}.{{na
 
 @Service
 @Transactional
-public class {{namePascalCase}}RepositoryService {
+public class {{namePascalCase}}Service {
     private final {{namePascalCase}}Repository {{nameCamelCase}}Repository;
     {{#attached 'View' this}}
     private final {{../namePascalCase}}Mapper {{../nameCamelCase}}Mapper;
     {{/attached}}
     
     @Autowired
-    public {{namePascalCase}}RepositoryService(
+    public {{namePascalCase}}Service(
         {{namePascalCase}}Repository {{nameCamelCase}}Repository
         {{#attached 'View' this}},{{../namePascalCase}}Mapper {{../nameCamelCase}}Mapper{{/attached}}) {
         this.{{nameCamelCase}}Repository = {{nameCamelCase}}Repository;
