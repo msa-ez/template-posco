@@ -76,7 +76,7 @@ public class {{namePascalCase}}Controller {
 
     {{#attached 'View' this}}
     {{#if queryParameters}}
-    @GetMapping(path = "/{{../namePlural}}/{{#addMustache ../keyFieldDescriptor.nameCamelCase}}{{/addMustache}}")
+    @GetMapping(path = "/{{../namePlural}}/{{namePascalCase}}/{{#addMustache ../keyFieldDescriptor.nameCamelCase}}{{/addMustache}}")
     public ResponseEntity<{{../namePascalCase}}> {{nameCamelCase}}(@PathVariable {{../keyFieldDescriptor.className}} {{../keyFieldDescriptor.nameCamelCase}}) {
         return ResponseEntity.ok({{../nameCamelCase}}Service.{{nameCamelCase}}({{../keyFieldDescriptor.nameCamelCase}}));
     }
