@@ -58,7 +58,7 @@ public class {{namePascalCase}}Controller {
     {{/ifEquals}}
     
     {{else}}
-    @PostMapping(path = "/{{../namePlural}}/{{#addMustache ../keyFieldDescriptor.nameCamelCase}}{{/addMustache}}/{{nameCamelCase}}")
+    @PostMapping(path = "/{{../namePlural}}/{{nameCamelCase}}/{{#addMustache ../keyFieldDescriptor.nameCamelCase}}{{/addMustache}}")
     public ResponseEntity<{{../namePascalCase}}> {{nameCamelCase}}(
         @PathVariable("{{../keyFieldDescriptor.nameCamelCase}}") {{../keyFieldDescriptor.className}} {{../keyFieldDescriptor.nameCamelCase}},
         @Valid @RequestBody {{namePascalCase}}Command command) {
@@ -76,7 +76,7 @@ public class {{namePascalCase}}Controller {
 
     {{#attached 'View' this}}
     {{#if queryParameters}}
-    @GetMapping(path = "/{{../namePlural}}/{{namePascalCase}}/{{#addMustache ../keyFieldDescriptor.nameCamelCase}}{{/addMustache}}")
+    @GetMapping(path = "/{{../namePlural}}/{{nameCamelCase}}/{{#addMustache ../keyFieldDescriptor.nameCamelCase}}{{/addMustache}}")
     public ResponseEntity<{{../namePascalCase}}> {{nameCamelCase}}(@PathVariable {{../keyFieldDescriptor.className}} {{../keyFieldDescriptor.nameCamelCase}}) {
         return ResponseEntity.ok({{../nameCamelCase}}Service.{{nameCamelCase}}({{../keyFieldDescriptor.nameCamelCase}}));
     }
