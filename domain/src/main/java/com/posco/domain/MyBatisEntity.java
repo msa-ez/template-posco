@@ -8,7 +8,7 @@ package com.posco.{{boundedContext.name}}.{{options.package}}.domain.{{aggregate
 import lombok.Data;
 import java.util.Date;
 
-{{#queryParameters}}{{^if (isPrimitive className)}}import com.posco.{{../boundedContext.name}}.{{options.package}}.domain.{{namePascalCase}};{{/if}}{{/queryParameters}}
+{{#queryParameters}}{{^if (isPrimitive className)}}import com.posco.{{../boundedContext.name}}.{{../options.package}}.domain.{{namePascalCase}};{{/if}}{{/queryParameters}}
 
 
 @Data
