@@ -58,7 +58,7 @@ public class {{namePascalCase}}Controller {
     {{/ifEquals}}
     
     {{else}}
-    @PostMapping(path = "/{{../namePlural}}/{{namePascalCase}}/{{#addMustache ../keyFieldDescriptor.nameCamelCase}}{{/addMustache}}/{{nameCamelCase}}")
+    @PostMapping(path = "/{{../namePlural}}/{{#addMustache ../keyFieldDescriptor.nameCamelCase}}{{/addMustache}}/{{nameCamelCase}}")
     public ResponseEntity<{{../namePascalCase}}> {{nameCamelCase}}(
         @PathVariable("{{../keyFieldDescriptor.nameCamelCase}}") {{../keyFieldDescriptor.className}} {{../keyFieldDescriptor.nameCamelCase}},
         @Valid @RequestBody {{namePascalCase}}Command command) {
