@@ -3,7 +3,7 @@ representativeFor: Aggregate
 fileName: {{namePascalCase}}Service.java
 path: {{boundedContext.name}}/s20a01-domain/src/main/java/com/posco/{{boundedContext.name}}/s20a01/domain/{{nameCamelCase}}
 ---
-package com.posco.{{boundedContext.name}}.s20a01.service;
+package com.posco.{{boundedContext.name}}.s20a01.domain.{{nameCamelCase}};
 
 import com.posco.{{boundedContext.name}}.s20a01.domain.{{nameCamelCase}}.{{namePascalCase}};
 import com.posco.{{boundedContext.name}}.s20a01.domain.{{nameCamelCase}}.{{namePascalCase}}Repository;
