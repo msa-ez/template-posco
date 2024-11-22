@@ -11,8 +11,8 @@ fileName: pom.xml
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.posco.carmng</groupId>
-    <artifactId>{{option.package}}-boot</artifactId>
+    <groupId>com.posco.{{name}}</groupId>
+    <artifactId>{{option.package}}-{{name}}-boot</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
     <properties>
@@ -24,8 +24,8 @@ fileName: pom.xml
             <artifactId>spring-cloud-config-client</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.posco.carmng</groupId>
-            <artifactId>{{option.package}}-service</artifactId>
+            <groupId>com.posco.{{name}}</groupId>
+            <artifactId>{{option.package}}-{{name}}-service</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
