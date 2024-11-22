@@ -1,13 +1,13 @@
 forEach: Aggregate
 representativeFor: Aggregate
 fileName: {{namePascalCase}}Mapper.java
-path: {{boundedContext.name}}/{{option.package}}-domain/src/main/java/com/posco/{{boundedContext.name}}/{{option.package}}/domain/{{nameCamelCase}}/mybatis
+path: {{boundedContext.name}}/{{options.package}}-domain/src/main/java/com/posco/{{boundedContext.name}}/{{options.package}}/domain/{{nameCamelCase}}/mybatis
 ---
-package com.posco.{{boundedContext.name}}.{{option.package}}.domain.{{nameCamelCase}}.mybatis;
+package com.posco.{{boundedContext.name}}.{{options.package}}.domain.{{nameCamelCase}}.mybatis;
 
 {{#attached 'View' this}}
 {{#if queryParameters}}
-import com.posco.{{boundedContext.name}}.{{option.package}}.domain.{{aggregate.nameCamelCase}}.mybatis.{{namePascalCase}}MybatisEntity;
+import com.posco.{{boundedContext.name}}.{{options.package}}.domain.{{aggregate.nameCamelCase}}.mybatis.{{namePascalCase}}MybatisEntity;
 {{/if}}
 {{/attached}}
 

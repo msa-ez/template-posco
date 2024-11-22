@@ -1,16 +1,16 @@
 forEach: Command
 representativeFor: Command
 fileName: {{namePascalCase}}Command.java
-path: {{boundedContext.name}}/{{option.package}}-domain/src/main/java/com/posco/{{boundedContext.name}}/{{option.package}}/domain/{{aggregate.nameCamelCase}}
+path: {{boundedContext.name}}/{{options.package}}-domain/src/main/java/com/posco/{{boundedContext.name}}/{{options.package}}/domain/{{aggregate.nameCamelCase}}
 ---
-package com.posco.{{boundedContext.name}}.{{option.package}}.domain.{{aggregate.nameCamelCase}};
+package com.posco.{{boundedContext.name}}.{{options.package}}.domain.{{aggregate.nameCamelCase}};
 
 import java.util.*;
 import lombok.Data;
 import java.time.LocalDate;
 {{#fieldDescriptors}}
 {{^if (isPrimitive className)}}
-import com.posco.{{../boundedContext.name}}.{{option.package}}.domain.{{removeList className}};
+import com.posco.{{../boundedContext.name}}.{{options.package}}.domain.{{removeList className}};
 {{/if}}
 {{/fieldDescriptors}}
 {{#checkBigDecimal fieldDescriptors}}{{/checkBigDecimal}}

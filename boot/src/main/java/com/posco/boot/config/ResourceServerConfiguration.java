@@ -1,7 +1,7 @@
-path: {{name}}/{{option.package}}-boot/src/main/java/com/posco/{{name}}/{{option.package}}/config
+path: {{name}}/{{options.package}}-boot/src/main/java/com/posco/{{name}}/{{options.package}}/config
 fileName: ResourceServerConfiguration.java
 ---
-package com.posco.{{name}}.{{option.package}}.config;
+package com.posco.{{name}}.{{options.package}}.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

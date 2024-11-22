@@ -1,11 +1,11 @@
 forEach: Aggregate
 representativeFor: Aggregate
 fileName: {{namePascalCase}}.java
-path: {{boundedContext.name}}/{{option.package}}-domain/src/main/java/com/posco/{{boundedContext.name}}/{{option.package}}/domain/{{nameCamelCase}}
+path: {{boundedContext.name}}/{{options.package}}-domain/src/main/java/com/posco/{{boundedContext.name}}/{{options.package}}/domain/{{nameCamelCase}}
 ---
-package com.posco.{{boundedContext.name}}.{{option.package}}.domain.{{nameCamelCase}};
+package com.posco.{{boundedContext.name}}.{{options.package}}.domain.{{nameCamelCase}};
 
-{{#aggregateRoot.fieldDescriptors}}{{^if (isPrimitive className)}}import com.posco.{{../boundedContext.name}}.{{option.package}}.domain.{{className}};{{/if}}{{/aggregateRoot.fieldDescriptors}}
+{{#aggregateRoot.fieldDescriptors}}{{^if (isPrimitive className)}}import com.posco.{{../boundedContext.name}}.{{options.package}}.domain.{{className}};{{/if}}{{/aggregateRoot.fieldDescriptors}}
 
 import javax.persistence.*;
 import java.util.List;

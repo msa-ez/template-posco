@@ -1,4 +1,4 @@
-path: {{name}}/{{option.package}}-store
+path: {{name}}/{{options.package}}-store
 fileName: pom.xml
 ---
 <?xml version="1.0" encoding="UTF-8"?>
@@ -12,7 +12,7 @@ fileName: pom.xml
     </parent>
 
     <groupId>com.posco.{{name}}</groupId>
-    <artifactId>{{option.package}}-{{name}}-store</artifactId>
+    <artifactId>{{options.package}}-{{name}}-store</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
     <properties>
@@ -29,7 +29,7 @@ fileName: pom.xml
         </dependency>
         <dependency>
             <groupId>com.posco.{{name}}</groupId>
-            <artifactId>{{option.package}}-{{name}}-domain</artifactId>
+            <artifactId>{{options.package}}-{{name}}-domain</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
