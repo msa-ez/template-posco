@@ -1,14 +1,14 @@
 forEach: View
 representativeFor: View
 fileName: {{namePascalCase}}MybatisEntity.java
-path: {{boundedContext.name}}/s20a01-domain/src/main/java/com/posco/{{boundedContext.name}}/s20a01/domain/{{aggregate.nameCamelCase}}/mybatis
+path: {{boundedContext.name}}/{{option.package}}-domain/src/main/java/com/posco/{{boundedContext.name}}/{{option.package}}/domain/{{aggregate.nameCamelCase}}/mybatis
 ---
-package com.posco.{{boundedContext.name}}.s20a01.domain.{{aggregate.nameCamelCase}}.mybatis;
+package com.posco.{{boundedContext.name}}.{{option.package}}.domain.{{aggregate.nameCamelCase}}.mybatis;
 
 import lombok.Data;
 import java.util.Date;
 
-{{#queryParameters}}{{^if (isPrimitive className)}}import com.posco.{{../boundedContext.name}}.s20a01.domain.{{namePascalCase}};{{/if}}{{/queryParameters}}
+{{#queryParameters}}{{^if (isPrimitive className)}}import com.posco.{{../boundedContext.name}}.{{option.package}}.domain.{{namePascalCase}};{{/if}}{{/queryParameters}}
 
 
 @Data

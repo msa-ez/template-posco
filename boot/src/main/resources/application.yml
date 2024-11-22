@@ -1,4 +1,4 @@
-path: {{name}}/s20a01-boot/src/main/resources
+path: {{name}}/{{option.package}}-boot/src/main/resources
 fileName: application.yml
 ---
 server:
@@ -58,7 +58,7 @@ eureka:
     register-with-eureka: false
 
 mybatis:
-  type-aliases-package: {{#aggregates}}com.posco.{{../nameCamelCase}}.s20a01.domain.{{nameCamelCase}}.mybatis;{{/aggregates}}
+  type-aliases-package: {{#aggregates}}com.posco.{{../nameCamelCase}}.{{option.package}}.domain.{{nameCamelCase}}.mybatis;{{/aggregates}}
   mapper-locations: classpath:mybatis.mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true

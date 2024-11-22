@@ -1,7 +1,7 @@
-path: {{name}}/s20a01-boot/src/main/java/com/posco/{{name}}/s20a01/config
+path: {{name}}/{{option.package}}-boot/src/main/java/com/posco/{{name}}/{{option.package}}/config
 fileName: ResourceServerConfiguration.java
 ---
-package com.posco.{{name}}.s20a01.config;
+package com.posco.{{name}}.{{option.package}}.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

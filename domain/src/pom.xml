@@ -1,4 +1,4 @@
-path: {{name}}/s20a01-domain
+path: {{name}}/{{option.package}}-domain
 fileName: pom.xml
 ---
 <?xml version="1.0" encoding="UTF-8"?>
@@ -12,7 +12,7 @@ fileName: pom.xml
     </parent>
 
     <groupId>com.posco.carmng</groupId>
-    <artifactId>s20a01-domain</artifactId>
+    <artifactId>{{option.package}}-domain</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
     <dependencies>

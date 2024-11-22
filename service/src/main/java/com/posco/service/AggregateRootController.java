@@ -1,12 +1,12 @@
 forEach: Aggregate
 representativeFor: Aggregate
 fileName: {{namePascalCase}}Controller.java
-path: {{boundedContext.name}}/s20a01-service/src/main/java/com/posco/{{boundedContext.name}}/s20a01/service
+path: {{boundedContext.name}}/{{option.package}}-service/src/main/java/com/posco/{{boundedContext.name}}/{{option.package}}/service
 ---
-package com.posco.{{boundedContext.name}}.s20a01.service;
+package com.posco.{{boundedContext.name}}.{{option.package}}.service;
 
-import com.posco.{{boundedContext.name}}.s20a01.domain.{{nameCamelCase}}.{{namePascalCase}};
-import com.posco.{{boundedContext.name}}.s20a01.domain.{{nameCamelCase}}.{{namePascalCase}}Service;
+import com.posco.{{boundedContext.name}}.{{option.package}}.domain.{{nameCamelCase}}.{{namePascalCase}};
+import com.posco.{{boundedContext.name}}.{{option.package}}.domain.{{nameCamelCase}}.{{namePascalCase}}Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,7 @@ import java.util.List;
 import javax.validation.Valid;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 {{#commands}}
-import com.posco.{{boundedContext.name}}.s20a01.domain.{{../nameCamelCase}}.{{namePascalCase}}Command;
+import com.posco.{{boundedContext.name}}.{{option.package}}.domain.{{../nameCamelCase}}.{{namePascalCase}}Command;
 {{/commands}}
 
 @RepositoryRestController

@@ -1,9 +1,9 @@
 forEach: Enumeration
 fileName: {{pascalCase name}}.java
-path: {{boundedContext.name}}/s20a01-domain/src/main/java/com/posco/{{boundedContext.name}}/s20a01/domain
+path: {{boundedContext.name}}/{{option.package}}-domain/src/main/java/com/posco/{{boundedContext.name}}/{{option.package}}/domain
 mergeType: template
 ---
-package com.posco.{{boundedContext.name}}.s20a01.domain;
+package com.posco.{{boundedContext.name}}.{{option.package}}.domain;
 
 import javax.persistence.*;
 import org.springframework.beans.BeanUtils;

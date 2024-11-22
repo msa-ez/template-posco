@@ -1,12 +1,12 @@
 forEach: Aggregate
 representativeFor: Aggregate
 fileName: {{namePascalCase}}Service.java
-path: {{boundedContext.name}}/s20a01-domain/src/main/java/com/posco/{{boundedContext.name}}/s20a01/domain/{{nameCamelCase}}
+path: {{boundedContext.name}}/{{option.package}}-domain/src/main/java/com/posco/{{boundedContext.name}}/{{option.package}}/domain/{{nameCamelCase}}
 ---
-package com.posco.{{boundedContext.name}}.s20a01.domain.{{nameCamelCase}};
+package com.posco.{{boundedContext.name}}.{{option.package}}.domain.{{nameCamelCase}};
 
-import com.posco.{{boundedContext.name}}.s20a01.domain.{{nameCamelCase}}.{{namePascalCase}};
-import com.posco.{{boundedContext.name}}.s20a01.domain.{{nameCamelCase}}.{{namePascalCase}}Repository;
+import com.posco.{{boundedContext.name}}.{{option.package}}.domain.{{nameCamelCase}}.{{namePascalCase}};
+import com.posco.{{boundedContext.name}}.{{option.package}}.domain.{{nameCamelCase}}.{{namePascalCase}}Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,11 +16,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 {{#attached 'View' this}}
-import com.posco.{{boundedContext.name}}.s20a01.domain.{{aggregate.nameCamelCase}}.mybatis.{{namePascalCase}}MybatisEntity;
-import com.posco.{{boundedContext.name}}.s20a01.domain.{{aggregate.nameCamelCase}}.mybatis.{{../namePascalCase}}Mapper;
+import com.posco.{{boundedContext.name}}.{{option.package}}.domain.{{aggregate.nameCamelCase}}.mybatis.{{namePascalCase}}MybatisEntity;
+import com.posco.{{boundedContext.name}}.{{option.package}}.domain.{{aggregate.nameCamelCase}}.mybatis.{{../namePascalCase}}Mapper;
 {{/attached}}
 {{#commands}}
-import com.posco.{{boundedContext.name}}.s20a01.domain.{{../nameCamelCase}}.{{namePascalCase}}Command;
+import com.posco.{{boundedContext.name}}.{{option.package}}.domain.{{../nameCamelCase}}.{{namePascalCase}}Command;
 {{/commands}}
 
 @Service

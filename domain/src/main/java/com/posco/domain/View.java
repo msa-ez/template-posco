@@ -1,10 +1,10 @@
 forEach: View
 representativeFor: View
 fileName: {{namePascalCase}}.java
-path: {{boundedContext.name}}/s20a01-domain/src/main/java/com/posco/{{boundedContext.name}}/s20a01/domain
+path: {{boundedContext.name}}/{{option.package}}-domain/src/main/java/com/posco/{{boundedContext.name}}/{{option.package}}/domain
 except: true
 ---
-package com.posco.{{boundedContext.name}}.s20a01.domain;
+package com.posco.{{boundedContext.name}}.{{option.package}}.domain;
 
 import javax.persistence.*;
 import java.util.List;

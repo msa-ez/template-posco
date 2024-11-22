@@ -1,8 +1,8 @@
 forEach: Aggregate
 fileName: {{namePascalCase}}Repository.java
-path: {{boundedContext.name}}/s20a01-domain/src/main/java/com/posco/{{boundedContext.name}}/s20a01/domain/{{nameCamelCase}}
+path: {{boundedContext.name}}/{{option.package}}-domain/src/main/java/com/posco/{{boundedContext.name}}/{{option.package}}/domain/{{nameCamelCase}}
 ---
-package com.posco.{{boundedContext.name}}.s20a01.domain.{{nameCamelCase}};
+package com.posco.{{boundedContext.name}}.{{option.package}}.domain.{{nameCamelCase}};
 
 {{#if boundedContext.readModels}} 
 import java.util.Date;
@@ -11,7 +11,7 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 {{/if}}
-import com.posco.{{boundedContext.name}}.s20a01.domain.{{nameCamelCase}}.*;
+import com.posco.{{boundedContext.name}}.{{option.package}}.domain.{{nameCamelCase}}.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
