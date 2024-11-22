@@ -40,6 +40,15 @@ public class {{namePascalCase}}Controller {
     }
     {{/ifEquals}}
 
+    {{#ifEquals restRepositoryInfo.method 'PUT'}}
+    @PutMapping(path = "/{{../namePlural}}/{{#addMustache ../keyFieldDescriptor.nameCamelCase}}{{/addMustache}}")
+    public ResponseEntity<{{../namePascalCase}}> update(
+        @PathVariable {{../keyFieldDescriptor.className}} {{../keyFieldDescriptor.nameCamelCase}},
+        @Valid @RequestBody {{namePascalCase}}Command command) {
+        return ResponseEntity.ok({{../nameCamelCase}}Service.update({{../keyFieldDescriptor.nameCamelCase}}, command));
+    }
+    {{/ifEquals}}
+
     {{#ifEquals restRepositoryInfo.method 'PATCH'}}
     @PatchMapping(path = "/{{../namePlural}}/{{#addMustache ../keyFieldDescriptor.nameCamelCase}}{{/addMustache}}")
     public ResponseEntity<{{../namePascalCase}}> update(

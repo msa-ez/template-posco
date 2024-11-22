@@ -65,6 +65,18 @@ public class {{namePascalCase}}Service {
     }
     {{/ifEquals}}
 
+    {{#ifEquals restRepositoryInfo.method 'PUT'}}
+    public {{../namePascalCase}} update({{../keyFieldDescriptor.className}} id, {{namePascalCase}}Command command) {
+        {{../namePascalCase}} existing = findById(id);
+        {{#fieldDescriptors}}
+        if (command.get{{pascalCase nameCamelCase}}() != null) {
+            existing.set{{pascalCase nameCamelCase}}(command.get{{pascalCase nameCamelCase}}());
+        }
+        {{/fieldDescriptors}}
+        return {{../nameCamelCase}}Repository.save(existing);
+    }
+    {{/ifEquals}}
+
     {{#ifEquals restRepositoryInfo.method 'DELETE'}}
     public void delete({{../keyFieldDescriptor.className}} id) {
         {{../namePascalCase}} {{../nameCamelCase}} = findById(id);
