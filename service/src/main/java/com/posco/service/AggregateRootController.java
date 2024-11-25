@@ -90,11 +90,11 @@ public class {{namePascalCase}}Controller {
     //readModel rest api
     {{#attached 'View' this}}
     {{#if queryParameters}}
-    @GetMapping(path = "/{{../namePlural}}/{{nameCamelCase}}/{{#addMustache keyFieldDescriptor.nameCamelCase}}{{/addMustache}}")
+    @GetMapping(path = "/{{../namePlural}}/{{nameCamelCase}}/{{#addMustache ../keyFieldDescriptor.nameCamelCase}}{{/addMustache}}")
     public ResponseEntity<{{namePascalCase}}MybatisEntity> {{nameCamelCase}}(
-        @PathVariable {{keyFieldDescriptor.className}} {{keyFieldDescriptor.nameCamelCase}},
+        @PathVariable {{../keyFieldDescriptor.className}} {{../keyFieldDescriptor.nameCamelCase}},
         @Valid @RequestBody {{namePascalCase}}MybatisDTO mybatisDTO) {
-        return ResponseEntity.ok({{../nameCamelCase}}Service.{{nameCamelCase}}({{keyFieldDescriptor.nameCamelCase}}, mybatisDTO));
+        return ResponseEntity.ok({{../nameCamelCase}}Service.{{nameCamelCase}}({{../keyFieldDescriptor.nameCamelCase}}, mybatisDTO));
     }
     {{/if}}
     {{/attached}}
