@@ -16,7 +16,7 @@ $(document).ready(function(){
             {{else}}
             {{#if isKey}}
             {{else}}
-            { "Header": "{{#checkName displayName namePascalCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVO namePascalCase}}{{/checkFieldType}}",{{#isDate className}} "EmptyValue": "날짜를 입력해주세요",{{/isDate}}{{#isEnum isVO className ../entities}} "Enum": {{/isEnum}}{{#checkEnum className isVO ../entities}}{{/checkEnum}}{{#isEnum isVO className ../entities}},{{/isEnum}}{{#isEnum isVO className ../entities}} "EnumKeys": {{/isEnum}}{{#checkEnum className isVO ../entities}}{{/checkEnum}}{{#isEnum isVO className ../entities}},{{/isEnum}} "Align": "Center", "Width":120, "CanEdit":1},  
+            { "Header": "{{#checkName displayName namePascalCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVO namePascalCase}}{{/checkFieldType}}",{{#isDate className}}"Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요",{{/isDate}}{{#isEnum isVO className ../entities}} "Enum": {{/isEnum}}{{#checkEnum className isVO ../entities}}{{/checkEnum}}{{#isEnum isVO className ../entities}},{{/isEnum}}{{#isEnum isVO className ../entities}} "EnumKeys": {{/isEnum}}{{#checkEnum className isVO ../entities}}{{/checkEnum}}{{#isEnum isVO className ../entities}},{{/isEnum}} "Align": "Center", "Width":120, "CanEdit":1},  
             {{/if}}
             {{/if}}
             {{/fieldDescriptors}}
@@ -65,6 +65,17 @@ function deleteData(){
 
 function save(){
     var rows = sheet.getSaveJson()?.data;
+
+    rows.forEach(row => {
+        if (row.from && row.to) {
+            row.period = {
+                from: row.from,
+                to: row.to
+            };
+            delete row.from;
+            delete row.to;
+        }
+    });
 
     for(var i=0; i<rows.length;i++){
         if(rows[i].id.includes("AR")){
