@@ -7,8 +7,8 @@ package com.posco.{{boundedContext.name}}.{{options.package}}.domain.{{nameCamel
 
 {{#attached 'View' this}}
 {{#if queryParameters}}
-import com.posco.{{boundedContext.name}}.{{options.package}}.domain.{{aggregate.nameCamelCase}}.mybatis.{{namePascalCase}}Response;
-import com.posco.{{boundedContext.name}}.{{options.package}}.domain.{{aggregate.nameCamelCase}}.mybatis.{{namePascalCase}}DTO;
+import com.posco.{{boundedContext.name}}.{{../options.package}}.domain.{{aggregate.nameCamelCase}}.mybatis.{{namePascalCase}}Response;
+import com.posco.{{boundedContext.name}}.{{../options.package}}.domain.{{aggregate.nameCamelCase}}.mybatis.{{namePascalCase}}DTO;
 {{/if}}
 {{/attached}}
 
