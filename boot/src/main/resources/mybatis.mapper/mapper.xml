@@ -10,7 +10,9 @@ path: {{boundedContext.name}}/{{options.package}}-boot/src/main/resources/mybati
     {{#attached 'View' this}}
     {{#if queryParameters}}
     <select id="{{nameCamelCase}}" resultType="{{namePascalCase}}Response">
-        SELECT * FROM {{../namePascalCase}}_table WHERE {{keyFieldDescriptor.nameCamelCase}} = #{id}
+        SELECT * 
+        FROM {{#outGoingRelations}}{{value.targetElement.namePascalCase}}_table{{^if @last}}, {{/if}}{{/outGoingRelations}}
+        WHERE {{#outGoingRelations}}{{value.targetElement.keyFieldDescriptor.nameCamelCase}} = #{id} {{^if @last}} AND {{/if}}{{/outGoingRelations}}
     </select>
     {{/if}}
     {{/attached}}
