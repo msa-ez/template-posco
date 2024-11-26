@@ -13,6 +13,13 @@ $(document).ready(function(){
             {{/if}}
             {{/fieldDescriptors}}
             {{/aggregateRoot}}
+            {{#aggregateRoot}}
+            {{#fieldDescriptors}}
+            {{#if isVO}}
+            {{#createVoField className ../entities}}{{/createVoField}}
+            {{/if}}
+            {{/fieldDescriptors}}
+            {{/aggregateRoot}}
        ]
    };
 
@@ -146,6 +153,21 @@ window.$HandleBars.registerHelper('checkEnum', function (type, voField, field) {
 window.$HandleBars.registerHelper('addMustache', function (id) {
     var result = '';
     result = "{" + id + "}"
+    return result;
+});
+window.$HandleBars.registerHelper('createVoField', function (type, field) {
+    var result = [];
+    var relation = field.relations
+
+    for(var i = 0; i < relation.length; i++){
+        var vo = relation[i].targetElement;
+        for(var j = 0; j < vo.fieldDescriptors.length; j++){
+            var voField = vo.fieldDescriptors[j];
+            result.push({
+                "Header": [`"${vo.namePascalCase}"`, `"${voField.nameCamelCase}"`], "Name": `"${voField.namePascalCase}"`,"Width": 110
+            });
+        }
+    }
     return result;
 });
 window.$HandleBars.registerHelper('checkFieldType', function (type, voField, fieldName) {
