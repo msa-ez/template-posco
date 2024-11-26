@@ -25,7 +25,7 @@ $(document).ready(function(){
         Cols:[
             {{#aggregateRoot}}
             {{#fieldDescriptors}}
-            { "Header": "{{#if displayName}}{{else}}{{namePascalCase}}{{/if}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVo namePascalCase}}{{/checkFieldType}}", "{{#checkEnum className ../entities}}{{/checkEnum}}" "Width":120, "CanEdit":1},
+            { "Header": "{{#if displayName}}{{else}}{{namePascalCase}}{{/if}}", "Name": "{{nameCamelCase}}", "Type": "{{#isEnum className ../entities}}"Enum": {{/isEnum}}" "{{#checkFieldType className isVo namePascalCase}}{{/checkFieldType}}",  "{{#checkEnum className ../entities}}{{/checkEnum}}"{{#isEnum className ../entities}},{{/isEnum}} {{#isEnum className ../entities}}"EnumKeys": {{/isEnum}}"{{#checkEnum className ../entities}}{{/checkEnum}}"{{#isEnum className ../entities}},{{/isEnum}} "Width":120, "CanEdit":1},
             {{/fieldDescriptors}}
             {{/aggregateRoot}}
        ]
@@ -121,6 +121,15 @@ window.$HandleBars.registerHelper('checkFieldType', function (type, vo, fieldNam
     }else if(!vo && (type == fieldName)){
         return 'Enum';
     }
+});
+window.$HandleBars.registerHelper('isEnum', function (type, field, options) {
+    var relation = field.relations
+    for(var i = 0; i < relation.length; i++){
+        if(type == relation[i].targetElement.name){
+            return options.fn(this);
+        }
+    }
+    return options.inverse(this);
 });
 window.$HandleBars.registerHelper('checkEnum', function (type, field) {
     var relation = field.relations
