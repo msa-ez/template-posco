@@ -137,7 +137,7 @@ window.$HandleBars.registerHelper('checkEnum', function (type, field) {
         if(type == relation[i].targetElement.name){
             var items = relation[i].targetElement.items;
             var result = items.map(item => item.value).join('|');
-            return `"${result}";
+            return `"${result}"`;
         }
     }
 });
