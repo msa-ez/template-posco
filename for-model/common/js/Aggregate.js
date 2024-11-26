@@ -109,17 +109,17 @@ window.$HandleBars.registerHelper('addMustache', function (id) {
 });
 window.$HandleBars.registerHelper('checkFieldType', function (type, vo, fieldName) {
     if(type === "String"){
-        return Text;
+        return 'Text';
     }else if(type === "Long" || type === "Integer" || type === "Double" || type === "BigDecimal"){
-        return Int;
+        return 'Int';
     }else if(type === "Float"){
-        return Float;
+        return 'Float';
     }else if(type === "Date"){
-        return Date;
+        return 'Date';
     }else if(type === "Boolean"){
-        return Bool;
+        return 'Bool';
     }else if(!vo && (type == fieldName)){
-        return Enum;
+        return 'Enum';
     }
 });
 window.$HandleBars.registerHelper('checkEnum', function (type, field) {
