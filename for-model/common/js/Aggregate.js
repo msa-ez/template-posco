@@ -13,6 +13,13 @@ $(document).ready(function(){
             {{/if}}
             {{/fieldDescriptors}}
             {{/aggregateRoot}}
+            {{#aggregateRoot}}
+            {{#fieldDescriptors}}
+            {{#if isVO}}
+            {{#createVoField className ../entities}}{{/createVoField}}
+            {{/if}}
+            {{/fieldDescriptors}}
+            {{/aggregateRoot}}
        ]
    };
 
@@ -108,17 +115,19 @@ window.$HandleBars.registerHelper('isDate', function (type, options) {
     }
     return options.inverse(this);
 });
-window.$HandleBars.registerHelper('isEnum', function (voField,type, field, options) {
+window.$HandleBars.registerHelper('isEnum', function (voField, type, field, options) {
     if(voField){
         return options.inverse(this);
     }else{
         var relation = field.relations
-        for(var i = 0; i < relation.length; i++){
-            if(relation[i].targetElement){
-                if(relation[i].targetElement.name){
-                    if(type === relation[i].targetElement.name){
-                        return options.fn(this);
-                        
+        if(relation){
+            for(var i = 0; i < relation.length; i++){
+                if(relation[i].targetElement){
+                    if(relation[i].targetElement.name){
+                        if(type === relation[i].targetElement.name){
+                            return options.fn(this);
+                            
+                        }
                     }
                 }
             }
@@ -147,6 +156,37 @@ window.$HandleBars.registerHelper('addMustache', function (id) {
     var result = '';
     result = "{" + id + "}"
     return result;
+});
+window.$HandleBars.registerHelper('createVoField', function (type, field) {
+    var result = [];
+    var relation = field.relations
+
+    for(var i = 0; i < relation.length; i++){
+        if(relation[i].targetElement && relation[i].targetElement.isVO){
+            var vo = relation[i].targetElement;
+            if(vo && vo.fieldDescriptors){
+                for(var j = 0; j < vo.fieldDescriptors.length; j++){
+                    var voField = vo.fieldDescriptors[j];
+                    var voFieldType = '';
+                    if(voField.className ==="String"){
+                        voFieldType = 'Text';
+                    }else if(voField.className ==="Long" || voField.className ==="Integer" || voField.className ==="Double" || voField.className ==="BigDecimal"){
+                        voFieldType = 'Int';
+                    }else if(voField.className ==="Float"){
+                        voFieldType = 'Float';
+                    }else if(voField.className ==="Date"){
+                        voFieldType = 'Date';
+                    }else if(voField.className ==="Boolean"){
+                        voFieldType = 'Bool';
+                    }
+                    result.push(`{"Header": ["${vo.namePascalCase}", "${voField.nameCamelCase}"], "Name": "${voField.nameCamelCase}", "Type": "${voFieldType}", "Width": 110}`);
+                }
+            }else{
+                return;
+            }
+        }
+    }
+    return result.join(',\n'); 
 });
 window.$HandleBars.registerHelper('checkFieldType', function (type, voField, fieldName) {
     if(type === 'String'){
