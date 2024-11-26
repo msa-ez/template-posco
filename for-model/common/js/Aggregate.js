@@ -4,12 +4,20 @@ path: common/js
 ---
 $(document).ready(function(){
     var OPT = {
+        {{#aggregateRoot.keyFieldDescriptor}}
+        "LeftCols": [
+            {"Header": "{{#checkName displayName namePascalCase className}}{{/checkName}}","Type": "{{#checkFieldType className isVO namePascalCase}}{{/checkFieldType}}","Width": 50,"Align": "Center","Name": "{{nameCamelCase}}"}
+        ],
+        {{/aggregateRoot.keyFieldDescriptor}}
         Cols:[
             {{#aggregateRoot}}
             {{#fieldDescriptors}}
             {{#if isVO}}
             {{else}}
-            { "Header": "{{#checkName displayName namePascalCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVO namePascalCase}}{{/checkFieldType}}",{{#isDate className}} "EmptyValue": "날짜를 입력해주세요",{{/isDate}}{{#isEnum isVO className ../entities}} "Enum": {{/isEnum}}{{#checkEnum className isVO ../entities}}{{/checkEnum}}{{#isEnum isVO className ../entities}},{{/isEnum}}{{#isEnum isVO className ../entities}} "EnumKeys": {{/isEnum}}{{#checkEnum className isVO ../entities}}{{/checkEnum}}{{#isEnum isVO className ../entities}},{{/isEnum}} "Width":120, "CanEdit":1},  
+            {{#if isKey}}
+            {{else}}
+            { "Header": "{{#checkName displayName namePascalCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVO namePascalCase}}{{/checkFieldType}}",{{#isDate className}} "EmptyValue": "날짜를 입력해주세요",{{/isDate}}{{#isEnum isVO className ../entities}} "Enum": {{/isEnum}}{{#checkEnum className isVO ../entities}}{{/checkEnum}}{{#isEnum isVO className ../entities}},{{/isEnum}}{{#isEnum isVO className ../entities}} "EnumKeys": {{/isEnum}}{{#checkEnum className isVO ../entities}}{{/checkEnum}}{{#isEnum isVO className ../entities}},{{/isEnum}} "Align": "Center", "Width":120, "CanEdit":1},  
+            {{/if}}
             {{/if}}
             {{/fieldDescriptors}}
             {{/aggregateRoot}}
