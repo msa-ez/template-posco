@@ -15,10 +15,10 @@ $(document).ready(function(){
         Cols:[
             {{#aggregateRoot}}
             {{#fieldDescriptors}}
-            { "Header": "{{#checkName displayName namePascalCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVo namePascalCase}}{{/checkFieldType}}",{{#isDate className}} "EmptyValue": "날짜를 입력해주세요"{{/isDate}}{{#isEnum className ../entities}} "Enum": {{/isEnum}}{{#checkEnum className ../entities}}{{/checkEnum}}{{#isEnum className ../entities}},{{/isEnum}}{{#isEnum className ../entities}} "EnumKeys": {{/isEnum}}{{#checkEnum className ../entities}}{{/checkEnum}}{{#isEnum className ../entities}},{{/isEnum}} "Width":120, "CanEdit":1},
+            { "Header": "{{#checkName displayName namePascalCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVo namePascalCase}}{{/checkFieldType}}",{{#isDate className}} "EmptyValue": "날짜를 입력해주세요",{{/isDate}}{{#isEnum className ../entities}} "Enum": {{/isEnum}}{{#checkEnum className ../entities}}{{/checkEnum}}{{#isEnum className ../entities}},{{/isEnum}}{{#isEnum className ../entities}} "EnumKeys": {{/isEnum}}{{#checkEnum className ../entities}}{{/checkEnum}}{{#isEnum className ../entities}},{{/isEnum}} "Width":120, "CanEdit":1},
             {{/fieldDescriptors}}
             {{/aggregateRoot}}
-            {{#checkVO aggregateRoot.fieldDescriptors }}{{/checkVO}}
+            {{#checkVO aggregateRoot.fieldDescriptors}}{{/checkVO}}
        ]
    };
 
