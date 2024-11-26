@@ -17,7 +17,8 @@ import org.springframework.data.rest.webmvc.RepositoryRestController;
 import com.posco.{{boundedContext.name}}.{{options.package}}.domain.{{../nameCamelCase}}.{{namePascalCase}}Command;
 {{/commands}}
 {{#attached 'View' this}}
-import com.posco.{{boundedContext.name}}.{{options.package}}.domain.{{../nameCamelCase}}.mybatis.{{namePascalCase}}DTO;
+import com.posco.{{boundedContext.name}}.{{../options.package}}.domain.{{../nameCamelCase}}.mybatis.{{namePascalCase}}DTO;
+import com.posco.{{boundedContext.name}}.{{../options.package}}.domain.{{../nameCamelCase}}.mybatis.{{namePascalCase}}Response;
 {{/attached}}
 
 @RepositoryRestController
