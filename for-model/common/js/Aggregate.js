@@ -25,7 +25,7 @@ $(document).ready(function(){
         Cols:[
             {{#aggregateRoot}}
             {{#fieldDescriptors}}
-            { "Header": "{{#if displayName}}{{else}}{{namePascalCase}}{{/if}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVo namePascalCase}}{{/checkFieldType}}", {{#isEnum className ../entities}}"Enum": {{/isEnum}}{{#checkEnum className ../entities}}{{/checkEnum}}{{#isEnum className ../entities}},{{/isEnum}} {{#isEnum className ../entities}}"EnumKeys": {{/isEnum}}{{#checkEnum className ../entities}}{{/checkEnum}}{{#isEnum className ../entities}},{{/isEnum}} "Width":120, "CanEdit":1},
+            { "Header": "{{#checkName displayName namePascalCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVo namePascalCase}}{{/checkFieldType}}", {{#isEnum className ../entities}}"Enum": {{/isEnum}}{{#checkEnum className ../entities}}{{/checkEnum}}{{#isEnum className ../entities}},{{/isEnum}} {{#isEnum className ../entities}}"EnumKeys": {{/isEnum}}{{#checkEnum className ../entities}}{{/checkEnum}}{{#isEnum className ../entities}},{{/isEnum}} "Width":120, "CanEdit":1},
             {{/fieldDescriptors}}
             {{/aggregateRoot}}
        ]
@@ -106,6 +106,21 @@ window.$HandleBars.registerHelper('addMustache', function (id) {
     var result = '';
     result = "{" + id + "}"
     return result;
+});
+window.$HandleBars.registerHelper('checkName', function (koName, engName, type) {
+    if(type === "Boolean"){
+        if(koName){
+            return {"Value": `"${koName}"`,"HeaderCheck": 1}
+        }else{
+            return {"Value": `"${engName}"`,"HeaderCheck": 1}
+        }
+    }else{
+        if(koName){
+            return koName;
+        }else{
+            return engName;
+        }
+    }
 });
 window.$HandleBars.registerHelper('checkFieldType', function (type, vo, fieldName) {
     if(type === "String"){
