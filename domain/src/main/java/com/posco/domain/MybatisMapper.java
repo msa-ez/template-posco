@@ -7,8 +7,8 @@ package com.posco.{{boundedContext.name}}.{{options.package}}.domain.{{nameCamel
 
 {{#attached 'View' this}}
 {{#if queryParameters}}
-import com.posco.{{boundedContext.name}}.{{options.package}}.domain.{{aggregate.nameCamelCase}}.mybatis.{{namePascalCase}}MybatisEntity;
-import com.posco.{{boundedContext.name}}.{{options.package}}.domain.{{aggregate.nameCamelCase}}.mybatis.{{namePascalCase}}MybatisDTO;
+import com.posco.{{boundedContext.name}}.{{options.package}}.domain.{{aggregate.nameCamelCase}}.mybatis.{{namePascalCase}}Response;
+import com.posco.{{boundedContext.name}}.{{options.package}}.domain.{{aggregate.nameCamelCase}}.mybatis.{{namePascalCase}}DTO;
 {{/if}}
 {{/attached}}
 
@@ -20,7 +20,7 @@ public interface {{namePascalCase}}Mapper {
 
 {{#attached 'View' this}}
     {{#if queryParameters}}
-        {{namePascalCase}}MybatisEntity {{nameCamelCase}}({{../keyFieldDescriptor.className}} id, {{namePascalCase}}MybatisDTO mybatisDTO);
+        {{namePascalCase}}Response {{nameCamelCase}}({{../keyFieldDescriptor.className}} id, {{namePascalCase}}DTO dto);
     {{/if}}
 {{/attached}}
 }

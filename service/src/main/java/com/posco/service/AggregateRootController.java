@@ -17,7 +17,7 @@ import org.springframework.data.rest.webmvc.RepositoryRestController;
 import com.posco.{{boundedContext.name}}.{{options.package}}.domain.{{../nameCamelCase}}.{{namePascalCase}}Command;
 {{/commands}}
 {{#attached 'View' this}}
-import com.posco.{{boundedContext.name}}.{{options.package}}.domain.{{../nameCamelCase}}.mybatis.{{namePascalCase}}MybatisDTO;
+import com.posco.{{boundedContext.name}}.{{options.package}}.domain.{{../nameCamelCase}}.mybatis.{{namePascalCase}}DTO;
 {{/attached}}
 
 @RepositoryRestController
@@ -91,10 +91,10 @@ public class {{namePascalCase}}Controller {
     {{#attached 'View' this}}
     {{#if queryParameters}}
     @GetMapping(path = "/{{../namePlural}}/{{nameCamelCase}}/{{#addMustache ../keyFieldDescriptor.nameCamelCase}}{{/addMustache}}")
-    public ResponseEntity<{{namePascalCase}}MybatisEntity> {{nameCamelCase}}(
+    public ResponseEntity<{{namePascalCase}}Response> {{nameCamelCase}}(
         @PathVariable {{../keyFieldDescriptor.className}} {{../keyFieldDescriptor.nameCamelCase}},
-        @Valid @RequestBody {{namePascalCase}}MybatisDTO mybatisDTO) {
-        return ResponseEntity.ok({{../nameCamelCase}}Service.{{nameCamelCase}}({{../keyFieldDescriptor.nameCamelCase}}, mybatisDTO));
+        @Valid @RequestBody {{namePascalCase}}DTO dto) {
+        return ResponseEntity.ok({{../nameCamelCase}}Service.{{nameCamelCase}}({{../keyFieldDescriptor.nameCamelCase}}, dto));
     }
     {{/if}}
     {{/attached}}
