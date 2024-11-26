@@ -9,7 +9,7 @@ path: {{boundedContext.name}}/{{options.package}}-boot/src/main/resources/mybati
     
     {{#attached 'View' this}}
     {{#if queryParameters}}
-    <select id="{{nameCamelCase}}" resultType="{{namePascalCase}}MybatisEntity">
+    <select id="{{nameCamelCase}}" resultType="{{namePascalCase}}Response">
         SELECT * FROM {{../namePascalCase}}_table WHERE {{keyFieldDescriptor.nameCamelCase}} = #{id}
     </select>
     {{/if}}

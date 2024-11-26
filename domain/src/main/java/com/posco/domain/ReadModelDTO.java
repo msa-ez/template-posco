@@ -1,6 +1,6 @@
 forEach: View
 representativeFor: View
-fileName: {{namePascalCase}}MybatisDTO.java
+fileName: {{namePascalCase}}DTO.java
 path: {{boundedContext.name}}/{{options.package}}-domain/src/main/java/com/posco/{{boundedContext.name}}/{{options.package}}/domain/{{aggregate.nameCamelCase}}/mybatis
 ---
 package com.posco.{{boundedContext.name}}.{{options.package}}.domain.{{aggregate.nameCamelCase}}.mybatis;
@@ -12,7 +12,7 @@ import java.util.Date;
 
 
 @Data
-public class {{namePascalCase}}MybatisDTO {
+public class {{namePascalCase}}DTO {
     {{#queryParameters}}
         private {{className}} {{nameCamelCase}};
     {{/queryParameters}}
