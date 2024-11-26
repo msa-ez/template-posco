@@ -3,7 +3,7 @@ fileName: {{namePascalCase}}Test.java
 path: {{boundedContext.name}}/{{options.package}}-boot/src/test/java/com/posco/{{boundedContext.name}}/{{options.package}}
 ---
 
-package {{options.package}};
+package com.posco.{{boundedContext.name}}.{{options.package}};
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
