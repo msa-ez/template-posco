@@ -12,7 +12,7 @@ path: {{boundedContext.name}}/{{options.package}}-boot/src/main/resources/mybati
     <select id="{{nameCamelCase}}" resultType="{{namePascalCase}}Response">
         SELECT * 
         FROM {{#outgoingRelations}}{{target.namePascalCase}}_table{{^if @last}}, {{/if}}{{/outgoingRelations}}
-        WHERE {{#outgoingRelations}}{{target.nameCamelCase}}_id = #{id} {{^if @last}}AND{{/if}}{{/outgoingRelations}}
+        WHERE {{#outgoingRelations}}{{target.nameCamelCase}}_id = #{id} {{^if @last}}AND {{/if}}{{/outgoingRelations}}
     </select>
     {{/if}}
     {{/attached}}
