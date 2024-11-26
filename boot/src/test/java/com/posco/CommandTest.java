@@ -1,6 +1,6 @@
 forEach: Command
 fileName: {{namePascalCase}}Test.java
-path: {{name}}/{{options.package}}-boot/src/test/java/com/posco/{{boundedContext.name}}/{{options.package}}
+path: {{boundedContext.name}}/{{options.package}}-boot/src/test/java/com/posco/{{boundedContext.name}}/{{options.package}}
 except: {{#checkExamples examples}}{{/checkExamples}}
 ---
 

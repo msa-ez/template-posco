@@ -1,6 +1,6 @@
 forEach: Policy
 fileName: {{namePascalCase}}Test.java
-path: {{name}}/{{options.package}}-boot/src/test/java/com/posco/{{boundedContext.name}}/{{options.package}}
+path: {{boundedContext.name}}/{{options.package}}-boot/src/test/java/com/posco/{{boundedContext.name}}/{{options.package}}
 ---
 
 package {{options.package}};
