@@ -167,7 +167,19 @@ window.$HandleBars.registerHelper('createVoField', function (type, field) {
             if(vo && vo.fieldDescriptors){
                 for(var j = 0; j < vo.fieldDescriptors.length; j++){
                     var voField = vo.fieldDescriptors[j];
-                    result.push(`{"Header": ["${vo.namePascalCase}", "${voField.nameCamelCase}"], "Name": "${voField.namePascalCase}", "Width": 110}`);
+                    var voFieldType = '';
+                    if(voField.className ==="String"){
+                        voFieldType = 'Text';
+                    }else if(voField.className ==="Long" || voField.className ==="Integer" || voField.className ==="Double" || voField.className ==="BigDecimal"){
+                        voFieldType = 'Int';
+                    }else if(voField.className ==="Float"){
+                        voFieldType = 'Float';
+                    }else if(voField.className ==="Date"){
+                        voFieldType = 'Date';
+                    }else if(voField.className ==="Boolean"){
+                        voFieldType = 'Bool';
+                    }
+                    result.push(`{"Header": ["${vo.namePascalCase}", "${voField.nameCamelCase}"], "Name": "${voField.namePascalCase}", "Type": "${voFieldType}", "Width": 110}`);
                 }
             }else{
                 return;
