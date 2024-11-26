@@ -139,10 +139,12 @@ window.$HandleBars.registerHelper('isEnum', function (type, field, options) {
 window.$HandleBars.registerHelper('checkEnum', function (type, field) {
     var relation = field.relations
     for(var i = 0; i < relation.length; i++){
-        if(type == relation[i].targetElement.name){
-            var items = relation[i].targetElement.items;
-            var result = items.map(item => item.value).join('|');
-            return `"|${result}"`;
+        if(relation[i].targetElement && relation[i].targetElement.name){
+            if(type == relation[i].targetElement.name){
+                var items = relation[i].targetElement.items;
+                var result = items.map(item => item.value).join('|');
+                return `"|${result}"`;
+            }
         }
     }
 });
