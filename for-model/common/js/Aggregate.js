@@ -7,7 +7,7 @@ $(document).ready(function(){
         Cols:[
             {{#aggregateRoot}}
             {{#fieldDescriptors}}
-            { "Header": "{{#checkName displayName namePascalCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVo namePascalCase}}{{/checkFieldType}}",{{#isDate className}} "EmptyValue": "날짜를 입력해주세요",{{/isDate}}{{#isEnum className ../entities}} "Enum": {{/isEnum}}{{#checkEnum className ../entities}}{{/checkEnum}}{{#isEnum className ../entities}},{{/isEnum}}{{#isEnum className ../entities}} "EnumKeys": {{/isEnum}}{{#checkEnum className ../entities}}{{/checkEnum}}{{#isEnum className ../entities}},{{/isEnum}} "Width":120, "CanEdit":1},
+            { "Header": "{{#checkName displayName namePascalCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": {{#checkFieldType className isVo namePascalCase}}{{/checkFieldType}},{{#isDate className}} "EmptyValue": "날짜를 입력해주세요",{{/isDate}}{{#isEnum className ../entities}} "Enum": {{/isEnum}}{{#checkEnum className ../entities}}{{/checkEnum}}{{#isEnum className ../entities}},{{/isEnum}}{{#isEnum className ../entities}} "EnumKeys": {{/isEnum}}{{#checkEnum className ../entities}}{{/checkEnum}}{{#isEnum className ../entities}},{{/isEnum}} "Width":120, "CanEdit":1},
             {{/fieldDescriptors}}
             {{/aggregateRoot}}
        ]
@@ -84,11 +84,6 @@ function save(){
     }           
 }
 <function>
-window.$HandleBars.registerHelper('addMustache', function (id) {
-    var result = '';
-    result = "{" + id + "}"
-    return result;
-});
 window.$HandleBars.registerHelper('checkName', function (koName, engName, type) {
     if(type === "Boolean"){
         if(koName){
@@ -104,21 +99,6 @@ window.$HandleBars.registerHelper('checkName', function (koName, engName, type) 
         }
     }
 });
-window.$HandleBars.registerHelper('checkFieldType', function (type, vo, fieldName) {
-    if(type === "String"){
-        return 'Text';
-    }else if(type === "Long" || type === "Integer" || type === "Double" || type === "BigDecimal"){
-        return 'Int';
-    }else if(type === "Float"){
-        return 'Float';
-    }else if(type === "Date"){
-        return 'Date';
-    }else if(type === "Boolean"){
-        return 'Bool';
-    }else if(!vo && (type == fieldName)){
-        return 'Enum';
-    }
-});
 window.$HandleBars.registerHelper('isDate', function (type, options) {
     if(type === "Date"){
         return options.fn(this);
@@ -128,9 +108,12 @@ window.$HandleBars.registerHelper('isDate', function (type, options) {
 window.$HandleBars.registerHelper('isEnum', function (type, field, options) {
     var relation = field.relations
     for(var i = 0; i < relation.length; i++){
-        if(relation[i].targetElement && relation[i].targetElement.name){
-            if(type === relation[i].targetElement.name){
-                return options.fn(this);
+        if(relation[i].targetElement){
+            if(relation[i].targetElement.name){
+                if(type === relation[i].targetElement.name){
+                    return options.fn(this);
+                    
+                }
             }
         }
     }
@@ -142,10 +125,32 @@ window.$HandleBars.registerHelper('checkEnum', function (type, field) {
         if(relation[i].targetElement && relation[i].targetElement.name){
             if(type === relation[i].targetElement.name){
                 var items = relation[i].targetElement.items;
-                var result = items.map(item => item.value).join('|');
-                return `"|${result}"`;
+                if(items){
+                    var result = items.map(item => item.value).join('|');
+                    return `"|${result}"`;
+                }
             }
         }
+    }
+});
+window.$HandleBars.registerHelper('addMustache', function (id) {
+    var result = '';
+    result = "{" + id + "}"
+    return result;
+});
+window.$HandleBars.registerHelper('checkFieldType', function (type, vo, fieldName) {
+    if(type === 'String'){
+        return "Text";
+    }else if(type === "Long" || type === "Integer" || type === "Double" || type === "BigDecimal"){
+        return "Int";
+    }else if(type === "Float"){
+        return "Float";
+    }else if(type === "Date"){
+        return "Date";
+    }else if(type === "Boolean"){
+        return "Bool";
+    }else if(!vo && (type == fieldName)){
+        return "Enum";
     }
 });
 </function>
