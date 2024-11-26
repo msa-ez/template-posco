@@ -138,7 +138,7 @@ window.$HandleBars.registerHelper('addMustache', function (id) {
     result = "{" + id + "}"
     return result;
 });
-window.$HandleBars.registerHelper('checkFieldType', function (type, vo, fieldName) {
+window.$HandleBars.registerHelper('checkFieldType', function (type, voField, fieldName) {
     if(type === 'String'){
         return "Text";
     }else if(type === "Long" || type === "Integer" || type === "Double" || type === "BigDecimal"){
@@ -149,8 +149,12 @@ window.$HandleBars.registerHelper('checkFieldType', function (type, vo, fieldNam
         return "Date";
     }else if(type === "Boolean"){
         return "Bool";
-    }else if(!vo && (type == fieldName)){
-        return "Enum";
+    }else if(type == fieldName){
+        if(voField){
+            return
+        }else{
+            return "Enum";
+        }
     }
 });
 </function>
