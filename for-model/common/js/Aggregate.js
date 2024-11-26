@@ -117,8 +117,6 @@ window.$HandleBars.registerHelper('checkFieldType', function (type, vo, fieldNam
         return 'Bool';
     }else if(!vo && (type == fieldName)){
         return 'Enum';
-    }else if(vo){
-        return
     }
 });
 window.$HandleBars.registerHelper('isDate', function (type, options) {
@@ -131,7 +129,7 @@ window.$HandleBars.registerHelper('isEnum', function (type, field, options) {
     var relation = field.relations
     for(var i = 0; i < relation.length; i++){
         if(relation[i].targetElement && relation[i].targetElement.name){
-            if(type == relation[i].targetElement.name){
+            if(type === relation[i].targetElement.name){
                 return options.fn(this);
             }
         }
@@ -142,7 +140,7 @@ window.$HandleBars.registerHelper('checkEnum', function (type, field) {
     var relation = field.relations
     for(var i = 0; i < relation.length; i++){
         if(relation[i].targetElement && relation[i].targetElement.name){
-            if(type == relation[i].targetElement.name){
+            if(type === relation[i].targetElement.name){
                 var items = relation[i].targetElement.items;
                 var result = items.map(item => item.value).join('|');
                 return `"|${result}"`;
