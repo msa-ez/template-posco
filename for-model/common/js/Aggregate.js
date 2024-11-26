@@ -115,17 +115,19 @@ window.$HandleBars.registerHelper('isDate', function (type, options) {
     }
     return options.inverse(this);
 });
-window.$HandleBars.registerHelper('isEnum', function (voField,type, field, options) {
+window.$HandleBars.registerHelper('isEnum', function (voField, type, field, options) {
     if(voField){
         return options.inverse(this);
     }else{
         var relation = field.relations
-        for(var i = 0; i < relation.length; i++){
-            if(relation[i].targetElement){
-                if(relation[i].targetElement.name){
-                    if(type === relation[i].targetElement.name){
-                        return options.fn(this);
-                        
+        if(relation){
+            for(var i = 0; i < relation.length; i++){
+                if(relation[i].targetElement){
+                    if(relation[i].targetElement.name){
+                        if(type === relation[i].targetElement.name){
+                            return options.fn(this);
+                            
+                        }
                     }
                 }
             }
