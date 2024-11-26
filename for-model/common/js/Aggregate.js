@@ -122,8 +122,8 @@ window.$HandleBars.registerHelper('checkFieldType', function (type, vo, fieldNam
         return Enum;
     }
 });
-window.$HandleBars.registerHelper('checkEnum', function (type, enum) {
-    var relation = enum.relations
+window.$HandleBars.registerHelper('checkEnum', function (type, field) {
+    var relation = field.relations
     for(var i = 0; i < relation.length; i++){
         if(type == relation[i].targetElement.name){
             var items = relation[i].targetElement.items;
