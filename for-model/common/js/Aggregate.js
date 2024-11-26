@@ -130,8 +130,10 @@ window.$HandleBars.registerHelper('isDate', function (type, options) {
 window.$HandleBars.registerHelper('isEnum', function (type, field, options) {
     var relation = field.relations
     for(var i = 0; i < relation.length; i++){
-        if(type == relation[i].targetElement.name){
-            return options.fn(this);
+        if(relation[i].targetElement && relation[i].targetElement.name){
+            if(type == relation[i].targetElement.name){
+                return options.fn(this);
+            }
         }
     }
     return options.inverse(this);
