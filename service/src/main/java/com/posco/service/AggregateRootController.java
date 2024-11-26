@@ -70,7 +70,6 @@ public class {{namePascalCase}}Controller {
     }
     {{/ifEquals}}
     
-    // command rest api
     {{else}}
     @PostMapping(path = "/{{../namePlural}}/{{nameCamelCase}}/{{#addMustache ../keyFieldDescriptor.nameCamelCase}}{{/addMustache}}")
     public ResponseEntity<{{../namePascalCase}}> {{nameCamelCase}}(
@@ -91,11 +90,10 @@ public class {{namePascalCase}}Controller {
     //readModel rest api
     {{#attached 'View' this}}
     {{#if queryParameters}}
-    @GetMapping(path = "/{{../namePlural}}/{{nameCamelCase}}/{{#addMustache ../keyFieldDescriptor.nameCamelCase}}{{/addMustache}}")
+    @GetMapping(path = "/{{../namePlural}}/{{nameCamelCase}}")
     public ResponseEntity<{{namePascalCase}}Response> {{nameCamelCase}}(
-        @PathVariable {{../keyFieldDescriptor.className}} {{../keyFieldDescriptor.nameCamelCase}},
         @Valid @RequestBody {{namePascalCase}}DTO dto) {
-        return ResponseEntity.ok({{../nameCamelCase}}Service.{{nameCamelCase}}({{../keyFieldDescriptor.nameCamelCase}}, dto));
+        return ResponseEntity.ok({{../nameCamelCase}}Service.{{nameCamelCase}}(dto));
     }
     {{/if}}
     {{/attached}}

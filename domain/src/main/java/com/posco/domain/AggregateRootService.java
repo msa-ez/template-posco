@@ -116,8 +116,8 @@ public class {{namePascalCase}}Service {
     {{/attached}}
     {{#attached 'View' this}}
     {{#if queryParameters}}
-    public {{../namePascalCase}} {{nameCamelCase}}({{../keyFieldDescriptor.className}} id) {
-        {{namePascalCase}}Response response = {{../nameCamelCase}}Mapper.{{nameCamelCase}}(id);
+    public {{../namePascalCase}} {{nameCamelCase}}({{namePascalCase}}DTO dto) {
+        {{namePascalCase}}Response response = {{../nameCamelCase}}Mapper.{{nameCamelCase}}(dto);
         if (response == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "{{namePascalCase}} not found");
         }
