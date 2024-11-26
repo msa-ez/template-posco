@@ -131,6 +131,7 @@ window.$HandleBars.registerHelper('isDate', function (type, options) {
     if(type === "Date"){
         return options.fn(this);
     }
+    return options.inverse(this);
 });
 window.$HandleBars.registerHelper('isEnum', function (type, field, options) {
     var relation = field.relations
