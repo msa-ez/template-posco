@@ -1,7 +1,7 @@
-path: {{name}}/s20a01-boot/src/main/java/com/posco/{{name}}/s20a01/config
+path: {{name}}/{{options.package}}-boot/src/main/java/com/posco/{{name}}/{{options.package}}/config
 fileName: ResourceServerConfiguration.java
 ---
-package com.posco.{{name}}.s20a01.config;
+package com.posco.{{name}}.{{options.package}}.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +19,10 @@ public class ResourceServerConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .cors()
+            .and()
+            .authorizeRequests()
+            .antMatchers("/api-name/**")
+            .permitAll()
             .and()
             .csrf().disable()
             .authorizeRequests()

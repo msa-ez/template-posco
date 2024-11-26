@@ -1,11 +1,12 @@
 forEach: Aggregate
 representativeFor: Aggregate
 fileName: {{namePascalCase}}.java
-path: {{boundedContext.name}}/s20a01-domain/src/main/java/com/posco/{{boundedContext.name}}/s20a01/domain/{{nameCamelCase}}
+path: {{boundedContext.name}}/{{options.package}}-domain/src/main/java/com/posco/{{boundedContext.name}}/{{options.package}}/domain/{{nameCamelCase}}
 ---
-package com.posco.{{boundedContext.name}}.s20a01.domain.{{nameCamelCase}};
+package com.posco.{{boundedContext.name}}.{{options.package}}.domain.{{nameCamelCase}};
 
-{{#aggregateRoot.fieldDescriptors}}{{#isVO}}import com.posco.{{../boundedContext.name}}.s20a01.domain.{{namePascalCase}};{{/isVO}}{{/aggregateRoot.fieldDescriptors}}
+{{#aggregateRoot.fieldDescriptors}}{{^if (isPrimitive className)}}import com.posco.{{../boundedContext.name}}.{{../options.package}}.domain.{{className}};{{/if}}{{/aggregateRoot.fieldDescriptors}}
+
 import javax.persistence.*;
 import java.util.List;
 import lombok.Data;
@@ -135,7 +136,7 @@ window.$HandleBars.registerHelper('checkBigDecimal', function (fieldDescriptors)
 
 window.$HandleBars.registerHelper('isPrimitive', function (className) {
     if(className.includes("String") || className.includes("Integer") || className.includes("Long") || className.includes("Double") || className.includes("Float")
-            || className.includes("Boolean") || className.includes("Date")){
+            || className.includes("Boolean") || className.includes("Date") || className.includes("int")){
         return true;
     } else {
         return false;
@@ -145,7 +146,7 @@ window.$HandleBars.registerHelper('isPrimitive', function (className) {
 window.$HandleBars.registerHelper('checkFieldType', function (className, isVO, isKey) {
     try {
         if (className==="Integer" || className==="String" || className==="Boolean" || className==="Float" || 
-           className==="Double" || className==="Double" || className==="Long" || className==="Date"){
+           className==="Double" || className==="Double" || className==="Long" || className==="Date" || className==="int"){
                 return
         }else {
             if(className.includes("List")){

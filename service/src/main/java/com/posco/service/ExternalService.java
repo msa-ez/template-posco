@@ -1,10 +1,10 @@
 forEach: Relation
 fileName: {{target.aggregate.namePascalCase}}Service.java
-path: {{source.boundedContext.name}}/s20a01-service/src/main/java/com/posco/{{source.boundedContext.name}}/s20a01/service
-except: {{contexts.except}}
+path: {{source.boundedContext.name}}/{{options.package}}-service/src/main/java/com/posco/{{source.boundedContext.name}}/{{options.package}}/service
+except: true
 ifDuplicated: merge
 ---
-package com.posco.{{source.boundedContext.name}}.s20a01.service;
+package com.posco.{{source.boundedContext.name}}.{{options.package}}.service;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;

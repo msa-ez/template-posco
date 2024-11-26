@@ -1,7 +1,7 @@
-path: {{name}}/s20a01-boot/src/main/java/com/posco/{{name}}/s20a01
+path: {{name}}/{{options.package}}-boot/src/main/java/com/posco/{{name}}/{{options.package}}
 fileName: {{namePascalCase}}Application.java
 ---
-package com.posco.{{name}}.s20a01;
+package com.posco.{{name}}.{{options.package}};
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;

@@ -1,16 +1,16 @@
 forEach: Command
 representativeFor: Command
 fileName: {{namePascalCase}}Command.java
-path: {{boundedContext.name}}/s20a01-domain/src/main/java/com/posco/{{boundedContext.name}}/s20a01/domain/{{aggregate.nameCamelCase}}
+path: {{boundedContext.name}}/{{options.package}}-domain/src/main/java/com/posco/{{boundedContext.name}}/{{options.package}}/domain/{{aggregate.nameCamelCase}}
 ---
-package com.posco.{{boundedContext.name}}.s20a01.domain.{{aggregate.nameCamelCase}};
+package com.posco.{{boundedContext.name}}.{{options.package}}.domain.{{aggregate.nameCamelCase}};
 
 import java.util.*;
 import lombok.Data;
 import java.time.LocalDate;
 {{#fieldDescriptors}}
 {{^if (isPrimitive className)}}
-import com.posco.{{../boundedContext.name}}.s20a01.domain.{{removeList className}};
+import com.posco.{{../boundedContext.name}}.{{../options.package}}.domain.{{removeList className}};
 {{/if}}
 {{/fieldDescriptors}}
 {{#checkBigDecimal fieldDescriptors}}{{/checkBigDecimal}}
@@ -46,7 +46,7 @@ window.$HandleBars.registerHelper('isDefaultVerb', function (command) {
 
 window.$HandleBars.registerHelper('isPrimitive', function (className) {
     if(className.includes("String") || className.includes("Integer") || className.includes("Long") || className.includes("Double") || className.includes("Float")
-            || className.includes("Boolean") || className.includes("Date")){
+            || className.includes("Boolean") || className.includes("Date") || className.includes("int")){
         return true;
     } else {
         return false;

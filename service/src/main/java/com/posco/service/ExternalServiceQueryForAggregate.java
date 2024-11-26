@@ -1,7 +1,7 @@
 forEach: Relation
 fileName: {{target.aggregate.namePascalCase}}Service.java
 path: {{source.boundedContext.name}}/service/{{options.packagePath}}/service
-except: {{contexts.except}}
+except: true
 ---
 
 package {{options.package}}.service;
