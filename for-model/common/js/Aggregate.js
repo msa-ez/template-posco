@@ -23,9 +23,11 @@ $(document).ready(function(){
     {"Header": {"Value": "체크박스(Bool)","HeaderCheck": 1},"Type": "Bool","Name": "CheckData","Width": 110,"Align": "Center","CanEdit": 1}
   ]
         Cols:[
-            {{#aggregateRoot.fieldDescriptors}}
-            { "Header": "{{#if displayName}}{{else}}{{namePascalCase}}{{/if}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVo namePascalCase}}{{/checkFieldType}}", "{{#checkEnum className ../entities.relations}}{{/checkEnum}}" "Width":120, "CanEdit":1},
-            {{/aggregateRoot.fieldDescriptors}}
+            {{#aggregateRoot}}
+            {{#fieldDescriptors}}
+            { "Header": "{{#if displayName}}{{else}}{{namePascalCase}}{{/if}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVo namePascalCase}}{{/checkFieldType}}", "{{#checkEnum className ../entities}}{{/checkEnum}}" "Width":120, "CanEdit":1},
+            {{/fieldDescriptors}}
+            {{/aggregateRoot}}
        ]
    };
 
@@ -121,9 +123,10 @@ window.$HandleBars.registerHelper('checkFieldType', function (type, vo, fieldNam
     }
 });
 window.$HandleBars.registerHelper('checkEnum', function (type, class) {
-    for(var i = 0; i < class.length; i++){
-        if(type == class[i].targetElement.name){
-            var items = class[i].targetElement.items;
+    var relation = class.relations
+    for(var i = 0; i < relation.length; i++){
+        if(type == relation[i].targetElement.name){
+            var items = relation[i].targetElement.items;
             var result = items.map(item => item.value).join('|');
             return result;
         }
