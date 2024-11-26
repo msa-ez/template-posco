@@ -1,6 +1,7 @@
 forEach: Policy
 fileName: {{namePascalCase}}Test.java
 path: {{boundedContext.name}}/{{options.package}}-boot/src/test/java/com/posco/{{boundedContext.name}}/{{options.package}}
+except: {{#checkExamples examples}}{{/checkExamples}}
 ---
 
 package com.posco.{{boundedContext.name}}.{{options.package}};
@@ -168,3 +169,9 @@ function convertToJavaSyntax(value) {
       throw new Error(`Unsupported type: ${type}`);
   }
 }
+
+window.$HandleBars.registerHelper('checkExamples', function (examples) {
+   if(!examples)return true
+});
+
+</function>
