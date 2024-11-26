@@ -3,15 +3,7 @@ fileName: {{namePascalCase}}.js
 path: common/js
 ---
 $(document).ready(function(){
-
-    var IB_Preset = {
-        "YMD":{Type:"Date",Align:"Center","Format": "yyyy/MM/dd", "DataFormat": "yyyyMMdd", "EditFormat": "yyyyMMdd", Size:8,EditMask:"^\d*$",EmptyValue:"<span style='color:#AAA'>년,월,일 순으로 숫자만 입력해 주세요.</span>"},
-      };
     var OPT = {
-        "Cols": [
-    {"Type": "Enum","Name": "ComboData","Align": "Center","Enum": "|대기|진행중|완료","EnumKeys": "|01|02|03"},
-    {"Header": "날짜(Date)","Type": "Date","Name": "DateData","Width": 150,"Align": "Center","CanEdit": 1,"EmptyValue": "날짜를 입력해주세요"},
-  ]
         Cols:[
             {{#aggregateRoot}}
             {{#fieldDescriptors}}
@@ -125,6 +117,8 @@ window.$HandleBars.registerHelper('checkFieldType', function (type, vo, fieldNam
         return 'Bool';
     }else if(!vo && (type == fieldName)){
         return 'Enum';
+    }else if(vo){
+        return
     }
 });
 window.$HandleBars.registerHelper('isDate', function (type, options) {
