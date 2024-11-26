@@ -20,7 +20,7 @@ public interface {{namePascalCase}}Mapper {
 
 {{#attached 'View' this}}
     {{#if queryParameters}}
-        {{namePascalCase}}Response {{nameCamelCase}}({{../keyFieldDescriptor.className}} id, {{namePascalCase}}DTO dto);
+        {{namePascalCase}}Response {{nameCamelCase}}({{namePascalCase}}DTO dto);
     {{/if}}
 {{/attached}}
 }
