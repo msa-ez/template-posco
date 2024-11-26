@@ -23,9 +23,11 @@ $(document).ready(function(){
     {"Header": {"Value": "체크박스(Bool)","HeaderCheck": 1},"Type": "Bool","Name": "CheckData","Width": 110,"Align": "Center","CanEdit": 1}
   ]
         Cols:[
-            {{#aggregateRoot.fieldDescriptors}}
+            {{#aggregateRoot}}
+            {{#fieldDescriptors}}
             { "Header": "{{#if displayName}}{{else}}{{namePascalCase}}{{/if}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVo namePascalCase}}{{/checkFieldType}}", "{{#checkEnum className ../entities}}{{/checkEnum}}" "Width":120, "CanEdit":1},
-            {{/aggregateRoot.fieldDescriptors}}
+            {{/fieldDescriptors}}
+            {{/aggregateRoot}}
        ]
    };
 
