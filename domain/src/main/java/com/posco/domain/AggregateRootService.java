@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 {{#attached 'View' this}}
 import com.posco.{{boundedContext.name}}.{{../options.package}}.domain.{{aggregate.nameCamelCase}}.mybatis.{{namePascalCase}}Response;
+import com.posco.{{boundedContext.name}}.{{../options.package}}.domain.{{aggregate.nameCamelCase}}.mybatis.{{namePascalCase}}DTO;
 import com.posco.{{boundedContext.name}}.{{../options.package}}.domain.{{aggregate.nameCamelCase}}.mybatis.{{../namePascalCase}}Mapper;
 {{/attached}}
 {{#commands}}
@@ -100,28 +101,15 @@ public class {{namePascalCase}}Service {
     }
 
 
-    //// mybatis
-    {{#attached 'View' this}}
-    private {{../namePascalCase}} convertToEntity({{namePascalCase}}Response response) {
-        {{../namePascalCase}} entity = new {{../namePascalCase}}();
-        BeanUtils.copyProperties(response, entity);
-        return entity;
-    }
-    
-    private {{namePascalCase}}Response convertToMybatisEntity({{../namePascalCase}} entity) {
-        {{namePascalCase}}Response response = new {{namePascalCase}}Response();
-        BeanUtils.copyProperties(entity, response);
-        return response;
-    }
-    {{/attached}}
+    //// readModel mybatis
     {{#attached 'View' this}}
     {{#if queryParameters}}
-    public {{../namePascalCase}} {{nameCamelCase}}({{namePascalCase}}DTO dto) {
+    public {{namePascalCase}} {{nameCamelCase}}({{namePascalCase}}DTO dto) {
         {{namePascalCase}}Response response = {{../nameCamelCase}}Mapper.{{nameCamelCase}}(dto);
         if (response == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "{{namePascalCase}} not found");
         }
-        return convertToEntity(response);
+        return response;
     }
     {{/if}}
     {{/attached}}
