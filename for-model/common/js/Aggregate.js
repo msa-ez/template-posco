@@ -162,16 +162,18 @@ window.$HandleBars.registerHelper('createVoField', function (type, field) {
     var relation = field.relations
 
     for(var i = 0; i < relation.length; i++){
-        var vo = relation[i].targetElement;
-        if(vo && vo.fieldDescriptors){
-            for(var j = 0; j < vo.fieldDescriptors.length; j++){
-                var voField = vo.fieldDescriptors[j];
-                result.push({
-                    "Header": [`"${vo.namePascalCase}"`, `"${voField.nameCamelCase}"`], "Name": `"${voField.namePascalCase}"`,"Width": 110
-                });
+        if(relation[i].targetElement && relation[i].targetElement.isVO){
+            var vo = relation[i].targetElement;
+            if(vo && vo.fieldDescriptors){
+                for(var j = 0; j < vo.fieldDescriptors.length; j++){
+                    var voField = vo.fieldDescriptors[j];
+                    result.push({
+                        "Header": [`"${vo.namePascalCase}"`, `"${voField.nameCamelCase}"`], "Name": `"${voField.namePascalCase}"`,"Width": 110
+                    });
+                }
+            }else{
+                return;
             }
-        }else{
-            return;
         }
     }
     return result;
