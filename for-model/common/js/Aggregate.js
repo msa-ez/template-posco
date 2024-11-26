@@ -167,12 +167,10 @@ window.$HandleBars.registerHelper('createVoField', function (type, field) {
             if(vo && vo.fieldDescriptors){
                 for(var j = 0; j < vo.fieldDescriptors.length; j++){
                     var voField = vo.fieldDescriptors[j];
-                    result.push({
-                        "Header": [`"${vo.namePascalCase}"`, `"${voField.nameCamelCase}"`], "Name": `"${voField.namePascalCase}"`,"Width": 110
-                    });
+                    result.push(`"Header": [\`"${vo.namePascalCase}"\`, \`"${voField.nameCamelCase}"\`], "Name": \`"${voField.namePascalCase}"\`, "Width": 110`);
                 }
             }else{
-                return;
+                result.join(',\n');
             }
         }
     }
