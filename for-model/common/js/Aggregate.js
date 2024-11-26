@@ -15,9 +15,10 @@ $(document).ready(function(){
         Cols:[
             {{#aggregateRoot}}
             {{#fieldDescriptors}}
-            { "Header": "{{#checkName displayName namePascalCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVo namePascalCase}}{{/checkFieldType}}",{{#isEnum className ../entities}} "Enum": {{/isEnum}}{{#checkEnum className ../entities}}{{/checkEnum}}{{#isEnum className ../entities}},{{/isEnum}}{{#isEnum className ../entities}} "EnumKeys": {{/isEnum}}{{#checkEnum className ../entities}}{{/checkEnum}}{{#isEnum className ../entities}},{{/isEnum}} "Width":120, "CanEdit":1},
+            { "Header": "{{#checkName displayName namePascalCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVo namePascalCase}}{{/checkFieldType}}",{{#isDate className}} "EmptyValue": "날짜를 입력해주세요"{{/isDate}}{{#isEnum className ../entities}} "Enum": {{/isEnum}}{{#checkEnum className ../entities}}{{/checkEnum}}{{#isEnum className ../entities}},{{/isEnum}}{{#isEnum className ../entities}} "EnumKeys": {{/isEnum}}{{#checkEnum className ../entities}}{{/checkEnum}}{{#isEnum className ../entities}},{{/isEnum}} "Width":120, "CanEdit":1},
             {{/fieldDescriptors}}
             {{/aggregateRoot}}
+            {{#checkVO aggregateRoot.fieldDescriptors }}{{/checkVO}}
        ]
    };
 
@@ -125,6 +126,11 @@ window.$HandleBars.registerHelper('checkFieldType', function (type, vo, fieldNam
         return 'Bool';
     }else if(!vo && (type == fieldName)){
         return 'Enum';
+    }
+});
+window.$HandleBars.registerHelper('isDate', function (type, options) {
+    if(type === "Date"){
+        return options.fn(this);
     }
 });
 window.$HandleBars.registerHelper('isEnum', function (type, field, options) {
