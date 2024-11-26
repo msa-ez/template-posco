@@ -7,7 +7,7 @@ $(document).ready(function(){
         Cols:[
             {{#aggregateRoot}}
             {{#fieldDescriptors}}
-            { "Header": "{{#checkName displayName namePascalCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": {{#checkFieldType className isVo namePascalCase}}{{/checkFieldType}},{{#isDate className}} "EmptyValue": "날짜를 입력해주세요",{{/isDate}}{{#isEnum className ../entities}} "Enum": {{/isEnum}}{{#checkEnum className ../entities}}{{/checkEnum}}{{#isEnum className ../entities}},{{/isEnum}}{{#isEnum className ../entities}} "EnumKeys": {{/isEnum}}{{#checkEnum className ../entities}}{{/checkEnum}}{{#isEnum className ../entities}},{{/isEnum}} "Width":120, "CanEdit":1},
+            { "Header": "{{#checkName displayName namePascalCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": {{#checkFieldType className isVO namePascalCase}}{{/checkFieldType}},{{#isDate className}} "EmptyValue": "날짜를 입력해주세요",{{/isDate}}{{#isEnum isVO className ../entities}} "Enum": {{/isEnum}}{{#checkEnum className isVO ../entities}}{{/checkEnum}}{{#isEnum isVO className ../entities}},{{/isEnum}}{{#isEnum isVO className ../entities}} "EnumKeys": {{/isEnum}}{{#checkEnum className isVO ../entities}}{{/checkEnum}}{{#isEnum isVO className ../entities}},{{/isEnum}} "Width":120, "CanEdit":1},
             {{/fieldDescriptors}}
             {{/aggregateRoot}}
        ]
@@ -105,29 +105,36 @@ window.$HandleBars.registerHelper('isDate', function (type, options) {
     }
     return options.inverse(this);
 });
-window.$HandleBars.registerHelper('isEnum', function (type, field, options) {
-    var relation = field.relations
-    for(var i = 0; i < relation.length; i++){
-        if(relation[i].targetElement){
-            if(relation[i].targetElement.name){
-                if(type === relation[i].targetElement.name){
-                    return options.fn(this);
-                    
+window.$HandleBars.registerHelper('isEnum', function (voField,type, field, options) {
+    if(voField){
+        return options.inverse(this);
+    }else{
+        var relation = field.relations
+        for(var i = 0; i < relation.length; i++){
+            if(relation[i].targetElement){
+                if(relation[i].targetElement.name){
+                    if(type === relation[i].targetElement.name){
+                        return options.fn(this);
+                        
+                    }
                 }
             }
         }
     }
-    return options.inverse(this);
 });
-window.$HandleBars.registerHelper('checkEnum', function (type, field) {
-    var relation = field.relations
-    for(var i = 0; i < relation.length; i++){
-        if(relation[i].targetElement && relation[i].targetElement.name){
-            if(type === relation[i].targetElement.name){
-                var items = relation[i].targetElement.items;
-                if(items){
-                    var result = items.map(item => item.value).join('|');
-                    return `"|${result}"`;
+window.$HandleBars.registerHelper('checkEnum', function (type, voField, field) {
+    if(voField){
+        return;
+    }else{
+        var relation = field.relations
+        for(var i = 0; i < relation.length; i++){
+            if(relation[i].targetElement && relation[i].targetElement.name){
+                if(type === relation[i].targetElement.name){
+                    var items = relation[i].targetElement.items;
+                    if(items){
+                        var result = items.map(item => item.value).join('|');
+                        return `"|${result}"`;
+                    }
                 }
             }
         }
@@ -151,7 +158,7 @@ window.$HandleBars.registerHelper('checkFieldType', function (type, voField, fie
         return "Bool";
     }else if(type == fieldName){
         if(voField){
-            return
+            return;
         }else{
             return "Enum";
         }
