@@ -24,7 +24,7 @@ $(document).ready(function(){
   ]
         Cols:[
             {{#aggregateRoot.fieldDescriptors}}
-            { "Header": "{{#if displayName}}{{else}}{{namePascalCase}}{{/if}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVo namePascalCase}}{{/checkFieldType}}", "{{#checkEnum className ../entities.relations}}{{/checkEnum}}" "Width":120, "CanEdit":1},
+            { "Header": "{{#if displayName}}{{else}}{{namePascalCase}}{{/if}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVo namePascalCase}}{{/checkFieldType}}", "{{#checkEnum className ../entities}}{{/checkEnum}}" "Width":120, "CanEdit":1},
             {{/aggregateRoot.fieldDescriptors}}
        ]
    };
@@ -121,9 +121,10 @@ window.$HandleBars.registerHelper('checkFieldType', function (type, vo, fieldNam
     }
 });
 window.$HandleBars.registerHelper('checkEnum', function (type, class) {
-    for(var i = 0; i < class.length; i++){
-        if(type == class[i].targetElement.name){
-            var items = class[i].targetElement.items;
+    var relation = class.relations
+    for(var i = 0; i < relation.length; i++){
+        if(type == relation[i].targetElement.name){
+            var items = relation[i].targetElement.items;
             var result = items.map(item => item.value).join('|');
             return result;
         }
