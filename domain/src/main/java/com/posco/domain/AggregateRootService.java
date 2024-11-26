@@ -104,7 +104,7 @@ public class {{namePascalCase}}Service {
     //// readModel mybatis
     {{#attached 'View' this}}
     {{#if queryParameters}}
-    public {{namePascalCase}} {{nameCamelCase}}({{namePascalCase}}DTO dto) {
+    public {{namePascalCase}}Response {{nameCamelCase}}({{namePascalCase}}DTO dto) {
         {{namePascalCase}}Response response = {{../nameCamelCase}}Mapper.{{nameCamelCase}}(dto);
         if (response == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "{{namePascalCase}} not found");
