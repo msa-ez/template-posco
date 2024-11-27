@@ -52,7 +52,8 @@ function retrieve(){
         {{#aggregateRoot}}
         {{#fieldDescriptors}}
         {{#if isVO}}
-        {{#isVO isVO}}json.forEach(row => {{{/isVO}}
+        {{#isVO isVO}}json.forEach(row => {
+        {{/isVO}}
             {{#disassembleVO ../entities}}{{/disassembleVO}}
         {{#isVO isVO}}
         });{{/isVO}}
@@ -79,7 +80,8 @@ function save(){
     {{#aggregateRoot}}
     {{#fieldDescriptors}}
     {{#if isVO}}
-    {{#isVO isVO}}rows.forEach(row => {{/isVO}}
+    {{#isVO isVO}}rows.forEach(row => {
+    {{/isVO}}
         {{#combineVO ../entities}}{{/combineVO}}
     {{#isVO isVO}}
     });{{/isVO}}
