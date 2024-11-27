@@ -93,7 +93,19 @@ public class {{namePascalCase}}Test {
       repository.delete(theEntity);
    {{/ifEquals}}
    
-   {{#ifEquals @root/restRepositoryInfo/method "PUT" || @root/restRepositoryInfo/method "PATCH"}}
+   {{#ifEquals @root/restRepositoryInfo/method "PUT"}}
+      {{pascalCase ../name}} command = new {{pascalCase ../name}}Command();
+
+      {{#when}}
+      {{#each value}}
+         command.set{{pascalCase @key}}({{{toJava this}}});
+      {{/each}}
+      {{/when}}
+
+      existingEntity.{{camelCase ../name}}(command);
+
+   {{/ifEquals}}
+   {{#ifEquals @root/restRepositoryInfo/method "PATCH"}}
       {{pascalCase ../name}} command = new {{pascalCase ../name}}Command();
 
       {{#when}}
