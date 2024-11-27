@@ -133,10 +133,25 @@ public class {{namePascalCase}}Test {
    {{/ifEquals}}
 
    {{else}}
+      {{#reaching "Aggregate" ..}}
+      {{pascalCase name}} newEntity = new {{pascalCase name}}();
+      {{/reaching}}
       
+      {{#then}}
+      {{../../namePascalCase}}Command command = new {{../../namePascalCase}}Command();
+      {{/then}}
+
+      {{#when}}
+      {{#each value}}
+         command.set{{pascalCase @key}}({{{toJava this}}});
+      {{/each}}
+      {{/when}}
+      
+      newEntity.{{../nameCamelCase}}(command);
    {{/if}}
-   
+         {{#reaching "Aggregate" ..}}
          {{pascalCase name}} result = repository.findById(existingEntity.getId()).get();
+         {{/reaching}}
 
          //then:
          LOGGER.info("Response received: {}", result);
