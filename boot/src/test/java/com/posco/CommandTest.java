@@ -63,7 +63,7 @@ public class {{namePascalCase}}Test {
       
       try {
 
-   {{#if isRestRepositoryInfo}}
+   {{^if isExtendedVerb}}
    {{#ifEquals @root/restRepositoryInfo/method "POST"}}
       {{#reaching "Aggregate" ..}}
       {{pascalCase name}} newEntity = new {{pascalCase name}}();
