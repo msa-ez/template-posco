@@ -63,7 +63,7 @@ public class {{namePascalCase}}Test {
       
       try {
 
-   {{^if isExtendedVerb}}
+   {{#isRestRepository}}
    {{#ifEquals @root/restRepositoryInfo/method "POST"}}
       {{#reaching "Aggregate" ..}}
       {{pascalCase name}} newEntity = new {{pascalCase name}}();
@@ -117,8 +117,9 @@ public class {{namePascalCase}}Test {
       existingEntity.{{camelCase ../name}}(command);
 
    {{/ifEquals}}
+   {{/isRestRepository}}
 
-   {{else}}
+   {{#isExtendedVerb}}
       {{#then}}
       {{../../namePascalCase}}Command command = new {{../../namePascalCase}}Command();
       {{/then}}
@@ -130,7 +131,7 @@ public class {{namePascalCase}}Test {
       {{/when}}
       
       existingEntity.{{../nameCamelCase}}(command);
-   {{/if}}
+   {{/isExtendedVerb}}
          {{#reaching "Aggregate" ..}}
          {{pascalCase name}} result = repository.findById(existingEntity.get{{keyFieldDescriptor.namePascalCase}}()).get();
          {{/reaching}}
