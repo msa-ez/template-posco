@@ -49,6 +49,23 @@ function retrieve(){
     }).then(res => {
         return res.json();
     }).then(json => {
+        {{#aggregateRoot}}
+        {{#fieldDescriptors}}
+        {{#if isVO}}
+        {{#isVO isVO}}
+        json.forEach(row => {
+        {{/isVO}}
+            {{#disassembleVO ../entities}}{{/disassembleVO}}
+            if (row.period) {
+                row.from = row.period.from;
+                row.to = row.period.to;
+            }
+        {{#isVO isVO}}
+        });
+        {{/isVO}}
+        {{/if}}
+        {{/fieldDescriptors}}
+        {{/aggregateRoot}}
         sheet.loadSearchData(json)
     }).catch(error => {
         console.error("에러", error);
@@ -72,7 +89,7 @@ function save(){
     {{#isVO isVO}}
     rows.forEach(row => {
     {{/isVO}}
-        {{#combineVOData ../entities}}{{/combineVOData}}
+        {{#combineVO ../entities}}{{/combineVO}}
     {{#isVO isVO}}
     });
     {{/isVO}}
@@ -143,7 +160,7 @@ window.$HandleBars.registerHelper('isVO', function (vo, options) {
     }
     return options.inverse(this);
 });
-window.$HandleBars.registerHelper('combineVOData', function (voField) {
+window.$HandleBars.registerHelper('combineVO', function (voField) {
     var result = [];
     var relation = voField.relations
 
@@ -167,6 +184,32 @@ window.$HandleBars.registerHelper('combineVOData', function (voField) {
                             ${assignments.join(',\n')}
                         };
                         ${deletions.join(';\n')}
+                    }
+                `);
+            }else{
+                return;
+            }
+        }
+    }
+    return new window.$HandleBars.SafeString(result.join('\n'));
+});
+window.$HandleBars.registerHelper('disassembleVO', function (voField) {
+    var result = [];
+    var relation = voField.relations
+
+    for(var i = 0; i < relation.length; i++){
+        if(relation[i].targetElement && relation[i].targetElement.isVO){
+            var vo = relation[i].targetElement;
+            if(vo && vo.fieldDescriptors){
+                var assignments = [];
+                vo.fieldDescriptors.forEach(fd => {
+                    var fieldName = fd.name; // 필드 이름을 가져옴
+                    assignments.push(`row.${fieldName} = row.${vo.name}.${fieldName}`);
+                });
+
+                result.push(`
+                    if (row.${vo.name}) {
+                        ${assignments.join(';\n')}
                     }
                 `);
             }else{
