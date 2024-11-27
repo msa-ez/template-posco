@@ -68,6 +68,7 @@ function save(){
 
     {{#aggregateRoot}}
     {{#fieldDescriptors}}
+    {{#if isVO}}
     {{#isVO isVO}}
     rows.forEach(row => {
     {{/isVO}}
@@ -84,6 +85,7 @@ function save(){
     {{#isVO isVO}}
     });
     {{/isVO}}
+    {{/if}}
     {{/fieldDescriptors}}
     {{/aggregateRoot}}
 
