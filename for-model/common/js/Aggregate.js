@@ -171,12 +171,12 @@ window.$HandleBars.registerHelper('combineVO', function (voField) {
                 });
 
                 result.push(`
-                    if (${conditions.join(' && ')}) {
-                        row.${vo.name} = {
-                            ${assignments.join(',\n')}
-                        };
-                        ${deletions.join(';\n')}
-                    }
+                if (${conditions.join(' && ')}) {
+                    row.${vo.name} = {
+                        ${assignments.join(',\n')}
+                    };
+                    ${deletions.join(';\n')}
+                }
                 `);
             }else{
                 return;
@@ -195,14 +195,14 @@ window.$HandleBars.registerHelper('disassembleVO', function (voField) {
             if(vo && vo.fieldDescriptors){
                 var assignments = [];
                 vo.fieldDescriptors.forEach(fd => {
-                    var fieldName = fd.name; // 필드 이름을 가져옴
+                    var fieldName = fd.name;
                     assignments.push(`row.${fieldName} = row.${vo.name}.${fieldName}`);
                 });
 
                 result.push(`
-                    if (row.${vo.name}) {
-                        ${assignments.join(';\n')}
-                    }
+                if (row.${vo.name}) {
+                    ${assignments.join(';\n')}
+                }
                 `);
             }else{
                 return;
