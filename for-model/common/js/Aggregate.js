@@ -152,7 +152,7 @@ window.$HandleBars.registerHelper('isVO', function (vo, options) {
 });
 window.$HandleBars.registerHelper('combineVOData', function (voField) {
     var result = [];
-    var relation = field.relations
+    var relation = voField.relations
 
     for(var i = 0; i < relation.length; i++){
         if(relation[i].targetElement && relation[i].targetElement.isVO){
