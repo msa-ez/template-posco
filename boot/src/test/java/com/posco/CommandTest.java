@@ -76,9 +76,10 @@ public class {{namePascalCase}}Test {
       {{/when}}
 
       repository.save(newEntity);
+   {{/ifEquals}}
 
 
-   {{else}}{{#ifEquals @root/restRepositoryInfo/method "DELETE"}}
+   {{#ifEquals @root/restRepositoryInfo/method "DELETE"}}
       {{#reaching "Aggregate" ..}}
       {{pascalCase name}} theEntity = new {{pascalCase name}}();
       {{/reaching}}
@@ -90,7 +91,9 @@ public class {{namePascalCase}}Test {
       {{/when}}
 
       repository.delete(theEntity);
-   {{else}}
+   {{/ifEquals}}
+   
+   {{#ifEquals @root/restRepositoryInfo/method "PUT" || @root/restRepositoryInfo/method "PATCH"}}
       {{pascalCase ../name}} command = new {{pascalCase ../name}}Command();
 
       {{#when}}
@@ -101,7 +104,6 @@ public class {{namePascalCase}}Test {
 
       existingEntity.{{camelCase ../name}}(command);
 
-   {{/ifEquals}}
    {{/ifEquals}}
 
    {{else}}
