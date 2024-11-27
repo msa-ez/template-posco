@@ -119,7 +119,6 @@ public class {{namePascalCase}}Test {
 
       repository.delete(theEntity);
    {{else}}
-
       {{pascalCase ../name}} command = new {{pascalCase ../name}}Command();
 
       {{#when}}
@@ -137,8 +136,10 @@ public class {{namePascalCase}}Test {
       {{#reaching "Aggregate" ..}}
       {{pascalCase name}} newEntity = new {{pascalCase name}}();
       {{/reaching}}
-
-      {{../pascalCase name}} command = new {{../pascalCase name}}Command();
+      
+      {{#then}}
+      {{../namePascalCase}} command = new {{../namePascalCase}}Command();
+      {{/then}}
 
       {{#when}}
       {{#each value}}
@@ -146,7 +147,7 @@ public class {{namePascalCase}}Test {
       {{/each}}
       {{/when}}
       
-      newEntity.{{camelCase ../name}}(command);
+      newEntity.{{../nameCamelCase}}(command);
    {{/if}}
    
          {{pascalCase name}} result = repository.findById(existingEntity.getId()).get();
