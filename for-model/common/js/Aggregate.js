@@ -4,11 +4,6 @@ path: common/js
 ---
 $(document).ready(function(){
     var OPT = {
-        {{#aggregateRoot.keyFieldDescriptor}}
-        "LeftCols": [
-            {"Header": "{{#checkName displayName namePascalCase className}}{{/checkName}}","Type": "{{#checkFieldType className isVO namePascalCase}}{{/checkFieldType}}","Width": 50,"Align": "Center","Name": "{{nameCamelCase}}"}
-        ],
-        {{/aggregateRoot.keyFieldDescriptor}}
         Cols:[
             {{#aggregateRoot}}
             {{#fieldDescriptors}}
@@ -16,7 +11,7 @@ $(document).ready(function(){
             {{else}}
             {{#if isKey}}
             {{else}}
-            {"Header": "{{#checkName displayName namePascalCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVO namePascalCase}}{{/checkFieldType}}",{{#isDate className}}"Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요",{{/isDate}}{{#isEnum isVO className ../entities}} "Enum": {{/isEnum}}{{#checkEnum className isVO ../entities}}{{/checkEnum}}{{#isEnum isVO className ../entities}},{{/isEnum}}{{#isEnum isVO className ../entities}} "EnumKeys": {{/isEnum}}{{#checkEnum className isVO ../entities}}{{/checkEnum}}{{#isEnum isVO className ../entities}},{{/isEnum}} "Align": "Center", "Width":120, "CanEdit":1},  
+            {"Header": "{{#checkName nameCamelCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVO namePascalCase}}{{/checkFieldType}}",{{#isDate className}}"Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요",{{/isDate}}{{#isEnum isVO className ../entities}} "Enum": {{/isEnum}}{{#checkEnum className isVO ../entities}}{{/checkEnum}}{{#isEnum isVO className ../entities}},{{/isEnum}}{{#isEnum isVO className ../entities}} "EnumKeys": {{/isEnum}}{{#checkEnum className isVO ../entities}}{{/checkEnum}}{{#isEnum isVO className ../entities}},{{/isEnum}} "Align": "Center", "Width":140, "CanEdit":1},  
             {{/if}}
             {{/if}}
             {{/fieldDescriptors}}
@@ -125,19 +120,11 @@ function save(){
     }           
 }
 <function>
-window.$HandleBars.registerHelper('checkName', function (koName, engName, type) {
+window.$HandleBars.registerHelper('checkName', function (name, type) {
     if(type === "Boolean"){
-        if(koName){
-            return {"Value": `"${koName}"`,"HeaderCheck": 1}
-        }else{
-            return {"Value": `"${engName}"`,"HeaderCheck": 1}
-        }
+        return {"Value": `"${name}"`,"HeaderCheck": 1}
     }else{
-        if(koName){
-            return koName;
-        }else{
-            return engName;
-        }
+        return name;
     }
 });
 window.$HandleBars.registerHelper('isDate', function (type, options) {
@@ -271,11 +258,11 @@ window.$HandleBars.registerHelper('createVoField', function (type, field) {
                     }else if(voField.className ==="Float"){
                         voFieldType = 'Float';
                     }else if(voField.className ==="Date"){
-                        voFieldType = 'Date';
+                        voFieldType = `"Date", "Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요"`;
                     }else if(voField.className ==="Boolean"){
                         voFieldType = 'Bool';
                     }
-                    result.push(`{"Header": ["${vo.namePascalCase}", "${voField.nameCamelCase}"], "Name": "${voField.nameCamelCase}", "Type": "${voFieldType}", "Width": 110}`);
+                    result.push(`{"Header": ["${vo.namePascalCase}", "${voField.nameCamelCase}"], "Name": "${voField.nameCamelCase}", "Type": ${voFieldType}, "Width": 110}`);
                 }
             }else{
                 return;
