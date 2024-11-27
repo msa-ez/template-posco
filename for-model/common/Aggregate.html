@@ -23,7 +23,7 @@ fileName: {{namePascalCase}}.html
         <button type="button" class='buttonLabelDeleteRow' onclick="deleteData()">삭제</button>
         {{#commands}}
         {{^isRestRepository}}
-        <button type="button" onclick="{{nameCamelCase}}()">{{#if displayName}}{{displayName}}{{else}}{{/if}}</button>
+        <button type="button" onclick="{{nameCamelCase}}()">{{#if displayName}}{{displayName}}{{else}}{{name}}{{/if}}</button>
         {{/isRestRepository}}
         {{/commands}}
         <div id="sheet_DIV" style="width:100%;height:500px"></div>
