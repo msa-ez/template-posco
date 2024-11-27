@@ -55,7 +55,7 @@ public class {{namePascalCase}}Test {
 
    {{#reaching "Aggregate" this}}
    @Autowired
-   public {{aggregate.namePascalCase}}Repository repository;
+   public {{namePascalCase}}Repository repository;
    {{/reaching}}
 
 {{#examples}}
@@ -137,7 +137,7 @@ public class {{namePascalCase}}Test {
       existingEntity.{{../nameCamelCase}}(command);
    {{/if}}
          {{#reaching "Aggregate" ..}}
-         {{pascalCase name}} result = repository.findById(existingEntity.get{{keyFieldDescriptor.nameCamelCase}}()).get();
+         {{pascalCase name}} result = repository.findById(existingEntity.get{{keyFieldDescriptor.namePascalCase}}()).get();
          {{/reaching}}
 
          //then:
