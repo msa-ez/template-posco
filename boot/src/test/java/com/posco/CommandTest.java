@@ -91,7 +91,7 @@ public class {{namePascalCase}}Test {
       
       try {
 
-
+   {{#if isRestRepositoryInfo}}
    {{#ifEquals @root/restRepositoryInfo/method "POST"}}
       {{#reaching "Aggregate" ..}}
       {{pascalCase name}} newEntity = new {{pascalCase name}}();
@@ -119,7 +119,6 @@ public class {{namePascalCase}}Test {
 
       repository.delete(theEntity);
    {{else}}
-
       {{pascalCase ../name}} command = new {{pascalCase ../name}}Command();
 
       {{#when}}
@@ -133,29 +132,29 @@ public class {{namePascalCase}}Test {
    {{/ifEquals}}
    {{/ifEquals}}
 
-           
+   {{else}}
+      {{#then}}
+      {{../../namePascalCase}}Command command = new {{../../namePascalCase}}Command();
+      {{/then}}
 
-         this.messageVerifier.send(MessageBuilder
-                .withPayload(newEntity)
-                .setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
-                .build(), {{{toJava ../options.package}}});
+      {{#when}}
+      {{#each value}}
+         command.set{{pascalCase @key}}({{{toJava this}}});
+      {{/each}}
+      {{/when}}
+      
+      existingEntity.{{../nameCamelCase}}(command);
+   {{/if}}
+         {{#reaching "Aggregate" ..}}
+         {{pascalCase name}} result = repository.findById(existingEntity.getId()).get();
+         {{/reaching}}
 
-         Message<?> receivedMessage = this.messageVerifier.receive({{{toJava ../options.package}}}, 5000, TimeUnit.MILLISECONDS);
-         assertNotNull("Resulted event must be published", receivedMessage);
-
-      //then:
-      {{#outgoing "Event" ..}}
-         String receivedPayload = (String) receivedMessage.getPayload();
-
-         {{pascalCase name}} outputEvent = objectMapper.readValue(receivedPayload, {{pascalCase name}}.class);
-      {{/outgoing}}
-
-
-         LOGGER.info("Response received: {}", outputEvent);
+         //then:
+         LOGGER.info("Response received: {}", result);
 
       {{#then}}
       {{#each value}}
-         assertEquals(outputEvent.get{{pascalCase @key}}(), {{{toJava this}}});
+         assertEquals(result.get{{pascalCase @key}}(), {{{toJava this}}});
       {{/each}}
       {{/then}}
 
