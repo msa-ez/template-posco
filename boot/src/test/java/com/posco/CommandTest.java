@@ -11,47 +11,28 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cloud.stream.messaging.Processor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.util.MimeTypeUtils;
-
-import java.util.concurrent.TimeUnit;
-
-import org.junit.Before;
-
-import javax.inject.Inject;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.posco.{{boundedContext.name}}.{{options.package}}.domain.{{aggregate.nameCamelCase}}.{{aggregate.namePascalCase}};
 import com.posco.{{boundedContext.name}}.{{options.package}}.domain.{{aggregate.nameCamelCase}}.{{aggregate.namePascalCase}}Repository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMessageVerifier
 public class {{namePascalCase}}Test {
 
    private static final Logger LOGGER = LoggerFactory.getLogger({{namePascalCase}}Test.class);
    
    @Autowired
-   private KafkaProcessor processor;
-   @Autowired
-   private MessageCollector messageCollector;
-   @Autowired
    private ApplicationContext applicationContext;
-
-   @Autowired
-   ObjectMapper objectMapper;
-
-   @Autowired
-   private MessageVerifier<Message<?>> messageVerifier;
 
    {{#reaching "Aggregate" this}}
    @Autowired
@@ -143,11 +124,11 @@ public class {{namePascalCase}}Test {
          //then:
          LOGGER.info("Response received: {}", result);
 
-      {{#then}}
-      {{#each value}}
+         {{#then}}
+         {{#each value}}
          assertEquals(result.get{{pascalCase @key}}(), {{{toJava this}}});
-      {{/each}}
-      {{/then}}
+         {{/each}}
+         {{/then}}
 
 
       } catch (JsonProcessingException e) {
