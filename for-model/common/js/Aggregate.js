@@ -16,7 +16,7 @@ $(document).ready(function(){
             {{else}}
             {{#if isKey}}
             {{else}}
-            { "Header": "{{#checkName displayName namePascalCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVO namePascalCase}}{{/checkFieldType}}",{{#isDate className}}"Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요",{{/isDate}}{{#isEnum isVO className ../entities}} "Enum": {{/isEnum}}{{#checkEnum className isVO ../entities}}{{/checkEnum}}{{#isEnum isVO className ../entities}},{{/isEnum}}{{#isEnum isVO className ../entities}} "EnumKeys": {{/isEnum}}{{#checkEnum className isVO ../entities}}{{/checkEnum}}{{#isEnum isVO className ../entities}},{{/isEnum}} "Align": "Center", "Width":120, "CanEdit":1},  
+            {"Header": "{{#checkName displayName namePascalCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVO namePascalCase}}{{/checkFieldType}}",{{#isDate className}}"Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요",{{/isDate}}{{#isEnum isVO className ../entities}} "Enum": {{/isEnum}}{{#checkEnum className isVO ../entities}}{{/checkEnum}}{{#isEnum isVO className ../entities}},{{/isEnum}}{{#isEnum isVO className ../entities}} "EnumKeys": {{/isEnum}}{{#checkEnum className isVO ../entities}}{{/checkEnum}}{{#isEnum isVO className ../entities}},{{/isEnum}} "Align": "Center", "Width":120, "CanEdit":1},  
             {{/if}}
             {{/if}}
             {{/fieldDescriptors}}
@@ -66,7 +66,12 @@ function deleteData(){
 function save(){
     var rows = sheet.getSaveJson()?.data;
 
+    {{#aggregateRoot}}
+    {{#fieldDescriptors}}
+    {{#isVO isVO}}
     rows.forEach(row => {
+    {{/isVO}}
+        {{#combineVOData ../entities}}
         if (row.from && row.to) {
             row.period = {
                 from: row.from,
@@ -75,7 +80,12 @@ function save(){
             delete row.from;
             delete row.to;
         }
+        {{/combineVOData}}
+    {{#isVO isVO}}
     });
+    {{/isVO}}
+    {{/fieldDescriptors}}
+    {{/aggregateRoot}}
 
     for(var i=0; i<rows.length;i++){
         if(rows[i].id.includes("AR")){
@@ -133,6 +143,45 @@ window.$HandleBars.registerHelper('isDate', function (type, options) {
         return options.fn(this);
     }
     return options.inverse(this);
+});
+window.$HandleBars.registerHelper('isVO', function (vo, options) {
+    if(vo){
+        return options.fn(this);
+    }
+    return options.inverse(this);
+});
+window.$HandleBars.registerHelper('combineVOData', function (voField) {
+    var result = [];
+    var relation = field.relations
+
+    for(var i = 0; i < relation.length; i++){
+        if(relation[i].targetElement && relation[i].targetElement.isVO){
+            var vo = relation[i].targetElement;
+            if(vo && vo.fieldDescriptors){
+                var conditions = [];
+                var assignments = [];
+                var deletions = [];
+                vo.fieldDescriptors.forEach(fd => {
+                    var fieldName = fd.name; // 필드 이름을 가져옴
+                    conditions.push(`row.${fieldName}`);
+                    assignments.push(`${fieldName}: row.${fieldName}`);
+                    deletions.push(`delete row.${fieldName}`);
+                });
+
+                result.push(`
+                    if (${conditions.join(' && ')}) {
+                        row.${vo.name} = {
+                            ${assignments.join(',\n')}
+                        };
+                        ${deletions.join(';\n')}
+                    }
+                `);
+            }else{
+                return;
+            }
+        }
+    }
+    return new window.$HandleBars.SafeString(result.join('\n'));
 });
 window.$HandleBars.registerHelper('isEnum', function (voField, type, field, options) {
     if(voField){
