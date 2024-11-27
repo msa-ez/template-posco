@@ -72,16 +72,7 @@ function save(){
     {{#isVO isVO}}
     rows.forEach(row => {
     {{/isVO}}
-        {{#combineVOData ../entities}}
-        if (row.from && row.to) {
-            row.period = {
-                from: row.from,
-                to: row.to
-            };
-            delete row.from;
-            delete row.to;
-        }
-        {{/combineVOData}}
+        {{#combineVOData ../entities}}{{/combineVOData}}
     {{#isVO isVO}}
     });
     {{/isVO}}
