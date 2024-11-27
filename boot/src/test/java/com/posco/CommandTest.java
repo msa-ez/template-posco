@@ -133,10 +133,6 @@ public class {{namePascalCase}}Test {
    {{/ifEquals}}
 
    {{else}}
-      {{#reaching "Aggregate" ..}}
-      {{pascalCase name}} newEntity = new {{pascalCase name}}();
-      {{/reaching}}
-      
       {{#then}}
       {{../../namePascalCase}}Command command = new {{../../namePascalCase}}Command();
       {{/then}}
@@ -147,7 +143,7 @@ public class {{namePascalCase}}Test {
       {{/each}}
       {{/when}}
       
-      newEntity.{{../nameCamelCase}}(command);
+      existingEntity.{{../nameCamelCase}}(command);
    {{/if}}
          {{#reaching "Aggregate" ..}}
          {{pascalCase name}} result = repository.findById(existingEntity.getId()).get();
