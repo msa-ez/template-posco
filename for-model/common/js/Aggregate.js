@@ -56,10 +56,6 @@ function retrieve(){
         json.forEach(row => {
         {{/isVO}}
             {{#disassembleVO ../entities}}{{/disassembleVO}}
-            if (row.period) {
-                row.from = row.period.from;
-                row.to = row.period.to;
-            }
         {{#isVO isVO}}
         });
         {{/isVO}}
