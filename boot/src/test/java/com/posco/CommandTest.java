@@ -1,7 +1,7 @@
 forEach: Command
 fileName: {{namePascalCase}}Test.java
 path: {{boundedContext.name}}/{{options.package}}-boot/src/test/java/com/posco/{{boundedContext.name}}/{{options.package}}
-except: {{#if reaching "Aggregate" this}}{{/if}}
+except: {{#checkExamples examples}}{{/checkExamples}}
 ---
 
 package com.posco.{{boundedContext.name}}.{{options.package}};
@@ -17,30 +17,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.stream.messaging.Processor;
-import org.springframework.cloud.stream.test.binder.MessageCollector;
 import org.springframework.context.ApplicationContext;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.MessageHeaders;
-import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.MimeTypeUtils;
 
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Before;
-import org.springframework.cloud.contract.verifier.messaging.MessageVerifier;
-import org.springframework.cloud.contract.verifier.messaging.boot.AutoConfigureMessageVerifier;
 
 import javax.inject.Inject;
-import org.springframework.cloud.contract.verifier.messaging.internal.ContractVerifierMessage;
-import org.springframework.cloud.contract.verifier.messaging.internal.ContractVerifierMessaging;
-import org.springframework.cloud.contract.verifier.messaging.internal.ContractVerifierObjectMapper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import {{options.package}}.config.kafka.KafkaProcessor;
-import {{options.package}}.domain.*;
+import com.posco.{{boundedContext.name}}.{{options.package}}.domain.{{aggregate.nameCamelCase}}.{{aggregate.namePascalCase}};
+import com.posco.{{boundedContext.name}}.{{options.package}}.domain.{{aggregate.nameCamelCase}}.{{aggregate.namePascalCase}}Repository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -64,7 +55,7 @@ public class {{namePascalCase}}Test {
 
    {{#reaching "Aggregate" this}}
    @Autowired
-   public {{pascalCase name}}Repository repository;
+   public {{aggregate.namePascalCase}}Repository repository;
    {{/reaching}}
 
 {{#examples}}
@@ -146,7 +137,7 @@ public class {{namePascalCase}}Test {
       existingEntity.{{../nameCamelCase}}(command);
    {{/if}}
          {{#reaching "Aggregate" ..}}
-         {{pascalCase name}} result = repository.findById(existingEntity.getId()).get();
+         {{pascalCase name}} result = repository.findById(existingEntity.get{{keyFieldDescriptor.nameCamelCase}}()).get();
          {{/reaching}}
 
          //then:
