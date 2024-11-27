@@ -138,7 +138,7 @@ public class {{namePascalCase}}Test {
       {{/reaching}}
       
       {{#then}}
-      {{../namePascalCase}} command = new {{../namePascalCase}}Command();
+      {{../../namePascalCase}}Command command = new {{../../namePascalCase}}Command();
       {{/then}}
 
       {{#when}}
