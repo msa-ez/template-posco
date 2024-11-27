@@ -21,6 +21,11 @@ fileName: {{namePascalCase}}.html
         <button type="button" class='buttonLabelSave' onclick="save()">저장</button>
         <button type="button" class='buttonLabelAddRow' onclick="addData()">신규</button>
         <button type="button" class='buttonLabelDeleteRow' onclick="deleteData()">삭제</button>
+        {{#commands}}
+        {{^isRestRepository}}
+        <button type="button" onclick="{{nameCamelCase}}()">{{#if displayName}}{{displayName}}{{else}}{{name}}{{/if}}</button>
+        {{/isRestRepository}}
+        {{/commands}}
         <div id="sheet_DIV" style="width:100%;height:500px"></div>
     </body>
 </html>
