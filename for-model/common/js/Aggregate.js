@@ -55,7 +55,7 @@ function retrieve(){
         {{#isVO isVO}}
         json.forEach(row => {
         {{/isVO}}
-            {{#disassembleVO ../entities}}{{/disassembleVO}}
+        {{#disassembleVO ../entities}}{{/disassembleVO}}
         {{#isVO isVO}}
         });
         {{/isVO}}
