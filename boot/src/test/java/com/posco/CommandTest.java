@@ -11,60 +11,32 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cloud.stream.messaging.Processor;
-import org.springframework.cloud.stream.test.binder.MessageCollector;
 import org.springframework.context.ApplicationContext;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.MessageHeaders;
-import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.util.MimeTypeUtils;
-
-import java.util.concurrent.TimeUnit;
-
-import org.junit.Before;
-import org.springframework.cloud.contract.verifier.messaging.MessageVerifier;
-import org.springframework.cloud.contract.verifier.messaging.boot.AutoConfigureMessageVerifier;
-
-import javax.inject.Inject;
-import org.springframework.cloud.contract.verifier.messaging.internal.ContractVerifierMessage;
-import org.springframework.cloud.contract.verifier.messaging.internal.ContractVerifierMessaging;
-import org.springframework.cloud.contract.verifier.messaging.internal.ContractVerifierObjectMapper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-import {{options.package}}.config.kafka.KafkaProcessor;
-import {{options.package}}.domain.*;
+import com.posco.{{boundedContext.name}}.{{options.package}}.domain.{{aggregate.nameCamelCase}}.{{aggregate.namePascalCase}};
+import com.posco.{{boundedContext.name}}.{{options.package}}.domain.{{aggregate.nameCamelCase}}.{{aggregate.namePascalCase}}Repository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMessageVerifier
 public class {{namePascalCase}}Test {
 
    private static final Logger LOGGER = LoggerFactory.getLogger({{namePascalCase}}Test.class);
    
    @Autowired
-   private KafkaProcessor processor;
-   @Autowired
-   private MessageCollector messageCollector;
-   @Autowired
    private ApplicationContext applicationContext;
-
-   @Autowired
-   ObjectMapper objectMapper;
-
-   @Autowired
-   private MessageVerifier<Message<?>> messageVerifier;
 
    {{#reaching "Aggregate" this}}
    @Autowired
-   public {{pascalCase name}}Repository repository;
+   public {{namePascalCase}}Repository repository;
    {{/reaching}}
 
 {{#examples}}
@@ -91,7 +63,7 @@ public class {{namePascalCase}}Test {
       
       try {
 
-   {{#if isRestRepositoryInfo}}
+   {{#../isRestRepository}}
    {{#ifEquals @root/restRepositoryInfo/method "POST"}}
       {{#reaching "Aggregate" ..}}
       {{pascalCase name}} newEntity = new {{pascalCase name}}();
@@ -104,9 +76,10 @@ public class {{namePascalCase}}Test {
       {{/when}}
 
       repository.save(newEntity);
+   {{/ifEquals}}
 
 
-   {{else}}{{#ifEquals @root/restRepositoryInfo/method "DELETE"}}
+   {{#ifEquals @root/restRepositoryInfo/method "DELETE"}}
       {{#reaching "Aggregate" ..}}
       {{pascalCase name}} theEntity = new {{pascalCase name}}();
       {{/reaching}}
@@ -118,7 +91,9 @@ public class {{namePascalCase}}Test {
       {{/when}}
 
       repository.delete(theEntity);
-   {{else}}
+   {{/ifEquals}}
+   
+   {{#ifEquals @root/restRepositoryInfo/method "PUT"}}
       {{pascalCase ../name}} command = new {{pascalCase ../name}}Command();
 
       {{#when}}
@@ -130,9 +105,21 @@ public class {{namePascalCase}}Test {
       existingEntity.{{camelCase ../name}}(command);
 
    {{/ifEquals}}
-   {{/ifEquals}}
+   {{#ifEquals @root/restRepositoryInfo/method "PATCH"}}
+      {{pascalCase ../name}} command = new {{pascalCase ../name}}Command();
 
-   {{else}}
+      {{#when}}
+      {{#each value}}
+         command.set{{pascalCase @key}}({{{toJava this}}});
+      {{/each}}
+      {{/when}}
+
+      existingEntity.{{camelCase ../name}}(command);
+
+   {{/ifEquals}}
+   {{/../isRestRepository}}
+
+   {{#../isExtendedVerb}}
       {{#then}}
       {{../../namePascalCase}}Command command = new {{../../namePascalCase}}Command();
       {{/then}}
@@ -144,19 +131,19 @@ public class {{namePascalCase}}Test {
       {{/when}}
       
       existingEntity.{{../nameCamelCase}}(command);
-   {{/if}}
+   {{/../isExtendedVerb}}
+         //then:
          {{#reaching "Aggregate" ..}}
-         {{pascalCase name}} result = repository.findById(existingEntity.getId()).get();
+         {{pascalCase name}} result = repository.findById(existingEntity.get{{keyFieldDescriptor.namePascalCase}}()).get();
          {{/reaching}}
 
-         //then:
          LOGGER.info("Response received: {}", result);
 
-      {{#then}}
-      {{#each value}}
+         {{#then}}
+         {{#each value}}
          assertEquals(result.get{{pascalCase @key}}(), {{{toJava this}}});
-      {{/each}}
-      {{/then}}
+         {{/each}}
+         {{/then}}
 
 
       } catch (JsonProcessingException e) {
