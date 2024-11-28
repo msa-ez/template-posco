@@ -55,7 +55,7 @@ fileName: {{namePascalCase}}.html
                     {{#isVOType isVO}}
                     <label for="{{nameCamelCase}}">{{namePascalCase}}</label>
                     {{#../../aggregateRoot.entities.relations}}
-                    {{#compareField name ../../../commands "isVO"}}
+                    {{#compareField name ../../../commands "isVO" isVO}}
                     {{#targetElement.fieldDescriptors}}
                     <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
                     <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
@@ -96,7 +96,7 @@ fileName: {{namePascalCase}}.html
                 {{/isDefaultType}}
                 {{#isEnumType className namePascalCase isVO}}
                 {{#../../aggregateRoot.entities.relations}}
-                {{#compareField name ../../../commands "isNotVO"}}
+                {{#compareField name ../../../commands "isNotVO" isVO}}
                 const {{targetElement.nameCamelCase}} = document.getElementById('{{targetElement.nameCamelCase}}').value;
                 {{/compareField}}
                 {{/../../aggregateRoot.entities.relations}}
@@ -104,7 +104,7 @@ fileName: {{namePascalCase}}.html
                 {{#isVOType isVO}}
                 const {{nameCamelCase}} = {
                 {{#../../aggregateRoot.entities.relations}}
-                {{#compareField name ../../../commands "isVO"}}
+                {{#compareField name ../../../commands "isVO" isVO}}
                 {{#targetElement.fieldDescriptors}}
                     {{nameCamelCase}}: document.getElementById('{{nameCamelCase}}').value,
                 {{/targetElement.fieldDescriptors}}
