@@ -39,8 +39,8 @@ fileName: {{namePascalCase}}.html
                     {{#isDefaultType className namePascalCase isVO}}
                     <input type="{{#checkParameterType}}{{className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
                     {{/isDefaultType}}
-
                     {{#isEnumType className namePascalCase}}
+                    ENUM
                     <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
                     <select id="{{nameCamelCase}}" name="{{nameCamelCase}}">
                         {{#../../aggregateRoot.entities.relations}}
@@ -51,9 +51,8 @@ fileName: {{namePascalCase}}.html
                         <option value="PENDING">Pending</option>
                     </select>
                     {{/isEnumType}}
-
                     {{#isVOType isVO}}
-
+                    VO
                     {{/isVOType}}
                     {{/fieldDescriptors}}
                     <button type="button" onclick="{{nameCamelCase}}()">Submit</button>
