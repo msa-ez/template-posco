@@ -127,7 +127,7 @@ function submit{{namePascalCase}}(data){
     const {{nameCamelCase}} = data.{{nameCamelCase}};
     {{/if}}
     {{/fieldDescriptors}}
-    fetch(`http://localhost:8088/{{../namePlural}}/{{nameCamelCase}}/{{#fieldDescriptors}}{{#if iskey}}{{#addMustache nameCamelCase}}{{/addMustache}}{{/if}}{{/fieldDescriptors}}`, {
+    fetch(`http://localhost:8088/{{../namePlural}}/{{nameCamelCase}}/{{#fieldDescriptors}}{{#if iskey}}${{#addMustache nameCamelCase}}{{/addMustache}}{{/if}}{{/fieldDescriptors}}`, {
         method: '{{controllerInfo.method}}',
         headers: {
             'Content-Type': 'application/json'
@@ -147,7 +147,9 @@ function submit{{namePascalCase}}(data){
 {{/commands}}
 <function>
 window.$HandleBars.registerHelper('addMustache', function (name) {
-    return "$" + "{" + name + "}";
+    if(name){
+        return "{" + name + "}";
+    }
 });
 window.$HandleBars.registerHelper('checkName', function (name, type) {
     if(type === "Boolean"){
