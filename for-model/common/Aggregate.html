@@ -27,8 +27,10 @@ fileName: {{namePascalCase}}.html
         {{/isRestRepository}}
         {{/commands}}
         <div id="sheet_DIV" style="width:100%;height:500px"></div>
+
         {{#commands}}
         {{^isRestRepository}}
+        <!-- The Modal -->
         <div id="{{nameCamelCase}}" class="modal"></div>
             <div class="modal-content">
                 <span class="close" onclick="closeDialog('{{nameCamelCase}}')">&times;</span>
