@@ -89,16 +89,39 @@ fileName: {{namePascalCase}}.html
 
             {{#commands}}
             {{^isRestRepository}}
-            function registerDrivingLog() {
-                const carId = document.getElementById('carId').value;
-                const driverName = document.getElementById('driverName').value;
-                const logDate = document.getElementById('logDate').value;
+            function {{nameCamelCase}}() {
+                {{#fieldDescriptors}}
+                {{#isDefaultType className namePascalCase isVO}}
+                const {{nameCamelCase}} = document.getElementById('{{nameCamelCase}}').value;
+                {{#isEnumType className namePascalCase isVO}}
+                {{#../../aggregateRoot.entities.relations}}
+                {{#compareField name ../../../commands}}
+                {{#targetElement.items}}
+                const {{value}} = document.getElementById('{{value}}').value;
+                {{/targetElement.items}}
+                {{/compareField}}
+                {{/../../aggregateRoot.entities.relations}}
+                {{/isEnumType}}
+                {{#isVOType isVO}}
+                {{#../../aggregateRoot.entities.relations}}
+                {{#compareField name ../../../commands}}
+                {{#targetElement.fieldDescriptors}}
+                const vo = {
+                    {{nameCamelCase}}: document.getElementById('{{nameCamelCase}}').value,
+                };
+                {{/targetElement.fieldDescriptors}}
+                {{/compareField}}
+                {{/../../aggregateRoot.entities.relations}}
+                {{/isVOType}}
+                {{/isDefaultType}}
+
+                {{/fieldDescriptors}}
 
                 // JSON 객체 생성
                 const data = {
-                    carId: carId,
-                    driverName: driverName,
-                    logDate: logDate
+                    {{#fieldDescriptors}}
+                    {{nameCamelCase}}: {{nameCamelCase}},
+                    {{/fieldDescriptors}}
                 };
                 invoke(data);
                 closeDialog();
