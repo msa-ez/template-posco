@@ -55,7 +55,7 @@ fileName: {{namePascalCase}}.html
                     {{#isVOType isVO}}
                     <label for="{{nameCamelCase}}">{{namePascalCase}}</label>
                     {{#../../aggregateRoot.entities.relations}}
-                    {{#compareField name ../../../commands "isVO" isVO}}
+                    {{#compareField name ../../../commands "isVO" targetElement.isVO}}
                     {{#targetElement.fieldDescriptors}}
                     <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
                     <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
@@ -104,7 +104,7 @@ fileName: {{namePascalCase}}.html
                 {{#isVOType isVO}}
                 const {{nameCamelCase}} = {
                 {{#../../aggregateRoot.entities.relations}}
-                {{#compareField name ../../../commands "isVO" isVO}}
+                {{#compareField name ../../../commands "isVO" targetElement.isVO}}
                 {{#targetElement.fieldDescriptors}}
                     {{nameCamelCase}}: document.getElementById('{{nameCamelCase}}').value,
                 {{/targetElement.fieldDescriptors}}
