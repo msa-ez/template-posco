@@ -93,6 +93,7 @@ fileName: {{namePascalCase}}.html
                 {{#fieldDescriptors}}
                 {{#isDefaultType className namePascalCase isVO}}
                 const {{nameCamelCase}} = document.getElementById('{{nameCamelCase}}').value;
+                {{/isDefaultType}}
                 {{#isEnumType className namePascalCase isVO}}
                 {{#../../aggregateRoot.entities.relations}}
                 {{#compareField name ../../../commands}}
@@ -113,8 +114,6 @@ fileName: {{namePascalCase}}.html
                 {{/compareField}}
                 {{/../../aggregateRoot.entities.relations}}
                 {{/isVOType}}
-                {{/isDefaultType}}
-
                 {{/fieldDescriptors}}
 
                 // JSON 객체 생성
