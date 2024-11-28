@@ -53,7 +53,7 @@ fileName: {{namePascalCase}}.html
                     <br><br>
                     {{/isEnumType}}
                     {{#isVOType isVO}}
-                    <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
+                    <label for="{{nameCamelCase}}">{{namePascalCase}}</label>
                     {{#../../aggregateRoot.entities.relations}}
                     {{#compareField name ../../../commands}}
                     {{#targetElement.fieldDescriptors}}
@@ -97,7 +97,6 @@ fileName: {{namePascalCase}}.html
                 {{#isEnumType className namePascalCase isVO}}
                 {{#../../aggregateRoot.entities.relations}}
                 {{#compareField name ../../../commands}}
-                {{targetElement.nameCamelCase}}
                 const {{targetElement.nameCamelCase}} = document.getElementById('{{targetElement.nameCamelCase}}').value;
                 {{/compareField}}
                 {{/../../aggregateRoot.entities.relations}}
