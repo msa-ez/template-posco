@@ -127,7 +127,7 @@ function submit{{namePascalCase}}(data){
     const {{nameCamelCase}} = data.{{nameCamelCase}};
     {{/if}}
     {{/fieldDescriptors}}
-    fetch(`http://localhost:8088/vehiclePerformances/registerDrivingLog/{{#fieldDescriptors}}{{#if iskey}}{{#addMustache nameCamelCase}}{{/addMustache}}{{/if}}{{/fieldDescriptors}}`, {
+    fetch(`http://localhost:8088/{{../namePlural}}/{{nameCamelCase}}/{{#fieldDescriptors}}{{#if iskey}}{{#addMustache nameCamelCase}}{{/addMustache}}{{/if}}{{/fieldDescriptors}}`, {
         method: '{{controllerInfo.method}}',
         headers: {
             'Content-Type': 'application/json'
