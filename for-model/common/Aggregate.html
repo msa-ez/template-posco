@@ -89,9 +89,9 @@ fileName: {{namePascalCase}}.html
 
         <div id="mySidebar" class="sidebar">
             <a href="javascript:void(0)" class="closebtn" onclick="toggleSidebar()">×</a>
-            {{#../boundedContexts.aggregates}}
+            {{@boundedContexts.aggregates}}
             <a href="/{{namePlural}}">{{namePascalCase}}</a>
-            {{/../boundedContexts.aggregates}}
+            {{/boundedContexts.aggregates}}
         </div>
         
         <h1>{{boundedContext.namePascalCase}}</h1>
