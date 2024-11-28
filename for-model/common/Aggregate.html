@@ -44,10 +44,11 @@ fileName: {{namePascalCase}}.html
                     <select id="{{nameCamelCase}}" name="{{nameCamelCase}}">
                         {{#../../aggregateRoot.entities.relations}}
                         {{#targetElement.items}}
-                        <option value="{{this}}">{{this}}</option>
+                        <option value="{{value}}">{{value}}</option>
                         {{/targetElement.items}}
                         {{/../../aggregateRoot.entities.relations}}
                     </select>
+                    <br><br>
                     {{/isEnumType}}
                     {{#isVOType isVO}}
                     VO
