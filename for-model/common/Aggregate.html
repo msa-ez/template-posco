@@ -37,7 +37,7 @@ fileName: {{namePascalCase}}.html
                     {{#fieldDescriptors}}
                     {{#isDefaultType className namePascalCase isVO}}
                     <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
-                    <input type="{{#checkParameterType}}{{className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
+                    <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
                     {{/isDefaultType}}
                     {{#isEnumType className namePascalCase isVO}}
                     <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
@@ -50,12 +50,21 @@ fileName: {{namePascalCase}}.html
                         {{/compareField}}
                         {{/../../aggregateRoot.entities.relations}}
                     </select>
-                    <br><br>
                     {{/isEnumType}}
                     {{#isVOType isVO}}
-                    VO
+                    <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
+                    {{#../../aggregateRoot.entities.relations}}
+                    {{#compareField name ../../../commands}}
+                    {{#targetElement.fieldDescriptors}}
+                    <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
+                    <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
+                    {{/targetElement.fieldDescriptors}}
+                    {{/compareField}}
+                    {{/../../aggregateRoot.entities.relations}}
                     {{/isVOType}}
                     {{/fieldDescriptors}}
+                    <br>
+                    <br>
                     <button type="button" onclick="{{nameCamelCase}}()">Submit</button>
                 </form>
             </div>
@@ -105,6 +114,20 @@ fileName: {{namePascalCase}}.html
             return options.fn(this);
         }else{
             return options.inverse(this);
+        }
+    });
+
+    window.$HandleBars.registerHelper('checkParameterType', function (type) {
+        if(type == 'String'){
+            return 'text';
+        }else if(type == 'Integer' || type == 'Long' || type == 'Double' || type == 'Float' || type == 'BigDecimal'){
+            return 'number';
+        }else if(type == 'Boolean'){
+            return 'checkbox';
+        }else if(type == 'Date'){
+            return 'date';
+        }else{
+            return 'text';
         }
     });
 
