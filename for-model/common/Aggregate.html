@@ -43,7 +43,7 @@ fileName: {{namePascalCase}}.html
                     <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
                     <select id="{{nameCamelCase}}" name="{{nameCamelCase}}">
                         {{#../../aggregateRoot.entities.relations}}
-                        {{#compareField name ../../../commands}}
+                        {{#compareField nameCamelCase ../../../commands}}
                         {{#targetElement.items}}
                         <option value="{{value}}">{{value}}</option>
                         {{/targetElement.items}}
@@ -122,10 +122,14 @@ fileName: {{namePascalCase}}.html
             return options.inverse(this);
         }
     });
-    window.$HandleBars.registerHelper('compareField', function (aggFieldName, commandFieldName, options) {
-        for(var i = 0; i < commandFieldName.length; i++){
-            if(aggFieldName == commandFieldName[i].name){
-                return options.fn(this);
+    window.$HandleBars.registerHelper('compareField', function (aggFieldName, command, options) {
+        for(var i = 0; i < command.length; i++){
+            if(!command[i].isRestRepository){
+                for(var j = 0; j < command[i].fieldDescriptors.length; j++){
+                    if(command[i].fieldDescriptors[j].nameCamelCase == aggFieldName){
+                        return options.fn(this);
+                    }
+                }
             }
         }
         return options.inverse(this);
