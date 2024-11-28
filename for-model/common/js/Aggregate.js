@@ -127,7 +127,7 @@ function submit{{namePascalCase}}(data){
     const {{nameCamelCase}} = data.{{nameCamelCase}};
     {{/if}}
     {{/fieldDescriptors}}
-    fetch(`http://localhost:8088/{{../namePlural}}/{{nameCamelCase}}/{{#fieldDescriptors}}{{#addMustache nameCamelCase isKey}}{{/addMustache}}{{/fieldDescriptors}}`, {
+    fetch(`http://localhost:8088/{{../namePlural}}/{{nameCamelCase}}/{{#fieldDescriptors}}{{#if isKey}}{{#addMustache nameCamelCase}}{{/if}}{{/addMustache}}{{/fieldDescriptors}}`, {
         method: '{{controllerInfo.method}}',
         headers: {
             'Content-Type': 'application/json'
@@ -146,8 +146,8 @@ function submit{{namePascalCase}}(data){
 {{/isRestRepository}}
 {{/commands}}
 <function>
-window.$HandleBars.registerHelper('addMustache', function (name, keyField) {
-    if(keyField){
+window.$HandleBars.registerHelper('addMustache', function (name) {
+    if(name){
         return `"${name}"`;
     }
 });
