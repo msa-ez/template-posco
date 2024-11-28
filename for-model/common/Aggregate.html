@@ -43,7 +43,7 @@ fileName: {{namePascalCase}}.html
                     <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
                     <select id="{{nameCamelCase}}" name="{{nameCamelCase}}">
                         {{#../../aggregateRoot.entities.relations}}
-                        {{#compareField name ../../../commands "Enum" isVO}}
+                        {{#compareField name ../../../commands "isNotVO" isVO}}
                         {{#targetElement.items}}
                         <option value="{{value}}">{{value}}</option>
                         {{/targetElement.items}}
@@ -55,7 +55,7 @@ fileName: {{namePascalCase}}.html
                     {{#isVOType isVO}}
                     <label for="{{nameCamelCase}}">{{namePascalCase}}</label>
                     {{#../../aggregateRoot.entities.relations}}
-                    {{#compareField name ../../../commands "VO"}}
+                    {{#compareField name ../../../commands "isVO"}}
                     {{#targetElement.fieldDescriptors}}
                     <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
                     <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
@@ -96,7 +96,7 @@ fileName: {{namePascalCase}}.html
                 {{/isDefaultType}}
                 {{#isEnumType className namePascalCase isVO}}
                 {{#../../aggregateRoot.entities.relations}}
-                {{#compareField name ../../../commands "Enum"}}
+                {{#compareField name ../../../commands "isNotVO"}}
                 const {{targetElement.nameCamelCase}} = document.getElementById('{{targetElement.nameCamelCase}}').value;
                 {{/compareField}}
                 {{/../../aggregateRoot.entities.relations}}
@@ -104,7 +104,7 @@ fileName: {{namePascalCase}}.html
                 {{#isVOType isVO}}
                 const {{nameCamelCase}} = {
                 {{#../../aggregateRoot.entities.relations}}
-                {{#compareField name ../../../commands "VO"}}
+                {{#compareField name ../../../commands "isVO"}}
                 {{#targetElement.fieldDescriptors}}
                     {{nameCamelCase}}: document.getElementById('{{nameCamelCase}}').value,
                 {{/targetElement.fieldDescriptors}}
@@ -166,7 +166,7 @@ fileName: {{namePascalCase}}.html
         }
     });
     window.$HandleBars.registerHelper('compareField', function (aggFieldName, command, mode, voField, options) {
-        if(mode == 'Enum'){
+        if(mode == 'isNotVO'){
             for(var i = 0; i < command.length; i++){
                 if(!command[i].isRestRepository){
                     for(var j = 0; j < command[i].fieldDescriptors.length; j++){
@@ -176,7 +176,7 @@ fileName: {{namePascalCase}}.html
                     }
                 }
             }
-        }else if(mode == 'VO'){
+        }else if(mode == 'isVO'){
             for(var i = 0; i < command.length; i++){
                 if(!command[i].isRestRepository){
                     for(var j = 0; j < command[i].fieldDescriptors.length; j++){
@@ -187,6 +187,8 @@ fileName: {{namePascalCase}}.html
                 }
             }
         }
-        return options.inverse(this);
+        else{
+            return options.inverse(this);
+        }
     });
 </function>
