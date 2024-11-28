@@ -47,7 +47,7 @@ fileName: {{namePascalCase}}.html
                         {{#targetElement}}
                         {{#items}}
                         {{#each value}}
-                        <option value="{{this}}">{{this}}</option>
+                        <option value="{{@key}}">{{{this}}}</option>
                         {{/each}}
                         {{/items}}
                         {{/targetElement}}
