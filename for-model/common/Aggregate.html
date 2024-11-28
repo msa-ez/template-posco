@@ -101,7 +101,7 @@ fileName: {{namePascalCase}}.html
 </html>
 <function>
     window.$HandleBars.registerHelper('isDefaultType', function (type, name, voField, options) {
-        if(!vofField && type != name){
+        if(!voField && type != name){
             return options.fn(this);
         }else{
             return options.inverse(this);
