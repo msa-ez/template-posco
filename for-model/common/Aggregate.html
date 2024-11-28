@@ -90,9 +90,11 @@ fileName: {{namePascalCase}}.html
         <div id="mySidebar" class="sidebar">
             <a href="javascript:void(0)" class="closebtn" onclick="toggleSidebar()">×</a>
             <a href="/" style="font-size: 20px; color: #f1f1f1;">Home</a>
-            {{#boundedContexts.aggregates}}
-            <a href="/{{namePlural}}">{{namePascalCase}}</a>
-            {{/boundedContexts.aggregates}}
+            {{#options.rootModel}}
+            {{#findByAgg elements}}
+            {{/findByAgg}}
+            {{/options.rootModel}}
+            
         </div>
         
         <h1>{{boundedContext.namePascalCase}}</h1>
@@ -220,6 +222,13 @@ fileName: {{namePascalCase}}.html
     </body>
 </html>
 <function>
+    window.$HandleBars.registerHelper('findByAgg', function (sticker) {
+        for(var i = 0; i < sticker.length; i++){
+            if(sticker[i]._type.endsWith('Aggregate')){
+                return `<a href="/${sticker[i].namePlural}}">${sticker[i].namePascalCase}</a>`
+            }
+        }
+    });
     window.$HandleBars.registerHelper('isDefaultType', function (type, name, voField, options) {
         if(!voField && type != name){
             return options.fn(this);
