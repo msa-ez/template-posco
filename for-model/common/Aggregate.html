@@ -96,7 +96,10 @@ fileName: {{namePascalCase}}.html
                 {{/isDefaultType}}
                 {{#isEnumType className namePascalCase isVO}}
                 {{#../../aggregateRoot.entities.relations}}
-                const {{value}} = document.getElementById('{{value}}').value;
+                {{#compareField name ../../../commands}}
+                {{targetElement.nameCamelCase}}
+                const {{targetElement.nameCamelCase}} = document.getElementById('{{targetElement.nameCamelCase}}').value;
+                {{/compareField}}
                 {{/../../aggregateRoot.entities.relations}}
                 {{/isEnumType}}
                 {{#isVOType isVO}}
