@@ -43,7 +43,7 @@ fileName: {{namePascalCase}}.html
                     <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
                     <select id="{{nameCamelCase}}" name="{{nameCamelCase}}">
                         {{#../../aggregateRoot.entities.relations}}
-                        {{#compareField name ../../../commands "isNotVO" isVO targetElement.isVO}}
+                        {{#compareField name ../../../commands "isNotVO" isVO targetElement}}
                         {{#targetElement.items}}
                         <option value="{{value}}">{{value}}</option>
                         {{/targetElement.items}}
@@ -96,7 +96,7 @@ fileName: {{namePascalCase}}.html
                 {{/isDefaultType}}
                 {{#isEnumType className namePascalCase isVO}}
                 {{#../../aggregateRoot.entities.relations}}
-                {{#compareField name ../../../commands "isNotVO" targetElement.isVO}}
+                {{#compareField name ../../../commands "isNotVO" targetElement}}
                 const {{targetElement.nameCamelCase}} = document.getElementById('{{targetElement.nameCamelCase}}').value;
                 {{/compareField}}
                 {{/../../aggregateRoot.entities.relations}}
@@ -170,7 +170,7 @@ fileName: {{namePascalCase}}.html
             for(var i = 0; i < command.length; i++){
                 if(!command[i].isRestRepository){
                     for(var j = 0; j < command[i].fieldDescriptors.length; j++){
-                        if(command[i].fieldDescriptors[j].nameCamelCase == aggFieldName && !voField){
+                        if(command[i].fieldDescriptors[j].nameCamelCase == aggFieldName && !voField.isVO){
                             return options.fn(this);
                         }
                     }
