@@ -147,8 +147,10 @@ function submit{{namePascalCase}}(data){
 {{/commands}}
 <function>
 window.$HandleBars.registerHelper('addMustache', function (name) {
+    var leftMustache = "{";
+    var rightMustache = "}";
     if(name){
-        return "{" + name + "}";
+        return leftMustache + name + rightMustache;
     }
 });
 window.$HandleBars.registerHelper('checkName', function (name, type) {
