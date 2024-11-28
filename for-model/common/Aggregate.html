@@ -23,9 +23,103 @@ fileName: {{namePascalCase}}.html
         <button type="button" class='buttonLabelDeleteRow' onclick="deleteData()">삭제</button>
         {{#commands}}
         {{^isRestRepository}}
-        <button type="button" onclick="{{nameCamelCase}}()">{{#if displayName}}{{displayName}}{{else}}{{name}}{{/if}}</button>
+        <button type="button" onclick="openDialog('{{nameCamelCase}}')">{{#if displayName}}{{displayName}}{{else}}{{name}}{{/if}}</button>
         {{/isRestRepository}}
         {{/commands}}
         <div id="sheet_DIV" style="width:100%;height:500px"></div>
+        {{#commands}}
+        {{^isRestRepository}}
+        <div id="{{nameCamelCase}}" class="modal"></div>
+            <div class="modal-content">
+                <span class="close" onclick="closeDialog('{{nameCamelCase}}')">&times;</span>
+                <h2>{{namePascalCase}}</h2>
+                <form id="{{nameCamelCase}}Form">
+                    {{#fieldDescriptors}}
+                    <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
+                    {{#isDefaultType className namePascalCase isVO}}
+                    <input type="{{#checkParameterType}}{{className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
+                    {{/isDefaultType}}
+
+                    {{#isEnumType className namePascalCase}}
+                    <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
+                    <select id="{{nameCamelCase}}" name="{{nameCamelCase}}">
+                        {{#../../aggregateRoot.entities.relations}}
+
+                        {{/../../aggregateRoot.entities.relations}}
+                        <option value="ACTIVE">Active</option>
+                        <option value="INACTIVE">Inactive</option>
+                        <option value="PENDING">Pending</option>
+                    </select>
+                    {{/isEnumType}}
+
+                    {{#isVOType isVO}}
+
+                    {{/isVOType}}
+                    {{/fieldDescriptors}}
+                    <button type="button" onclick="{{nameCamelCase}}()">Submit</button>
+                </form>
+            </div>
+        </div>
+        {{/isRestRepository}}
+        {{/commands}}
+
+        <script>
+            {{#commands}}
+            {{#if isRestRepository}}
+            {{else}}
+            function openDialog(id) {
+                document.getElementById(id).style.display = "block";
+            }
+
+            // Function to close the dialog
+            function closeDialog(id) {
+                document.getElementById(id).style.display = "none";
+            }
+            {{/if}}
+            {{/commands}}
+
+            {{#commands}}
+            {{^isRestRepository}}
+            function registerDrivingLog() {
+                const carId = document.getElementById('carId').value;
+                const driverName = document.getElementById('driverName').value;
+                const logDate = document.getElementById('logDate').value;
+
+                // JSON 객체 생성
+                const data = {
+                    carId: carId,
+                    driverName: driverName,
+                    logDate: logDate
+                };
+                invoke(data);
+                closeDialog();
+            }
+            {{/isRestRepository}}
+            {{/commands}}
+        </script>
     </body>
 </html>
+<function>
+    window.$HandleBars.registerHelper('isDefaultType', function (type, name, voField, options) {
+        if(!vofField && type != name){
+            return options.fn(this);
+        }else{
+            return options.inverse(this);
+        }
+    });
+
+    window.$HandleBars.registerHelper('isVOType', function (voField, options) {
+        if(voField){
+            return options.fn(this);
+        }else{
+            return options.inverse(this);
+        }
+    });
+    window.$HandleBars.registerHelper('isEnumType', function (type, name, options) {
+        if(type == name){
+            return options.fn(this);
+        }else{
+            return options.inverse(this);
+        }
+    });
+</function>
