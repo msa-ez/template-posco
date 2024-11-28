@@ -50,6 +50,7 @@ fileName: {{namePascalCase}}.html
                         {{/compareField}}
                         {{/../../aggregateRoot.entities.relations}}
                     </select>
+                    <br><br>
                     {{/isEnumType}}
                     {{#isVOType isVO}}
                     <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
@@ -63,8 +64,7 @@ fileName: {{namePascalCase}}.html
                     {{/../../aggregateRoot.entities.relations}}
                     {{/isVOType}}
                     {{/fieldDescriptors}}
-                    <br>
-                    <br>
+                    <br><br>
                     <button type="button" onclick="{{nameCamelCase}}()">Submit</button>
                 </form>
             </div>
