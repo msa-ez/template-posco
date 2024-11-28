@@ -127,7 +127,7 @@ function submit{{namePascalCase}}(data){
     const {{nameCamelCase}} = data.{{nameCamelCase}};
     {{/if}}
     {{/fieldDescriptors}}
-    fetch({{#addBacktick fieldDescriptors}}{{/addBacktick}}http://localhost:8088/{{../namePlural}}/{{nameCamelCase}}/{{#fieldDescriptors}}{{#if iskey}}${{#addMustache nameCamelCase}}{{/addMustache}}{{/if}}{{/fieldDescriptors}}{{#addBacktick fieldDescriptors}}{{/addBacktick}}, {
+    fetch(`http://localhost:8088/{{../namePlural}}/{{nameCamelCase}}/{{#fieldDescriptors}}{{#addMustache nameCamelCase isKey}}{{/addMustache}}{{/fieldDescriptors}}`, {
         method: '{{controllerInfo.method}}',
         headers: {
             'Content-Type': 'application/json'
@@ -146,16 +146,9 @@ function submit{{namePascalCase}}(data){
 {{/isRestRepository}}
 {{/commands}}
 <function>
-window.$HandleBars.registerHelper('addBacktick', function (field) {
-    if(field){
-        return "`";
-    }
-});
-window.$HandleBars.registerHelper('addMustache', function (name) {
-    var leftMustache = "{";
-    var rightMustache = "}";
-    if(name){
-        return leftMustache + name + rightMustache;
+window.$HandleBars.registerHelper('addMustache', function (name, keyField) {
+    if(keyField){
+        return `"${name}"`;
     }
 });
 window.$HandleBars.registerHelper('checkName', function (name, type) {
