@@ -43,7 +43,7 @@ fileName: {{namePascalCase}}.html
                     <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
                     <select id="{{nameCamelCase}}" name="{{nameCamelCase}}">
                         {{#../../aggregateRoot.entities.relations}}
-                        {{#compareField name ../../../commands "isNotVO" isVO targetElement}}
+                        {{#compareField name ../../../commands "isNotVO" targetElement}}
                         {{#targetElement.items}}
                         <option value="{{value}}">{{value}}</option>
                         {{/targetElement.items}}
