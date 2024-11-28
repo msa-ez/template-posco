@@ -35,16 +35,19 @@ fileName: {{namePascalCase}}.html
                 <h2>{{namePascalCase}}</h2>
                 <form id="{{nameCamelCase}}Form">
                     {{#fieldDescriptors}}
-                    <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
                     {{#isDefaultType className namePascalCase isVO}}
+                    <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
                     <input type="{{#checkParameterType}}{{className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
                     {{/isDefaultType}}
                     {{#isEnumType className namePascalCase isVO}}
                     <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
                     <select id="{{nameCamelCase}}" name="{{nameCamelCase}}">
                         {{#../../aggregateRoot.entities.relations}}
+                        1
                         {{#targetElement.items}}
+                        2
                         {{#each value}}
+                        3
                         <option value="{{@key}}">{{this}}</option>
                         {{/each}}
                         {{/targetElement.items}}
