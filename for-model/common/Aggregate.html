@@ -45,11 +45,7 @@ fileName: {{namePascalCase}}.html
                         {{#../../aggregateRoot.entities.relations}}
                         1
                         {{#targetElement.items}}
-                        2
-                        {{#each value}}
-                        3
-                        <option value="{{@key}}">{{this}}</option>
-                        {{/each}}
+                        <option value="{{this}}">{{this}}</option>
                         {{/targetElement.items}}
                         {{/../../aggregateRoot.entities.relations}}
                     </select>
