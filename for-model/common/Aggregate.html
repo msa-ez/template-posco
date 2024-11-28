@@ -96,23 +96,19 @@ fileName: {{namePascalCase}}.html
                 {{/isDefaultType}}
                 {{#isEnumType className namePascalCase isVO}}
                 {{#../../aggregateRoot.entities.relations}}
-                {{#compareField name ../../../commands}}
-                {{#targetElement.items}}
                 const {{value}} = document.getElementById('{{value}}').value;
-                {{/targetElement.items}}
-                {{/compareField}}
                 {{/../../aggregateRoot.entities.relations}}
                 {{/isEnumType}}
                 {{#isVOType isVO}}
+                const vo = {
                 {{#../../aggregateRoot.entities.relations}}
                 {{#compareField name ../../../commands}}
                 {{#targetElement.fieldDescriptors}}
-                const vo = {
                     {{nameCamelCase}}: document.getElementById('{{nameCamelCase}}').value,
-                };
                 {{/targetElement.fieldDescriptors}}
                 {{/compareField}}
                 {{/../../aggregateRoot.entities.relations}}
+                };
                 {{/isVOType}}
                 {{/fieldDescriptors}}
 
