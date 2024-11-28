@@ -223,12 +223,17 @@ fileName: {{namePascalCase}}.html
 </html>
 <function>
     window.$HandleBars.registerHelper('findByAgg', function (sticker) {
-        sticker.forEach(function(item) {
-            if(item._type.endsWith('Aggregate')) {
-                return `<a href="/${item.namePlural}}">${item.namePascalCase}</a>`;
-            }
-        });
-
+        if(stocker){
+            sticker.forEach(function(item) {
+                if(item){
+                    if(item._type.endsWith('Aggregate')) {
+                        return `<a href="/${item.namePlural}}">${item.namePascalCase}</a>`;
+                    }
+                }
+            });
+        }else{
+            return;
+        }
     });
     window.$HandleBars.registerHelper('isDefaultType', function (type, name, voField, options) {
         if(!voField && type != name){
