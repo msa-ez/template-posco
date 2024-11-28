@@ -39,18 +39,15 @@ fileName: {{namePascalCase}}.html
                     {{#isDefaultType className namePascalCase isVO}}
                     <input type="{{#checkParameterType}}{{className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
                     {{/isDefaultType}}
-                    {{#isEnumType className namePascalCase}}
-                    ENUM
+                    {{#isEnumType className namePascalCase isVO}}
                     <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
                     <select id="{{nameCamelCase}}" name="{{nameCamelCase}}">
                         {{#../../aggregateRoot.entities.relations}}
-                        {{#targetElement}}
-                        {{#items}}
+                        {{#targetElement.items}}
                         {{#each value}}
-                        <option value="{{@key}}">{{{this}}}</option>
+                        <option value="{{@key}}">{{this}}</option>
                         {{/each}}
-                        {{/items}}
-                        {{/targetElement}}
+                        {{/targetElement.items}}
                         {{/../../aggregateRoot.entities.relations}}
                     </select>
                     {{/isEnumType}}
@@ -117,8 +114,8 @@ fileName: {{namePascalCase}}.html
             return options.inverse(this);
         }
     });
-    window.$HandleBars.registerHelper('isEnumType', function (type, name, options) {
-        if(type == name){
+    window.$HandleBars.registerHelper('isEnumType', function (type, name, voField, options) {
+        if(!voField && type == name){
             return options.fn(this);
         }else{
             return options.inverse(this);
