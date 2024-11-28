@@ -119,7 +119,36 @@ function save(){
         }     
     }           
 }
+{{#commands}}
+{{^isRestRepository}}
+function submit{{namePascalCase}}(data){
+    {{#fieldDescriptors}}
+    {{#if isKey}}
+    const {{nameCamelCase}} = data.{{nameCamelCase}};
+    {{/if}}
+    {{/fieldDescriptors}}
+    fetch(`http://localhost:8088/vehiclePerformances/registerDrivingLog/{{#fieldDescriptors}}{{#addMustache nameCamelCase}}{{/addMustache}}{{/fieldDescriptors}}`, {
+        method: '{{controllerInfo.method}}',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        alert(error);
+    });
+}           
+{{/isRestRepository}}
+{{/commands}}
 <function>
+window.$HandleBars.registerHelper('addMustache', function (name) {
+    return "${" + name + "}";
+});
 window.$HandleBars.registerHelper('checkName', function (name, type) {
     if(type === "Boolean"){
         return {"Value": `"${name}"`,"HeaderCheck": 1}
