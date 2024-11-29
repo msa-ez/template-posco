@@ -227,7 +227,7 @@ fileName: {{namePascalCase}}.html
         for (const key in sticker) {
             const item = sticker[key];
             if (item._type && item._type.endsWith('Aggregate')) {
-                return `<a href="/${result.namePlural}">#{result.namePascalCase}</a>`
+                return `<a href="/${item.namePlural}">#{item.namePascalCase}</a>`
             }
         }
         return;
