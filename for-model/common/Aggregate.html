@@ -223,15 +223,17 @@ fileName: {{namePascalCase}}.html
 </html>
 <function>
     window.$HandleBars.registerHelper('findByAgg', function (sticker) {
-        const result = sticker.find(item => item._type.endsWith('Aggregate'));
-        
-        return `<a href="/${result.namePlural}">#{result.namePascalCase}</a>`
-    });
-    window.$HandleBars.registerHelper('isDefaultType', function (type, name, voField, options) {
-        if(!voField && type != name){
-            return options.fn(this);
-        }else{
-            return options.inverse(this);
+        // sticker가 배열인지 확인
+        if (Array.isArray(sticker)) {
+            // _type이 'Aggregate'로 끝나는 객체를 찾습니다.
+            const result = sticker.find(item => item._type.endsWith('Aggregate'));
+            
+            // 찾은 경우 namePlural 속성을 반환하고, 그렇지 않으면 undefined를 반환합니다.
+            return `<a href="/${result.namePlural}">#{result.namePascalCase}</a>`
+        } else {
+            // sticker가 배열이 아닌 경우 처리
+            console.error('sticker is not an array:', sticker);
+            return ;
         }
     });
 
