@@ -228,26 +228,28 @@ fileName: {{namePascalCase}}.html
         const aggregateLinks = [];
         for (let key in sticker) {
             var item = sticker[key];
-            if (item._type && item._type.endsWith('Aggregate')) {
-                if(item.name){
-                    name = item.name.charAt(0).toLowerCase() + item.name.slice(1);
-                    if (name.endsWith('y') && !/[aeiou]y$/.test(name)) {
-                        path = name.slice(0, -1) + 'ies';
-                    } else if (name.endsWith('s') || name.endsWith('sh') || name.endsWith('ch') || name.endsWith('x') || name.endsWith('z')) {
-                        path = name + 'es';
-                    } else if (name.endsWith('f')) {
-                        path = name.slice(0, -1) + 'ves';
-                    } else if (name.endsWith('fe')) {
-                        path = name.slice(0, -2) + 'ves';
-                    } else {
-                        path = name + 's';
-                    }
-
-                    const link = `<a href="/${path}">${name}</a>`;
-                    if (aggregateLinks.length > 0) {
-                        aggregateLinks.push('\n' + link);
-                    } else {
-                        aggregateLinks.push(link);
+            if(item){
+                if (item._type && item._type.endsWith('Aggregate')) {
+                    if(item.name){
+                        name = item.name.charAt(0).toLowerCase() + item.name.slice(1);
+                        if (name.endsWith('y') && !/[aeiou]y$/.test(name)) {
+                            path = name.slice(0, -1) + 'ies';
+                        } else if (name.endsWith('s') || name.endsWith('sh') || name.endsWith('ch') || name.endsWith('x') || name.endsWith('z')) {
+                            path = name + 'es';
+                        } else if (name.endsWith('f')) {
+                            path = name.slice(0, -1) + 'ves';
+                        } else if (name.endsWith('fe')) {
+                            path = name.slice(0, -2) + 'ves';
+                        } else {
+                            path = name + 's';
+                        }
+    
+                        const link = `<a href="/${path}">${name}</a>`;
+                        if (aggregateLinks.length > 0) {
+                            aggregateLinks.push('\n' + link);
+                        } else {
+                            aggregateLinks.push(link);
+                        }
                     }
                 }
             }
