@@ -250,10 +250,13 @@ fileName: {{namePascalCase}}.html
                         aggregateLinks.push(link);
                     }
                 }
-                return aggregateLinks;
             }
         }
-        return;
+        if(aggregateLinks){
+            return aggregateLinks;
+        }else{
+            return;
+        }
     });
 
     window.$HandleBars.registerHelper('isDefaultType', function (type, name, voField, options) {
