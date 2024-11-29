@@ -223,7 +223,9 @@ fileName: {{namePascalCase}}.html
 </html>
 <function>
     window.$HandleBars.registerHelper('findByAgg', function (sticker) {
+        const result = sticker.find(item => item._type.endsWith('Aggregate'));
         
+        return `<a href="/${result.namePlural}">#{result.namePascalCase}</a>`
     });
     window.$HandleBars.registerHelper('isDefaultType', function (type, name, voField, options) {
         if(!voField && type != name){
