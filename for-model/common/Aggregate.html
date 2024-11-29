@@ -226,8 +226,8 @@ fileName: {{namePascalCase}}.html
         var path = '';
         var name = '';
         const aggregateLinks = [];
-        for (const key in sticker) {
-            const item = sticker[key];
+        for (let key in sticker) {
+            var item = sticker[key];
             if (item._type && item._type.endsWith('Aggregate')) {
                 if(item.name){
                     name = item.name.charAt(0).toLowerCase() + item.name.slice(1);
