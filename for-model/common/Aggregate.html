@@ -225,6 +225,7 @@ fileName: {{namePascalCase}}.html
     window.$HandleBars.registerHelper('findByAgg', function (sticker) {
         var path = '';
         var name = '';
+        const aggregateLinks = [];
         for (const key in sticker) {
             const item = sticker[key];
             if (item._type && item._type.endsWith('Aggregate')) {
@@ -241,9 +242,16 @@ fileName: {{namePascalCase}}.html
                     } else {
                         path = name + 's';
                     }
+
+                    const link = `<a href="/${path}">${name}</a>`;
+                    if (aggregateLinks.length > 0) {
+                        aggregateLinks.push('\n' + link);
+                    } else {
+                        aggregateLinks.push(link);
+                    }
                 }
-                return `<a href="/${path}">${name}</a>`
             }
+            return aggregateLinks;
         }
         return;
     });
