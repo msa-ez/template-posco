@@ -10,6 +10,7 @@ $(document).ready(function(){
             {{#if isVO}}
             {{else}}
             {{#if isKey}}
+            {"Header": "no", "Name": "no", "Type": "{{className}}", "Align": "Center", "Width":140, "CanEdit":0},
             {{else}}
             {"Header": "{{#checkName nameCamelCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVO namePascalCase}}{{/checkFieldType}}",{{#isDate className}}"Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요",{{/isDate}}{{#isEnum isVO className ../entities}} "Enum": {{/isEnum}}{{#checkEnum className isVO ../entities}}{{/checkEnum}}{{#isEnum isVO className ../entities}},{{/isEnum}}{{#isEnum isVO className ../entities}} "EnumKeys": {{/isEnum}}{{#checkEnum className isVO ../entities}}{{/checkEnum}}{{#isEnum isVO className ../entities}},{{/isEnum}} "Align": "Center", "Width":140, "CanEdit":1},  
             {{/if}}
@@ -44,17 +45,16 @@ function retrieve(){
     }).then(res => {
         return res.json();
     }).then(json => {
+        json.forEach(row => {
+            row.No = row.{{#aggregateRoot.fieldDescriptors}}{{#if isKey}}{{nameCamelCase}}{{/if}}{{/aggregateRoot.fieldDescriptors}}
         {{#aggregateRoot}}
         {{#fieldDescriptors}}
         {{#if isVO}}
-        {{#isVO isVO}}json.forEach(row => {
-        {{/isVO}}
         {{#disassembleVO ../entities}}{{/disassembleVO}}
         {{#isVO isVO}}
-        });{{/isVO}}
-        {{/if}}
         {{/fieldDescriptors}}
         {{/aggregateRoot}}
+        });
         sheet.loadSearchData(json)
     }).catch(error => {
         console.error("에러", error);
