@@ -46,7 +46,7 @@ function retrieve(){
         return res.json();
     }).then(json => {
         json.forEach(row => {
-            row.No = row.{{#aggregateRoot.fieldDescriptors}}{{#if isKey}}{{nameCamelCase}}{{/if}}{{/aggregateRoot.fieldDescriptors}}
+            row.no = row.{{#aggregateRoot.fieldDescriptors}}{{#if isKey}}{{nameCamelCase}}{{/if}}{{/aggregateRoot.fieldDescriptors}}
         {{#aggregateRoot}}
         {{#fieldDescriptors}}
         {{#if isVO}}
@@ -71,18 +71,17 @@ function deleteData(){
 
 function save(){
     var rows = sheet.getSaveJson()?.data;
-
+    rows.forEach(row => {
+        rows.{{#aggregateRoot.fieldDescriptors}}{{#if isKey}}{{nameCamelCase}}{{/if}}{{/aggregateRoot.fieldDescriptors}} = rows.no
+        delete rows.no
     {{#aggregateRoot}}
     {{#fieldDescriptors}}
     {{#if isVO}}
-    {{#isVO isVO}}rows.forEach(row => {
-    {{/isVO}}
     {{#combineVO ../entities}}{{/combineVO}}
-    {{#isVO isVO}}
-    });{{/isVO}}
     {{/if}}
     {{/fieldDescriptors}}
     {{/aggregateRoot}}
+    });
 
     for(var i=0; i<rows.length;i++){
         if(rows[i].id.includes("AR")){
