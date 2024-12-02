@@ -4,11 +4,6 @@ path: common/js
 ---
 $(document).ready(function(){
     var OPT = {
-        {{#aggregateRoot.keyFieldDescriptor}}
-        "LeftCols": [
-            {"Header": "{{#checkName displayName namePascalCase className}}{{/checkName}}","Type": "{{#checkFieldType className isVO namePascalCase}}{{/checkFieldType}}","Width": 50,"Align": "Center","Name": "{{nameCamelCase}}"}
-        ],
-        {{/aggregateRoot.keyFieldDescriptor}}
         Cols:[
             {{#aggregateRoot}}
             {{#fieldDescriptors}}
@@ -16,7 +11,7 @@ $(document).ready(function(){
             {{else}}
             {{#if isKey}}
             {{else}}
-            {"Header": "{{#checkName displayName namePascalCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVO namePascalCase}}{{/checkFieldType}}",{{#isDate className}}"Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요",{{/isDate}}{{#isEnum isVO className ../entities}} "Enum": {{/isEnum}}{{#checkEnum className isVO ../entities}}{{/checkEnum}}{{#isEnum isVO className ../entities}},{{/isEnum}}{{#isEnum isVO className ../entities}} "EnumKeys": {{/isEnum}}{{#checkEnum className isVO ../entities}}{{/checkEnum}}{{#isEnum isVO className ../entities}},{{/isEnum}} "Align": "Center", "Width":120, "CanEdit":1},  
+            {"Header": "{{#checkName nameCamelCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVO namePascalCase}}{{/checkFieldType}}",{{#isDate className}}"Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요",{{/isDate}}{{#isEnum isVO className ../entities}} "Enum": {{/isEnum}}{{#checkEnum className isVO ../entities}}{{/checkEnum}}{{#isEnum isVO className ../entities}},{{/isEnum}}{{#isEnum isVO className ../entities}} "EnumKeys": {{/isEnum}}{{#checkEnum className isVO ../entities}}{{/checkEnum}}{{#isEnum isVO className ../entities}},{{/isEnum}} "Align": "Center", "Width":140, "CanEdit":1},  
             {{/if}}
             {{/if}}
             {{/fieldDescriptors}}
@@ -49,6 +44,17 @@ function retrieve(){
     }).then(res => {
         return res.json();
     }).then(json => {
+        {{#aggregateRoot}}
+        {{#fieldDescriptors}}
+        {{#if isVO}}
+        {{#isVO isVO}}json.forEach(row => {
+        {{/isVO}}
+        {{#disassembleVO ../entities}}{{/disassembleVO}}
+        {{#isVO isVO}}
+        });{{/isVO}}
+        {{/if}}
+        {{/fieldDescriptors}}
+        {{/aggregateRoot}}
         sheet.loadSearchData(json)
     }).catch(error => {
         console.error("에러", error);
@@ -69,13 +75,11 @@ function save(){
     {{#aggregateRoot}}
     {{#fieldDescriptors}}
     {{#if isVO}}
-    {{#isVO isVO}}
-    rows.forEach(row => {
+    {{#isVO isVO}}rows.forEach(row => {
     {{/isVO}}
-        {{#combineVOData ../entities}}{{/combineVOData}}
+    {{#combineVO ../entities}}{{/combineVO}}
     {{#isVO isVO}}
-    });
-    {{/isVO}}
+    });{{/isVO}}
     {{/if}}
     {{/fieldDescriptors}}
     {{/aggregateRoot}}
@@ -115,20 +119,43 @@ function save(){
         }     
     }           
 }
+{{#commands}}
+{{^isRestRepository}}
+function submit{{namePascalCase}}(data){
+    {{#fieldDescriptors}}
+    {{#if isKey}}
+    const {{nameCamelCase}} = data.{{nameCamelCase}};
+    {{/if}}
+    {{/fieldDescriptors}}
+    fetch(`http://localhost:8088/{{../namePlural}}/{{nameCamelCase}}/{{#fieldDescriptors}}{{#if isKey}}{{#addMustache nameCamelCase}}{{/addMustache}}{{/if}}{{/fieldDescriptors}}`, {
+        method: '{{controllerInfo.method}}',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        alert(error);
+    });
+}           
+{{/isRestRepository}}
+{{/commands}}
 <function>
-window.$HandleBars.registerHelper('checkName', function (koName, engName, type) {
+window.$HandleBars.registerHelper('addMustache', function (name) {
+    if(name){
+        return `"${name}"`;
+    }
+});
+window.$HandleBars.registerHelper('checkName', function (name, type) {
     if(type === "Boolean"){
-        if(koName){
-            return {"Value": `"${koName}"`,"HeaderCheck": 1}
-        }else{
-            return {"Value": `"${engName}"`,"HeaderCheck": 1}
-        }
+        return {"Value": `"${name}"`,"HeaderCheck": 1}
     }else{
-        if(koName){
-            return koName;
-        }else{
-            return engName;
-        }
+        return name;
     }
 });
 window.$HandleBars.registerHelper('isDate', function (type, options) {
@@ -143,7 +170,7 @@ window.$HandleBars.registerHelper('isVO', function (vo, options) {
     }
     return options.inverse(this);
 });
-window.$HandleBars.registerHelper('combineVOData', function (voField) {
+window.$HandleBars.registerHelper('combineVO', function (voField) {
     var result = [];
     var relation = voField.relations
 
@@ -162,12 +189,38 @@ window.$HandleBars.registerHelper('combineVOData', function (voField) {
                 });
 
                 result.push(`
-                    if (${conditions.join(' && ')}) {
-                        row.${vo.name} = {
-                            ${assignments.join(',\n')}
-                        };
-                        ${deletions.join(';\n')}
-                    }
+                if (${conditions.join(' && ')}) {
+                    row.${vo.name} = {
+                        ${assignments.join(',\n')}
+                    };
+                    ${deletions.join(';\n')}
+                }
+                `);
+            }else{
+                return;
+            }
+        }
+    }
+    return new window.$HandleBars.SafeString(result.join('\n'));
+});
+window.$HandleBars.registerHelper('disassembleVO', function (voField) {
+    var result = [];
+    var relation = voField.relations
+
+    for(var i = 0; i < relation.length; i++){
+        if(relation[i].targetElement && relation[i].targetElement.isVO){
+            var vo = relation[i].targetElement;
+            if(vo && vo.fieldDescriptors){
+                var assignments = [];
+                vo.fieldDescriptors.forEach(fd => {
+                    var fieldName = fd.name;
+                    assignments.push(`row.${fieldName} = row.${vo.name}.${fieldName}`);
+                });
+
+                result.push(`
+                if (row.${vo.name}) {
+                    ${assignments.join(';\n')}
+                }
                 `);
             }else{
                 return;
@@ -236,11 +289,11 @@ window.$HandleBars.registerHelper('createVoField', function (type, field) {
                     }else if(voField.className ==="Float"){
                         voFieldType = 'Float';
                     }else if(voField.className ==="Date"){
-                        voFieldType = 'Date';
+                        voFieldType = `"Date", "Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요"`;
                     }else if(voField.className ==="Boolean"){
                         voFieldType = 'Bool';
                     }
-                    result.push(`{"Header": ["${vo.namePascalCase}", "${voField.nameCamelCase}"], "Name": "${voField.nameCamelCase}", "Type": "${voFieldType}", "Width": 110}`);
+                    result.push(`{"Header": ["${vo.namePascalCase}", "${voField.nameCamelCase}"], "Name": "${voField.nameCamelCase}", "Type": ${voFieldType}, "Width": 140}`);
                 }
             }else{
                 return;
