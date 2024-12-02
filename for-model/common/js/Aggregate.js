@@ -51,7 +51,7 @@ function retrieve(){
         {{#fieldDescriptors}}
         {{#if isVO}}
         {{#disassembleVO ../entities}}{{/disassembleVO}}
-        {{#isVO isVO}}
+        {{/if}}
         {{/fieldDescriptors}}
         {{/aggregateRoot}}
         });
