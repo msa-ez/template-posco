@@ -17,7 +17,7 @@
         }
         .sidebar {
             height: 100%;
-            width: 0;
+            width: 250px;
             position: fixed;
             z-index: 1;
             top: 0;
@@ -30,7 +30,7 @@
         .sidebar a {
             padding: 10px 15px;
             text-decoration: none;
-            font-size: 25px;
+            font-size: 18px;
             color: #818181;
             display: block;
             transition: 0.3s;
@@ -56,6 +56,9 @@
             box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
             transition: 0.3s;
             cursor: pointer;
+            width: 200px; /* 변경: 카드 너비 설정 */
+            display: inline-block; /* 변경: 인라인 블록으로 설정 */
+            vertical-align: top; /* 변경: 수직 정렬 설정 */
         }
         .card:hover {
             box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
