@@ -2,6 +2,7 @@ forEach: Aggregate
 fileName: {{namePascalCase}}.js
 path: common/js
 ---
+let rowData = [];
 $(document).ready(function(){
     var OPT = {
         Cols:[
@@ -10,7 +11,7 @@ $(document).ready(function(){
             {{#if isVO}}
             {{else}}
             {{#if isKey}}
-            {"Header": "no", "Name": "no", "Type": "{{#checkFieldType className isVO namePascalCase}}{{/checkFieldType}}", "Align": "Center", "Width":140, "CanEdit":0},
+            {"Header": "No", "Name": "No", "Type": "{{#checkFieldType className isVO namePascalCase}}{{/checkFieldType}}", "Align": "Center", "Width":140, "CanEdit":0},
             {{else}}
             {"Header": "{{#checkName nameCamelCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVO namePascalCase}}{{/checkFieldType}}",{{#isDate className}}"Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요",{{/isDate}}{{#isEnum isVO className ../entities}} "Enum": {{/isEnum}}{{#checkEnum className isVO ../entities}}{{/checkEnum}}{{#isEnum isVO className ../entities}},{{/isEnum}}{{#isEnum isVO className ../entities}} "EnumKeys": {{/isEnum}}{{#checkEnum className isVO ../entities}}{{/checkEnum}}{{#isEnum isVO className ../entities}},{{/isEnum}} "Align": "Center", "Width":140, "CanEdit":1},  
             {{/if}}
@@ -46,7 +47,7 @@ function retrieve(){
         return res.json();
     }).then(json => {
         json.forEach(row => {
-            row.no = row.{{#aggregateRoot.fieldDescriptors}}{{#if isKey}}{{nameCamelCase}}{{/if}}{{/aggregateRoot.fieldDescriptors}}
+            row.No = row.{{#aggregateRoot.fieldDescriptors}}{{#if isKey}}{{nameCamelCase}}{{/if}}{{/aggregateRoot.fieldDescriptors}}
         {{#aggregateRoot}}
         {{#fieldDescriptors}}
         {{#if isVO}}
@@ -55,6 +56,7 @@ function retrieve(){
         {{/fieldDescriptors}}
         {{/aggregateRoot}}
         });
+        rowData = json;
         sheet.loadSearchData(json)
     }).catch(error => {
         console.error("에러", error);
@@ -72,8 +74,8 @@ function deleteData(){
 function save(){
     var rows = sheet.getSaveJson()?.data;
     rows.forEach(row => {
-        rows.{{#aggregateRoot.fieldDescriptors}}{{#if isKey}}{{nameCamelCase}}{{/if}}{{/aggregateRoot.fieldDescriptors}} = rows.no
-        delete rows.no
+        rows.{{#aggregateRoot.fieldDescriptors}}{{#if isKey}}{{nameCamelCase}}{{/if}}{{/aggregateRoot.fieldDescriptors}} = rows.No
+        delete rows.No
     {{#aggregateRoot}}
     {{#fieldDescriptors}}
     {{#if isVO}}
@@ -82,6 +84,7 @@ function save(){
     {{/fieldDescriptors}}
     {{/aggregateRoot}}
     });
+    rowData = rows;
 
     for(var i=0; i<rows.length;i++){
         if(rows[i].id.includes("AR")){

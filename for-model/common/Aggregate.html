@@ -107,6 +107,22 @@ fileName: {{namePascalCase}}.html
         <button type="button" onclick="openDialog('{{nameCamelCase}}')">{{#if displayName}}{{displayName}}{{else}}{{name}}{{/if}}</button>
         {{/isRestRepository}}
         {{/commands}}
+
+        {{#attached 'View' this}}
+        <div>
+        {{#if queryOption.multipleResult}}
+        {{#queryParameters}}
+            <label for="search{{namePascalCase}}">{{namePascalCase}}:</label>
+            <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="search{{namePascalCase}}" name="search{{namePascalCase}}"><br><br>
+        {{/queryParameters}}
+        {{else}}
+            
+            <label for="search{{aggregate.keyFieldDescriptor.namePascalCase}}">{{aggregate.keyFieldDescriptor.namePascalCase}}:</label>
+            <input type="{{#checkParameterType aggregate.keyFieldDescriptor.className}}{{/checkParameterType}}" id="search{{aggregate.keyFieldDescriptor.namePascalCase}}" name="search{{aggregate.keyFieldDescriptor.namePascalCase}}"><br><br>
+        {{/if}}
+            <button type="button" onclick="{{#if queryOption.multipleResult}}searchMultiple(){{else}}searchSingle(){{/if}}">검색</button>
+        </div>
+            {{/attached}}
         <div id="sheet_DIV" style="width:100%;height:500px"></div>
 
         {{#commands}}
@@ -217,6 +233,27 @@ fileName: {{namePascalCase}}.html
                     sidebar.style.width = "250px";
                 }
             }
+            {{#attached 'View' this}}
+            {{#if queryOption.multipleResult}}
+            function searchMultiple() {
+                {{#queryParameters}}
+                const search{{namePascalCase}} = document.getElementById('search{{namePascalCase}}').value;
+                {{/queryParameters}}
+
+                const searchParams = {
+                    {{#queryParameters}}
+                    {{nameCamelCase}}: search{{namePascalCase}},
+                    {{/queryParameters}}
+                };
+                searchMultipleResult(searchParams);
+            }
+            {{else}}
+            function searchSingle() {
+                const search{{aggregate.keyFieldDescriptor.namePascalCase}} = document.getElementById('search{{aggregate.keyFieldDescriptor.namePascalCase}}').value;
+                searchSingleResult(search{{aggregate.keyFieldDescriptor.namePascalCase}});
+            }
+            {{/if}}
+            {{/attached}}
         </script>
     </body>
 </html>
