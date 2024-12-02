@@ -2,7 +2,9 @@ forEach: Aggregate
 fileName: {{namePascalCase}}.js
 path: common/js
 ---
+{{#attached 'View' this}}
 let rowData = [];
+{{/attached}}
 $(document).ready(function(){
     var OPT = {
         Cols:[
@@ -147,7 +149,74 @@ function submit{{namePascalCase}}(data){
 }           
 {{/isRestRepository}}
 {{/commands}}
+{{#attached 'View' this}}
+{{#if queryOption.multipleResult}}
+function searchMultipleResult(params) {
+    // 모든 검색 조건이 비어있는지 확인
+    const allEmpty = {{#queryParameters}}!params.{{nameCamelCase}} {{^@last}}&&{{/@last}};{{/queryParameters}}
+
+    if (allEmpty) {
+        alert("검색할 내용을 입력하세요.");
+        return;
+    }
+    const queryParams = new URLSearchParams(params).toString();
+
+    $.ajax({
+        url: `https://localhost:8088/{{aggregate.namePlural}}?${queryParams}`,
+        method: 'GET',
+        headers: {
+            "Cache-Control": "no-cache",
+            "Pragma": "no-cache",
+            "Content-Type": "application/json"
+        },
+        success: function(results) {
+            if (results.length > 0) {
+                sheet.loadSearchData(results);
+            } else {
+                alert("해당 조건에 대한 결과가 없습니다.");
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("에러", error);
+            alert("데이터를 가져오는 중 오류가 발생했습니다.");
+        }
+    });
+}
+{{else}}
+function searchSingleResult(id){
+    const {{aggregate.keyFieldDescriptor.nameCamelCase}} = {{#checkKeyField aggregate.keyFieldDescriptor.className}}{{/checkKeyField}};
+
+    $.ajax({
+        url: `https://localhost:8088/{{/aggregate.namePlural}}/{{#fieldDescriptors}}{{#if isKey}}{{#addMustache aggregate.keyFieldDesctiptor.namePascalCase}}{{/addMustache}}{{/if}}{{/fieldDescriptors}}`,
+        method: 'GET',
+        headers: {
+            "Cache-Control": "no-cache",
+            "Pragma": "no-cache",
+            "Content-Type": "application/json"
+        },
+        success: function(result) {
+            if (result) {
+                sheet.loadSearchData([result]);
+            } else {
+                alert("해당 ID에 대한 결과가 없습니다.");
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("에러", error);
+            alert("데이터를 가져오는 중 오류가 발생했습니다.");
+        }
+    });
+}
+{{/if}}
+{{/attached}}
 <function>
+window.$HandleBars.registerHelper('checkKeyField', function (type) {
+    if(type === "String"){
+        return "id";
+    }else if(type === "Long" || type === "Integer" || type === "Double" || type === "BigDecimal" || type === "Float"){
+        return "parseInt(id, 10)";
+    }
+});
 window.$HandleBars.registerHelper('addMustache', function (name) {
     if(name){
         return `"${name}"`;
