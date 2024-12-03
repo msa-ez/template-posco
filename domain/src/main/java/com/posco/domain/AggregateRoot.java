@@ -217,46 +217,6 @@ window.$HandleBars.registerHelper('setDiscriminator', function (relations, name)
     }
 });
 
-window.$HandleBars.registerHelper('setOperations', function (commands, name, options) {
-    try {
-        if(commands == "undefined") {
-            return options.fn(this);
-        }
-        var isCmd = false;
-        for (var i = 0; i < commands.length; i ++ ) {
-            if(commands[i] != null) {
-                if (commands[i].name == name && commands[i].isRestRepository != true) {
-                    isCmd = true
-                }
-            }
-        }
-        if(isCmd) {
-            return options.inverse(this);
-        } else {
-            return options.fn(this);
-        }
-    } catch(e) {
-        console.log(e)
-    }
-});
-
-window.$HandleBars.registerHelper('correlationGetSet', function (setter, getter,options) {
-    let obj = {
-        source: null,
-        target: null
-    };
-   
-    if(setter && setter.fieldDescriptors){
-        obj.source = setter.fieldDescriptors.find(x=> x.isCorrelationKey);
-    }
-    if(getter && getter.fieldDescriptors){
-        obj.target = getter.fieldDescriptors.find(x => x.isCorrelationKey);
-    }
-    
-    return options.fn(obj);
-});
-
-
 window.$HandleBars.registerHelper('has', function (members) {
     try {
         return (members.length > 0);
