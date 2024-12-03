@@ -235,8 +235,8 @@ fileName: {{namePascalCase}}.html
                 }
             }
             {{#attached 'View' this}}
-            {{#if queryOption.multipleResult}}
-            function searchMultiple() {
+            {{#isQuery dataProjection}}
+            function search() {
                 {{#queryParameters}}
                 const search{{namePascalCase}} = document.getElementById('search{{namePascalCase}}').value;
                 {{/queryParameters}}
@@ -248,17 +248,19 @@ fileName: {{namePascalCase}}.html
                 };
                 searchMultipleResult(searchParams);
             }
-            {{else}}
-            function searchSingle() {
-                const search{{aggregate.keyFieldDescriptor.namePascalCase}} = document.getElementById('search{{aggregate.keyFieldDescriptor.namePascalCase}}').value;
-                searchSingleResult(search{{aggregate.keyFieldDescriptor.namePascalCase}});
-            }
-            {{/if}}
+            {{/isQuery}}
             {{/attached}}
         </script>
     </body>
 </html>
 <function>
+    window.$HandleBars.registerHelper('isQuery', function (mode, options) {
+        if(mode == 'query-for-aggregate'){
+            return options.fn(this);
+        }else{
+            return options.inverse(this);
+        }
+    });
     window.$HandleBars.registerHelper('findByAgg', function (sticker) {
         var path = '';
         var name = '';

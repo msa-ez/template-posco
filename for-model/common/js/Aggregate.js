@@ -150,15 +150,20 @@ function submit{{namePascalCase}}(data){
 {{/isRestRepository}}
 {{/commands}}
 {{#attached 'View' this}}
-{{#if queryOption.multipleResult}}
 function searchMultipleResult(params) {
-    // 모든 검색 조건이 비어있는지 확인
+    {{#if queryParameters}}
     const allEmpty = {{#queryParameters}}!params.{{nameCamelCase}} {{^@last}}&&{{/@last}};{{/queryParameters}}
-
+    
     if (allEmpty) {
         alert("검색할 내용을 입력하세요.");
         return;
     }
+    {{else}}
+    if (params) {
+        alert("검색할 내용을 입력하세요.");
+        return;
+    }
+    {{/if}}
     const queryParams = new URLSearchParams(params).toString();
 
     $.ajax({
@@ -182,32 +187,6 @@ function searchMultipleResult(params) {
         }
     });
 }
-{{else}}
-function searchSingleResult(id){
-    const {{aggregate.keyFieldDescriptor.nameCamelCase}} = {{#checkKeyField aggregate.keyFieldDescriptor.className}}{{/checkKeyField}};
-
-    $.ajax({
-        url: `https://localhost:8088/{{/aggregate.namePlural}}/{{#fieldDescriptors}}{{#if isKey}}{{#addMustache aggregate.keyFieldDesctiptor.namePascalCase}}{{/addMustache}}{{/if}}{{/fieldDescriptors}}`,
-        method: 'GET',
-        headers: {
-            "Cache-Control": "no-cache",
-            "Pragma": "no-cache",
-            "Content-Type": "application/json"
-        },
-        success: function(result) {
-            if (result) {
-                sheet.loadSearchData([result]);
-            } else {
-                alert("해당 ID에 대한 결과가 없습니다.");
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error("에러", error);
-            alert("데이터를 가져오는 중 오류가 발생했습니다.");
-        }
-    });
-}
-{{/if}}
 {{/attached}}
 <function>
 window.$HandleBars.registerHelper('checkKeyField', function (type) {
