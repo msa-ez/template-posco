@@ -107,8 +107,20 @@ fileName: {{namePascalCase}}.html
         <button type="button" onclick="openDialog('{{nameCamelCase}}')">{{#if displayName}}{{displayName}}{{else}}{{name}}{{/if}}</button>
         {{/isRestRepository}}
         {{/commands}}
-        <div id="sheet_DIV" style="width:100%;height:500px"></div>
 
+        {{#attached 'View' this}}
+        <div>
+        {{#isQuery dataProjection}}
+        {{#queryParameters}}
+            <label for="search{{namePascalCase}}">{{namePascalCase}}:</label>
+            <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="search{{namePascalCase}}" name="search{{namePascalCase}}"><br><br>
+        {{/queryParameters}}
+            <button type="button" onclick="search()">검색</button>
+        </div>
+        <br>
+        {{/isQuery}}
+        {{/attached}}
+        <div id="sheet_DIV" style="width:100%;height:500px"></div>
         {{#commands}}
         {{^isRestRepository}}
         <!-- The Modal -->
@@ -217,10 +229,33 @@ fileName: {{namePascalCase}}.html
                     sidebar.style.width = "250px";
                 }
             }
+            {{#attached 'View' this}}
+            {{#isQuery dataProjection}}
+            function search() {
+                {{#queryParameters}}
+                const search{{namePascalCase}} = document.getElementById('search{{namePascalCase}}').value;
+                {{/queryParameters}}
+
+                const searchParams = {
+                    {{#queryParameters}}
+                    {{nameCamelCase}}: search{{namePascalCase}},
+                    {{/queryParameters}}
+                };
+                searchMultipleResult(searchParams);
+            }
+            {{/isQuery}}
+            {{/attached}}
         </script>
     </body>
 </html>
 <function>
+    window.$HandleBars.registerHelper('isQuery', function (mode, options) {
+        if(mode == 'query-for-aggregate'){
+            return options.fn(this);
+        }else{
+            return options.inverse(this);
+        }
+    });
     window.$HandleBars.registerHelper('findByAgg', function (sticker) {
         var path = '';
         var name = '';

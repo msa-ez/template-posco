@@ -2,14 +2,28 @@ forEach: Aggregate
 fileName: {{namePascalCase}}.js
 path: common/js
 ---
+{{#attached 'View' this}}
+let rowData = [];
+{{/attached}}
 $(document).ready(function(){
     var OPT = {
+        "Cfg": {
+            "SearchMode": 2,
+            "HeaderMerge": 3,
+            "MessageWidth": 300,
+        },
+        "Def": {
+            "Row": {
+            "CanFormula": true
+            }
+        },
         Cols:[
             {{#aggregateRoot}}
             {{#fieldDescriptors}}
             {{#if isVO}}
             {{else}}
             {{#if isKey}}
+            {"Header": "No", "Name": "No", "Type": "{{#checkFieldType className isVO namePascalCase}}{{/checkFieldType}}", "Align": "Center", "Width":140, "CanEdit":0},
             {{else}}
             {"Header": "{{#checkName nameCamelCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVO namePascalCase}}{{/checkFieldType}}",{{#isDate className}}"Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요",{{/isDate}}{{#isEnum isVO className ../entities}} "Enum": {{/isEnum}}{{#checkEnum className isVO ../entities}}{{/checkEnum}}{{#isEnum isVO className ../entities}},{{/isEnum}}{{#isEnum isVO className ../entities}} "EnumKeys": {{/isEnum}}{{#checkEnum className isVO ../entities}}{{/checkEnum}}{{#isEnum isVO className ../entities}},{{/isEnum}} "Align": "Center", "Width":140, "CanEdit":1},  
             {{/if}}
@@ -44,17 +58,17 @@ function retrieve(){
     }).then(res => {
         return res.json();
     }).then(json => {
+        json.forEach(row => {
+            row.No = row.{{#aggregateRoot.fieldDescriptors}}{{#if isKey}}{{nameCamelCase}}{{/if}}{{/aggregateRoot.fieldDescriptors}}
         {{#aggregateRoot}}
         {{#fieldDescriptors}}
         {{#if isVO}}
-        {{#isVO isVO}}json.forEach(row => {
-        {{/isVO}}
         {{#disassembleVO ../entities}}{{/disassembleVO}}
-        {{#isVO isVO}}
-        });{{/isVO}}
         {{/if}}
         {{/fieldDescriptors}}
         {{/aggregateRoot}}
+        });
+        rowData = json;
         sheet.loadSearchData(json)
     }).catch(error => {
         console.error("에러", error);
@@ -71,18 +85,18 @@ function deleteData(){
 
 function save(){
     var rows = sheet.getSaveJson()?.data;
-
+    rows.forEach(row => {
+        rows.{{#aggregateRoot.fieldDescriptors}}{{#if isKey}}{{nameCamelCase}}{{/if}}{{/aggregateRoot.fieldDescriptors}} = rows.No
+        delete rows.No
     {{#aggregateRoot}}
     {{#fieldDescriptors}}
     {{#if isVO}}
-    {{#isVO isVO}}rows.forEach(row => {
-    {{/isVO}}
     {{#combineVO ../entities}}{{/combineVO}}
-    {{#isVO isVO}}
-    });{{/isVO}}
     {{/if}}
     {{/fieldDescriptors}}
     {{/aggregateRoot}}
+    });
+    rowData = rows;
 
     for(var i=0; i<rows.length;i++){
         if(rows[i].id.includes("AR")){
@@ -145,7 +159,62 @@ function submit{{namePascalCase}}(data){
 }           
 {{/isRestRepository}}
 {{/commands}}
+{{#attached 'View' this}}
+{{#isQuery dataProjection}}
+function searchResult(params) {
+    {{#if queryParameters}}
+    const allEmpty = {{#queryParameters}}!params.{{nameCamelCase}} {{^@last}}&&{{/@last}}{{/queryParameters}};
+    
+    if (allEmpty) {
+        alert("검색할 내용을 입력하세요.");
+        return;
+    }
+    {{else}}
+    if (params) {
+        alert("검색할 내용을 입력하세요.");
+        return;
+    }
+    {{/if}}
+    const queryParams = new URLSearchParams(params).toString();
+
+    $.ajax({
+        url: `https://localhost:8088/{{aggregate.namePlural}}?${queryParams}`,
+        method: 'GET',
+        headers: {
+            "Cache-Control": "no-cache",
+            "Pragma": "no-cache",
+            "Content-Type": "application/json"
+        },
+        success: function(results) {
+            if (results.length > 0) {
+                sheet.loadSearchData(results);
+            } else {
+                alert("해당 조건에 대한 결과가 없습니다.");
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("에러", error);
+            alert("데이터를 가져오는 중 오류가 발생했습니다.");
+        }
+    });
+}
+{{/isQuery}}
+{{/attached}}
 <function>
+window.$HandleBars.registerHelper('isQuery', function (mode, options) {
+    if(mode == 'query-for-aggregate'){
+        return options.fn(this);
+    }else{
+        return options.inverse(this);
+    }
+});
+window.$HandleBars.registerHelper('checkKeyField', function (type) {
+    if(type === "String"){
+        return "id";
+    }else if(type === "Long" || type === "Integer" || type === "Double" || type === "BigDecimal" || type === "Float"){
+        return "parseInt(id, 10)";
+    }
+});
 window.$HandleBars.registerHelper('addMustache', function (name) {
     if(name){
         return `"${name}"`;
