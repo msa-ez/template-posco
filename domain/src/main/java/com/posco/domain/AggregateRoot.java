@@ -38,20 +38,6 @@ public class {{namePascalCase}} {{#checkExtends aggregateRoot.entities.relations
     }
     {{/if}}
     {{/commands}}
-
-    {{#aggregateRoot.operations}}
-    {{#setOperations ../commands name}}
-    {{#isOverride}}
-    @Override
-    {{/isOverride}}
-    {{^isRootMethod}}
-    public {{returnType}} {{name}}(){
-        // 비즈니스 로직 구현
-        throw new UnsupportedOperationException("Not implemented");
-    }
-    {{/isRootMethod}}
-    {{/setOperations}}
-    {{/aggregateRoot.operations}}
 }
 
 <function>
