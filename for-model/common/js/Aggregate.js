@@ -306,12 +306,14 @@ window.$HandleBars.registerHelper('isEnum', function (voField, type, field, opti
         var relation = field.relations
         if(relation){
             for(var i = 0; i < relation.length; i++){
-                if(relation[i].targetElement){
+                if(relation[i] && relation[i].targetElement){
                     if(relation[i].targetElement.name){
                         if(type === relation[i].targetElement.name){
                             return options.fn(this);
                             
                         }
+                    }else{
+                        return
                     }
                 }
             }
