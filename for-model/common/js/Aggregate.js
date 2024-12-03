@@ -45,6 +45,7 @@ $(document).ready(function(){
        el:"sheet_DIV",
        options:OPT
    });
+   
 });
 
 function retrieve(){
@@ -233,7 +234,7 @@ window.$HandleBars.registerHelper('isDate', function (type, options) {
     }
     return options.inverse(this);
 });
-window.$HandleBars.registerHelper('isVO', function (vo, options) {
+window.$HandleBars.registerHelper('canVO', function (vo, options) {
     if(vo){
         return options.fn(this);
     }
