@@ -150,6 +150,7 @@ function submit{{namePascalCase}}(data){
 {{/isRestRepository}}
 {{/commands}}
 {{#attached 'View' this}}
+{{#isQuery dataProjection}}
 function searchMultipleResult(params) {
     {{#if queryParameters}}
     const allEmpty = {{#queryParameters}}!params.{{nameCamelCase}} {{^@last}}&&{{/@last}};{{/queryParameters}}
@@ -187,8 +188,16 @@ function searchMultipleResult(params) {
         }
     });
 }
+{{/if}}
 {{/attached}}
 <function>
+window.$HandleBars.registerHelper('isQuery', function (mode, options) {
+    if(mode == 'query-for-aggregate'){
+        return options.fn(this);
+    }else{
+        return options.inverse(this);
+    }
+});
 window.$HandleBars.registerHelper('checkKeyField', function (type) {
     if(type === "String"){
         return "id";
