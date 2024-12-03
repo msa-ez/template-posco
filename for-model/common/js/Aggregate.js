@@ -188,7 +188,7 @@ function searchResult(params) {
         }
     });
 }
-{{/isQuerys}}
+{{/isQuery}}
 {{/attached}}
 <function>
 window.$HandleBars.registerHelper('isQuery', function (mode, options) {
