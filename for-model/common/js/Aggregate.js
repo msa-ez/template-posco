@@ -151,7 +151,7 @@ function submit{{namePascalCase}}(data){
 {{/commands}}
 {{#attached 'View' this}}
 {{#isQuery dataProjection}}
-function searchMultipleResult(params) {
+function searchResult(params) {
     {{#if queryParameters}}
     const allEmpty = {{#queryParameters}}!params.{{nameCamelCase}} {{^@last}}&&{{/@last}};{{/queryParameters}}
     
@@ -188,7 +188,7 @@ function searchMultipleResult(params) {
         }
     });
 }
-{{/isQuery}}
+{{/isQuerys}}
 {{/attached}}
 <function>
 window.$HandleBars.registerHelper('isQuery', function (mode, options) {

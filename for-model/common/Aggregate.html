@@ -110,22 +110,17 @@ fileName: {{namePascalCase}}.html
 
         {{#attached 'View' this}}
         <div>
-        {{#if queryOption.multipleResult}}
+        {{#isQuery dataProjection}}
         {{#queryParameters}}
             <label for="search{{namePascalCase}}">{{namePascalCase}}:</label>
             <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="search{{namePascalCase}}" name="search{{namePascalCase}}"><br><br>
         {{/queryParameters}}
-        {{else}}
-            
-            <label for="search{{aggregate.keyFieldDescriptor.namePascalCase}}">{{aggregate.keyFieldDescriptor.namePascalCase}}:</label>
-            <input type="{{#checkParameterType aggregate.keyFieldDescriptor.className}}{{/checkParameterType}}" id="search{{aggregate.keyFieldDescriptor.namePascalCase}}" name="search{{aggregate.keyFieldDescriptor.namePascalCase}}"><br><br>
-        {{/if}}
-            <button type="button" onclick="{{#if queryOption.multipleResult}}searchMultiple(){{else}}searchSingle(){{/if}}">검색</button>
+            <button type="button" onclick="search()">검색</button>
         </div>
         <br>
-            {{/attached}}
+        {{/isQuery}}
+        {{/attached}}
         <div id="sheet_DIV" style="width:100%;height:500px"></div>
-
         {{#commands}}
         {{^isRestRepository}}
         <!-- The Modal -->
