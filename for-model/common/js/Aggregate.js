@@ -7,6 +7,16 @@ let rowData = [];
 {{/attached}}
 $(document).ready(function(){
     var OPT = {
+        "Cfg": {
+            "SearchMode": 2,
+            "HeaderMerge": 3,
+            "MessageWidth": 300,
+        },
+        "Def": {
+            "Row": {
+            "CanFormula": true
+            }
+        },
         Cols:[
             {{#aggregateRoot}}
             {{#fieldDescriptors}}
@@ -153,7 +163,7 @@ function submit{{namePascalCase}}(data){
 {{#isQuery dataProjection}}
 function searchResult(params) {
     {{#if queryParameters}}
-    const allEmpty = {{#queryParameters}}!params.{{nameCamelCase}} {{^@last}}&&{{/@last}};{{/queryParameters}}
+    const allEmpty = {{#queryParameters}}!params.{{nameCamelCase}} {{^@last}}&&{{/@last}}{{/queryParameters}};
     
     if (allEmpty) {
         alert("검색할 내용을 입력하세요.");
