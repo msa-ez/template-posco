@@ -136,21 +136,17 @@ fileName: {{namePascalCase}}.html
                     <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
                     {{/isDefaultType}}
                     {{#isEnumType className namePascalCase isVO}}
-                    {{#../entities}}
-                    {{#relations}}
-                    {{#targetElement}}
-                    {{#checkEquals ../../../../fieldDescriptors name}}
                     <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
                     <select id="{{nameCamelCase}}" name="{{nameCamelCase}}">
-                        {{#items}}
+                        {{#../../aggregateRoot.entities.relations}}
+                        {{#checkEquals ../../../fieldDescriptors name}}
+                        {{#targetElemen.items}}
                         <option value="{{value}}">{{value}}</option>
-                        {{/items}}
+                        {{/targetElement.items}}
+                        {{/checkEquals}}
+                        {{/../../aggregateRoot.entities.relations}}
                     </select>
                     <br><br>
-                    {{/checkEquals}}
-                    {{/targetElement}}
-                    {{/relations}}
-                    {{/../entities}}
                     {{/isEnumType}}
                     {{#isVOType isVO}}
                     <label for="{{nameCamelCase}}">{{namePascalCase}}</label>
