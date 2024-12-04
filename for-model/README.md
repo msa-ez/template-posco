@@ -43,7 +43,7 @@ location /{Aggregate.nameCamelCase} {
 }
 ```
 
-### 4. Run nginx
+### 4. Running Frontend
 
 ```
 nginx //start nginx
