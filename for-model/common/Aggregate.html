@@ -135,20 +135,18 @@ fileName: {{namePascalCase}}.html
                     <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
                     <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
                     {{/isDefaultType}}
-                    {{#isEnumType className namePascalCase isVO}}
+                    {{#../../aggregateRoot.entities.relations}}
+                    {{#checkEquals ../../../aggregateRoot.fieldDescriptors targetElement.name}}
                     <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
                     <select id="{{nameCamelCase}}" name="{{nameCamelCase}}">
-                        {{#../../aggregateRoot.entities.relations}}
-                        {{#checkEquals ../../../aggregateRoot.fieldDescriptors targetElement.name}}
                         {{#targetElement.items}}
                         <option value="{{value}}">{{value}}</option>
                         {{/targetElement.items}}
-                        {{/checkEquals}}
-                        {{/../../aggregateRoot.entities.relations}}
                     </select>
                     <br><br>
-                    {{/isEnumType}}
-                    {{#isVOType isVO}}
+                    {{/checkEquals}}
+                    {{/../../aggregateRoot.entities.relations}}
+                    {{#if isVO}}
                     <label for="{{nameCamelCase}}">{{namePascalCase}}</label>
                     {{#../entities.relations}}
                     {{#targetElement.fieldDescriptors}}
@@ -156,7 +154,7 @@ fileName: {{namePascalCase}}.html
                     <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
                     {{/targetElement.fieldDescriptors}}
                     {{/../entities.relations}}
-                    {{/isVOType}}
+                    {{/if}}
                     {{/fieldDescriptors}}
                     {{/aggregateRoot}}
                     {{#if isList}}

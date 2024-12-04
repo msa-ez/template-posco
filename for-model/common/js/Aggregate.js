@@ -37,14 +37,50 @@ $(document).ready(function(){
             {{/if}}
             {{/fieldDescriptors}}
             {{/aggregateRoot}}
-       ]
-   };
+        ],
+        Events: {
+            onClick: function(evtParam) {
+                if (evtParam.col === "requesterName") {
+                    console.log("requesterName clicked", evtParam);
+                    var originalRowData = rowData.find(item => item.No === evtParam.row.No);
+                    var requesterNames = originalRowData.requesterName;
+                    var detailData = [];
+        
+                    if (Array.isArray(requesterNames)) {
+                        requesterNames.forEach(function(name) {
+                            detailData.push({ "requesterName": name });
+                        });
+                    } else {
+                        detailData.push({ "requesterName": requesterNames });
+                    }
+                    detailSheet.loadSearchData(detailData);
+                }
+            }
+        }
+    };
 
-   IBSheet.create({
+    var detailSheetOptions = {
+        "Cfg": {
+            "SearchMode": 2,
+            "HeaderMerge": 3,
+            "MessageWidth": 300,
+        },
+        Cols:[
+            {"Header": "requesterName", "Name": "requesterName", "Type": "Text", "Align": "Center", "Width":140, "CanEdit":0}
+        ]
+    };
+
+    IBSheet.create({
        id:"sheet",
        el:"sheet_DIV",
-       options:OPT
-   });
+       options: OPT
+    });
+
+    IBSheet.create({
+        id:"detailSheet",
+        el:"detailSheet_DIV",
+        options: detailSheetOptions
+    });
    
 });
 
