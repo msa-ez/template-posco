@@ -58,7 +58,8 @@ $(document).ready(function(){
             }
         }
     };
-
+    {{#aggregateRoot.fieldDescriptors}}
+    {{#if isList}}
     var detailSheetOptions = {
         "Cfg": {
             "SearchMode": 2,
@@ -66,21 +67,26 @@ $(document).ready(function(){
             "MessageWidth": 300,
         },
         Cols:[
-            {"Header": "requesterName", "Name": "requesterName", "Type": "Text", "Align": "Center", "Width":140, "CanEdit":0}
+            {"Header": "{{nameCamelCase}}", "Name": "{{nameCamelCase}}", "Type": "Text", "Align": "Center", "Width":140, "CanEdit":0}
         ]
     };
+    {{/if}}
+    {{/aggregateRoot.fieldDescriptors}}
 
     IBSheet.create({
        id:"sheet",
        el:"sheet_DIV",
        options: OPT
     });
-
+    {{#aggregateRoot.fieldDescriptors}}
+    {{#if isList}}
     IBSheet.create({
         id:"detailSheet",
         el:"detailSheet_DIV",
         options: detailSheetOptions
     });
+    {{/if}}
+    {{/aggregateRoot.fieldDescriptors}}
    
 });
 
@@ -238,6 +244,13 @@ function searchResult(params) {
 {{/isQuery}}
 {{/attached}}
 <function>
+window.$HandleBars.registerHelper('checkList', function (listField, options) {
+    if(listField){
+        return options.fn(this);
+    }else{
+        return options.inverse(this);
+    }
+});
 window.$HandleBars.registerHelper('isQuery', function (mode, options) {
     if(mode == 'query-for-aggregate'){
         return options.fn(this);
