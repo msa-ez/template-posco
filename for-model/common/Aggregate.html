@@ -177,7 +177,7 @@ fileName: {{namePascalCase}}.html
                 <h2>{{namePascalCase}}</h2>
                 <form id="{{nameCamelCase}}Form">
                     {{#fieldDescriptors}}
-                    {{#isDefaultType className namePascalCase isVO}}
+                    {{#isDefaultType className namePascalCase isVO isList}}
                     <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
                     <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
                     {{/isDefaultType}}
@@ -239,7 +239,7 @@ fileName: {{namePascalCase}}.html
             {{^isRestRepository}}
             function {{nameCamelCase}}() {
                 {{#fieldDescriptors}}
-                {{#isDefaultType className namePascalCase isVO}}
+                {{#isDefaultType className namePascalCase isVO isList}}
                 const {{nameCamelCase}} = document.getElementById('{{nameCamelCase}}').value;
                 {{/isDefaultType}}
                 {{#isEnumType className namePascalCase isVO}}
