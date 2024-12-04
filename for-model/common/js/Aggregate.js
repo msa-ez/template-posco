@@ -127,7 +127,22 @@ function deleteData(){
     sheet.deleteRow(sheet.getFocusedRow());
 }
 
-function save(){
+function save(data){
+    var rows = data;
+    rows.id = rows.No
+    delete rows.No
+
+    $.ajax({
+        url: "/{{namePlural}}",
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(rows)
+    });
+    retrieve();
+
+}
+
+function saveRow(){
     var rows = sheet.getSaveJson()?.data;
     rows.forEach(row => {
         rows.{{#aggregateRoot.fieldDescriptors}}{{#if isKey}}{{nameCamelCase}}{{/if}}{{/aggregateRoot.fieldDescriptors}} = rows.No
@@ -147,15 +162,6 @@ function save(){
             rows[i].id = rows[i].id.replace(/AR/g, "");
         }
         switch(rows[i].STATUS){
-            case "Added":
-                var saveRow = rows[i];
-                $.ajax({
-                    url: "/{{namePlural}}",
-                    method: "POST",
-                    contentType: "application/json",
-                    data: JSON.stringify(saveRow)
-                });
-                break;
             case "Changed":
                 var rowObj = sheet.getRowById(rows[i].id);
                 var changedData = JSON.parse(sheet.getChangedData(rowObj))["Changes"][0];
