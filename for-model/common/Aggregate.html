@@ -345,7 +345,7 @@ fileName: {{namePascalCase}}.html
     </body>
 </html>
 <function>
-    window.$HandleBars.registerHelper('checkEquals', function (aggField, name, options) {
+    window.$HandleBars.registerHelper('checkEquals', function (aggField, test, name, options) {
         for(var i = 0; i < aggField.length; i++){
             if(aggField[i].namePascalCase == name && !aggField[i].isVO){
                 return options.fn(this);
