@@ -140,7 +140,7 @@ fileName: {{namePascalCase}}.html
                     <select id="{{nameCamelCase}}" name="{{nameCamelCase}}">
                         {{#../entities}}
                         {{#relations}}
-                        {{#checkEquals ../../fieldDescriptors targetElement.name}}
+                        {{#checkEquals ../../../../aggregateRoot.fieldDescriptors targetElement.name}}
                         {{#targetElement.items}}
                         <option value="{{value}}">{{value}}</option>
                         {{/targetElement.items}}
