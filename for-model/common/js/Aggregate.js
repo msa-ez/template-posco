@@ -40,26 +40,28 @@ $(document).ready(function(){
         ],
         Events: {
             onClick: function(evtParam) {
-                if (evtParam.col === "requesterName") {
-                    console.log("requesterName clicked", evtParam);
-                    var originalRowData = rowData.find(item => item.No === evtParam.row.No);
-                    var requesterNames = originalRowData.requesterName;
-                    var detailData = [];
-        
-                    if (Array.isArray(requesterNames)) {
-                        requesterNames.forEach(function(name) {
-                            detailData.push({ "requesterName": name });
+                var originalRowData = rowData.find(item => item.No === evtParam.row.No);
+                var detailData = [];
+                {{#aggregateRoot.fieldDescriptors}}
+                {{#if isList}}
+                if (evtParam.col === "{{nameCamelCase}}") {
+                    var {{nameCamelCase}}Fields = originalRowData.{{nameCamelCase}};
+                    if (Array.isArray({{nameCamelCase}}Fields)) {
+                        {{nameCamelCase}}Fields.forEach(function(data) {
+                            detailData.push({ "{{nameCamelCase}}": data });
                         });
                     } else {
-                        detailData.push({ "requesterName": requesterNames });
+                        detailData.push({ "{{nameCamelCase}}": {{nameCamelCase}}Fields });
                     }
-                    detailSheet.loadSearchData(detailData);
                 }
+                {{/if}}
+                {{/aggregateRoot.fieldDescriptors}}
+        
+                detailSheet.loadSearchData(detailData);
             }
         }
     };
-    {{#aggregateRoot.fieldDescriptors}}
-    {{#if isList}}
+    
     var detailSheetOptions = {
         "Cfg": {
             "SearchMode": 2,
@@ -67,26 +69,25 @@ $(document).ready(function(){
             "MessageWidth": 300,
         },
         Cols:[
-            {"Header": "{{nameCamelCase}}", "Name": "{{nameCamelCase}}", "Type": "Text", "Align": "Center", "Width":140, "CanEdit":0}
+            {{#aggregateRoot.fieldDescriptors}}
+            {{#if isList}}
+            {"Header": "{{nameCamelCase}}", "Name": "{{nameCamelCase}}", "Type": "Text", "Align": "Center", "Width":140, "CanEdit":0},
+            {{/if}}
+            {{/aggregateRoot.fieldDescriptors}}
         ]
     };
-    {{/if}}
-    {{/aggregateRoot.fieldDescriptors}}
 
     IBSheet.create({
        id:"sheet",
        el:"sheet_DIV",
        options: OPT
     });
-    {{#aggregateRoot.fieldDescriptors}}
-    {{#checkList isList}}
+    
     IBSheet.create({
         id:"detailSheet",
         el:"detailSheet_DIV",
         options: detailSheetOptions
     });
-    {{/checkList}}
-    {{/aggregateRoot.fieldDescriptors}}
    
 });
 
@@ -244,13 +245,6 @@ function searchResult(params) {
 {{/isQuery}}
 {{/attached}}
 <function>
-window.$HandleBars.registerHelper('checkList', function (listField, options) {
-    if(listField){
-        return options.fn(this);
-    }else{
-        return options.inverse(this);
-    }
-});
 window.$HandleBars.registerHelper('isQuery', function (mode, options) {
     if(mode == 'query-for-aggregate'){
         return options.fn(this);
