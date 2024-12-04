@@ -40,9 +40,9 @@ location / {
     try_files /common/MainPage.html =404;
 }
 {{#boundedContexts.aggregates}}
-location /{Aggregate.nameCamelCase} {
+location /{{nameCamelCase}} {
     root $gitpod_repo_root;
-    try_files /common/{Aggregate.namePascalCase}.html =404;
+    try_files /common/{{namePascalCase}}.html =404;
 }
 {{/boundedContexts.aggregates}}
 ```
