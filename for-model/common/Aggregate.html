@@ -129,7 +129,8 @@ fileName: {{namePascalCase}}.html
                 <span class="close" onclick="close{{namePascalCase}}Dialog()">&times;</span>
                 <h2>{{namePascalCase}}</h2>
                 <form id="{{nameCamelCase}}Form">
-                    {{#aggregateRoot.fieldDescriptors}}
+                    {{#aggregateRoot}}
+                    {{#fieldDescriptors}}
                     {{#isDefaultType className namePascalCase isVO isList}}
                     <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
                     <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
@@ -154,7 +155,8 @@ fileName: {{namePascalCase}}.html
                     {{/targetElement.fieldDescriptors}}
                     {{/../entities.relations}}
                     {{/isVOType}}
-                    {{/aggregateRoot.fieldDescriptors}}
+                    {{/fieldDescriptors}}
+                    {{/aggregateRoot}}
                     {{#if isList}}
                     <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
                     <div id="inputList">
