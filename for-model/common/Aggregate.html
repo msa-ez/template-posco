@@ -349,6 +349,7 @@ fileName: {{namePascalCase}}.html
         for(var i = 0; i < aggField.length; i++){
             if(aggField[i].namePascalCase == name && !aggField[i].isVO){
                 return options.fn(this);
+                break;
             }
         }
         return options.inverse(this);
