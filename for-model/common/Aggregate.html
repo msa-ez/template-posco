@@ -139,9 +139,11 @@ fileName: {{namePascalCase}}.html
                     <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
                     <select id="{{nameCamelCase}}" name="{{nameCamelCase}}">
                     {{#../entities.relations}}
-                    {{#targetElement.items}}
-                    <option value="{{value}}">{{value}}</option>
-                    {{/targetElement.items}}
+                    {{#checkEquals ../../fieldDescriptors targetElement}}
+                        {{#targetElement.items}}
+                        <option value="{{value}}">{{value}}</option>
+                        {{/targetElement.items}}
+                    {{/checkEquals}}
                     {{/../entities.relations}}
                     </select>
                     <br><br>
@@ -343,12 +345,20 @@ fileName: {{namePascalCase}}.html
     </body>
 </html>
 <function>
-    window.$HandleBars.registerHelper('checkEquals', function (aggField, name, options) {
-        const match = aggField.find(field => field.namePascalCase === name && !field.isVO);
-        if (match) {
-            return options.fn(this);
+    window.$HandleBars.registerHelper('checkEquals', function (aggField, enumField) {
+        for (var i = 0; i < aggField.length; i++) {
+            if (aggField[i].namePascalCase == enumField.name && !aggField[i].isVO) {
+                var optionsHtml = '';
+                for (var j = 0; j < enumField.items.length; j++) {
+                    optionsHtml += `<option value="${enumField.items[j].value}">${enumField.items[j].value}</option>`;
+                    if (j < enumField.items.length - 1) {
+                        optionsHtml += '\n';
+                    }
+                }
+                return optionsHtml;
+
+            }
         }
-        return options.inverse(this);
     });
     window.$HandleBars.registerHelper('isQuery', function (mode, options) {
         if(mode == 'query-for-aggregate'){
