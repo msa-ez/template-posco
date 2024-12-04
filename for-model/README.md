@@ -1,5 +1,3 @@
-forEach: Model
----
 ### 1. Install nginx
 
 ```
