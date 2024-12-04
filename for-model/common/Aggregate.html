@@ -139,7 +139,7 @@ fileName: {{namePascalCase}}.html
                     <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
                     <select id="{{nameCamelCase}}" name="{{nameCamelCase}}">
                     {{#../entities.relations}}
-                    {{#checkEquals ../../../fieldDescriptors targetElement.name}}
+                    {{#checkEquals ../../fieldDescriptors targetElement.name}}
                         {{#targetElement.items}}
                         <option value="{{value}}">{{value}}</option>
                         {{/targetElement.items}}
@@ -346,11 +346,9 @@ fileName: {{namePascalCase}}.html
 </html>
 <function>
     window.$HandleBars.registerHelper('checkEquals', function (aggField, name, options) {
-        for(var i = 0; i < aggField.length; i++){
-            if(aggField[i].namePascalCase == name && !aggField[i].isVO){
-                return options.fn(this);
-                break;
-            }
+        const match = aggField.find(field => field.namePascalCase === name && !field.isVO);
+        if (match) {
+            return options.fn(this);
         }
         return options.inverse(this);
     });
