@@ -136,17 +136,21 @@ fileName: {{namePascalCase}}.html
                     <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
                     {{/isDefaultType}}
                     {{#isEnumType className namePascalCase isVO}}
+                    {{#../entities}}
+                    {{#relations}}
+                    {{#targetElement}}
+                    {{#checkEquals ../../../../fieldDescriptors name}}
                     <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
                     <select id="{{nameCamelCase}}" name="{{nameCamelCase}}">
-                    {{#../entities.relations}}
-                    {{#checkEquals ../../fieldDescriptors targetElement}}
-                        {{#targetElement.items}}
+                        {{#items}}
                         <option value="{{value}}">{{value}}</option>
-                        {{/targetElement.items}}
-                    {{/checkEquals}}
-                    {{/../entities.relations}}
+                        {{/items}}
                     </select>
                     <br><br>
+                    {{/checkEquals}}
+                    {{/targetElement}}
+                    {{/relations}}
+                    {{/../entities}}
                     {{/isEnumType}}
                     {{#isVOType isVO}}
                     <label for="{{nameCamelCase}}">{{namePascalCase}}</label>
@@ -345,20 +349,14 @@ fileName: {{namePascalCase}}.html
     </body>
 </html>
 <function>
-    window.$HandleBars.registerHelper('checkEquals', function (aggField, enumField) {
-        for (var i = 0; i < aggField.length; i++) {
-            if (aggField[i].namePascalCase == enumField.name && !aggField[i].isVO) {
-                var optionsHtml = '';
-                for (var j = 0; j < enumField.items.length; j++) {
-                    optionsHtml += `<option value="${enumField.items[j].value}">${enumField.items[j].value}</option>`;
-                    if (j < enumField.items.length - 1) {
-                        optionsHtml += '\n';
-                    }
-                }
-                return optionsHtml;
-
+    window.$HandleBars.registerHelper('checkEquals', function (aggField, name, options) {
+        for(var i = 0; i < aggField.length; i++){
+            if(aggField[i].namePascalCase == name && !aggField[i].isVO){
+                return options.fn(this);
+                break;
             }
         }
+        return options.inverse(this);
     });
     window.$HandleBars.registerHelper('isQuery', function (mode, options) {
         if(mode == 'query-for-aggregate'){
