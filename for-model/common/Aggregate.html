@@ -138,13 +138,15 @@ fileName: {{namePascalCase}}.html
                     {{#isEnumType className namePascalCase isVO}}
                     <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
                     <select id="{{nameCamelCase}}" name="{{nameCamelCase}}">
-                        {{#../entities.relations}}
-                        {{#checkEquals ../fieldDescriptors targetElement.name}}
+                        {{#../entities}}
+                        {{#relations}}
+                        {{#checkEquals ../../fieldDescriptors targetElement.name}}
                         {{#targetElement.items}}
                         <option value="{{value}}">{{value}}</option>
                         {{/targetElement.items}}
                         {{/checkEquals}}
-                        {{/../entities.relations}}
+                        {{/relations}}
+                        {{/../entities}}
                     </select>
                     <br><br>
                     {{/isEnumType}}
