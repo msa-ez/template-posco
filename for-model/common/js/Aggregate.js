@@ -78,15 +78,13 @@ $(document).ready(function(){
        el:"sheet_DIV",
        options: OPT
     });
-    {{#aggregateRoot.fieldDescriptors}}
-    {{#if isList}}
+    {{#if aggregateRoot.fieldDescriptors.isList}}
     IBSheet.create({
         id:"detailSheet",
         el:"detailSheet_DIV",
         options: detailSheetOptions
     });
     {{/if}}
-    {{/aggregateRoot.fieldDescriptors}}
    
 });
 
