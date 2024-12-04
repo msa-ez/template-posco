@@ -100,7 +100,7 @@ fileName: {{namePascalCase}}.html
         <p>{{namePascalCase}}</p>
         <button type="button" class='buttonLabelSearch' onclick="retrieve()">조회</button>
         <button type="button" class='buttonLabelSave' onclick="save()">저장</button>
-        <button type="button" class='buttonLabelAddRow' onclick="addData()">신규</button>
+        <button type="button" class='buttonLabelAddRow' onclick="open{{namePascalCase}}Dialog()">신규</button>
         <button type="button" class='buttonLabelDeleteRow' onclick="deleteData()">삭제</button>
         {{#commands}}
         {{^isRestRepository}}
@@ -121,6 +121,53 @@ fileName: {{namePascalCase}}.html
         {{/isQuery}}
         {{/attached}}
         <div id="sheet_DIV" style="width:100%;height:500px"></div>
+        <div id="detailSheet_DIV" style="width:100%;height:100%"></div>
+
+        <!-- 등록 Dialog -->
+        <div id="{{nameCamelCase}}Dialog" style="z-index:99;" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="close{{namePascalCase}}Dialog()">&times;</span>
+                <h2>{{namePascalCase}}</h2>
+                <form id="{{nameCamelCase}}Form">
+                    {{#aggregateRoot.fieldDescriptors}}
+                    {{#isDefaultType className namePascalCase isVO isList}}
+                    <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
+                    <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
+                    {{/isDefaultType}}
+                    {{#isEnumType className namePascalCase isVO}}
+                    <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
+                    <select id="{{nameCamelCase}}" name="{{nameCamelCase}}">
+                        {{#../entities.relations}}
+                        {{#targetElement.items}}
+                        <option value="{{value}}">{{value}}</option>
+                        {{/targetElement.items}}
+                        {{/../entities.relations}}
+                    </select>
+                    <br><br>
+                    {{/isEnumType}}
+                    {{#isVOType isVO}}
+                    <label for="{{nameCamelCase}}">{{namePascalCase}}</label>
+                    {{#../entities.relations}}
+                    {{#targetElement.fieldDescriptors}}
+                    <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
+                    <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
+                    {{/targetElement.fieldDescriptors}}
+                    {{/../entities.relations}}
+                    {{/isVOType}}
+                    {{/aggregateRoot.fieldDescriptors}}
+                    {{#if isList}}
+                    <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
+                    <div id="inputList">
+                        <div class="input-container">
+                            <input type="text" name="{{nameCamelCase}}[]" placeholder="{{namePascalCase}}"><br>
+                        </div>
+                    </div><br>
+                    <button type="button" onclick="addInput('{{nameCamelCase}}')">Add</button><br><br>
+                    {{/if}}
+                    <button type="button" onclick="save{{namePascalCase}}()">Register</button>
+                </form>
+            </div>
+        </div>
         {{#commands}}
         {{^isRestRepository}}
         <!-- The Modal -->
@@ -168,6 +215,12 @@ fileName: {{namePascalCase}}.html
         {{/commands}}
 
         <script>
+            function open{{namePascalCase}}Dialog() {
+                openDialog('{{nameCamelCase}}');
+            }
+            function close{{namePascalCase}}Dialog() {
+                closeDialog('{{nameCamelCase}}');
+            }
             {{#commands}}
             {{#if isRestRepository}}
             {{else}}
@@ -245,6 +298,45 @@ fileName: {{namePascalCase}}.html
             }
             {{/isQuery}}
             {{/attached}}
+            {{#if aggregateRoot.fieldDescriptors.isList}}
+            function addInput(name) {
+                const inputList = document.getElementById('inputList');
+                const newInputContainer = document.createElement('div');
+                newInputContainer.className = 'input-container';
+                newInputContainer.innerHTML = `'<input type="text" name="${name}[]" placeholder="${name}"><br>'`;
+                inputList.appendChild(newInputContainer);
+            }
+            {{/if}}
+            function saveCarAssignment(){
+                {{#aggregateRoot.fieldDescriptors}}
+                {{#if isList}}
+                const {{nameCamelCase}}Elements = document.getElementsByName('{{nameCamelCase}}[]');
+                const {{nameCamelCase}}Fields = Array.from(requesterNameElements).map(input => input.value);
+                {{/if}}
+                {{/aggregateRoot.fieldDescriptors}}
+                
+                const data = {
+                    {{#aggregateRoot.fieldDescriptors}}
+                    {{#if isKey}}
+                    No: document.getElementById('No').value,
+                    {{else}}
+                    {{#if isVO}}
+                    period: {
+                        from: document.getElementById('from').value,
+                        to: document.getElementById('to').value
+                    }
+                    {{else}}
+                    {{#if isList}}
+                    {{nameCamelCase}}: {{nameCamelCase}}Fields,
+                    {{/if}}
+                    {{nameCamelCase}}: document.getElementById('{{nameCamelCase}}').value,
+                    {{/if}}
+                    {{/if}}
+                    {{/aggregateRoot.fieldDescriptors}}
+                };
+                save(data);
+                closeCarAssignmentDialog();
+            }
         </script>
     </body>
 </html>
@@ -295,8 +387,8 @@ fileName: {{namePascalCase}}.html
         }
     });
 
-    window.$HandleBars.registerHelper('isDefaultType', function (type, name, voField, options) {
-        if(!voField && type != name){
+    window.$HandleBars.registerHelper('isDefaultType', function (type, name, voField, listField, options) {
+        if(!voField && type != name && !listField){
             return options.fn(this);
         }else{
             return options.inverse(this);
