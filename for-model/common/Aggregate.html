@@ -135,8 +135,9 @@ fileName: {{namePascalCase}}.html
                     <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
                     <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
                     {{/isDefaultType}}
-                    {{#../../aggregateRoot.entities.relations}}
-                    {{#checkEquals ../../../aggregateRoot.fieldDescriptors targetElement.name}}
+                    {{/fieldDescriptors}}
+                    {{#entities.relations}}
+                    {{#checkEquals ../fieldDescriptors targetElement.name}}
                     <label for="{{targetElement.nameCamelCase}}">{{targetElement.namePascalCase}}:</label>
                     <select id="{{targetElement.nameCamelCase}}" name="{{targetElement.nameCamelCase}}">
                         {{#targetElement.items}}
@@ -145,7 +146,8 @@ fileName: {{namePascalCase}}.html
                     </select>
                     <br><br>
                     {{/checkEquals}}
-                    {{/../../aggregateRoot.entities.relations}}
+                    {{/entities.relations}}
+                    {{#fieldDescriptors}}
                     {{#if isVO}}
                     <label for="{{nameCamelCase}}">{{namePascalCase}}</label>
                     {{#../entities.relations}}
