@@ -1,83 +1,56 @@
-# 
+forEach: Model
+---
+### 1. Install nginx
 
-## Model
-www.msaez.io/{{URL}}
+```
+sudo apt update
+sudo apt install nginx
 
-## Before Running Services
-### Make sure there is a Kafka server running
-```
-cd kafka
-docker-compose up
-```
-- Check the Kafka messages:
-```
-cd infra
-docker-compose exec -it kafka /bin/bash
-cd /bin
-./kafka-console-consumer --bootstrap-server localhost:9092 --topic
+// if asked about the version of nginx.conf, Enter 'N'
 ```
 
-## Run the backend micro-services
-See the README.md files inside the each microservices directory:
+### 2. Set nginx.conf
 
-{{#boundedContexts}}
-- {{name}}
-{{/boundedContexts}}
-
-
-## Run API Gateway (Spring Gateway)
 ```
-cd gateway
-mvn spring-boot:run
+sudo vim /etc/nginx/nginx.conf
 ```
 
-## Test by API
-{{#boundedContexts}}
-- {{name}}
-```
-{{#aggregates}}
- http :8088/{{namePlural}} {{#aggregateRoot.fieldDescriptors}}{{nameCamelCase}}="{{name}}" {{/aggregateRoot.fieldDescriptors}}
-{{/aggregates}}
-```
-{{/boundedContexts}}
+### 3. Modify nginx.conf
 
-
-## Run the frontend
 ```
-cd frontend
-npm i
-npm run serve
+//modify port number
+listen         0.0.0.0:8081; (8002 -> 8081)
 ```
-
-## Test by UI
-Open a browser to localhost:8088
-
-## Required Utilities
-
-- httpie (alternative for curl / POSTMAN) and network utils
 ```
-sudo apt-get update
-sudo apt-get install net-tools
-sudo apt install iputils-ping
-pip install httpie
-```
+//remove 
 
-- kubernetes utilities (kubectl)
+location / {
+    ...
+}
 ```
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+```
+//add
+
+location /common/ {
+    root $gitpod_repo_root;
+}
+
+location / {
+    root $gitpod_repo_root;
+    try_files /common/MainPage.html =404;
+}
+{{#boundedContext.aggregates}}
+location /{{nameCamelCase}} {
+    root $gitpod_repo_root;
+    try_files /common/{{namePascalCase}}.html =404;
+}
+{{/boundedContext.aggregates}}
 ```
 
-- aws cli (aws)
-```
-curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-unzip awscliv2.zip
-sudo ./aws/install
-```
+### 4. Run nginx
 
-- eksctl 
 ```
-curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
-sudo mv /tmp/eksctl /usr/local/bin
+nginx //start nginx
+nginx -s stop //stop nginx
+nginx -s reload //reload nginx
 ```
-
