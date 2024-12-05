@@ -197,7 +197,7 @@ function submit{{namePascalCase}}(data){
     const {{nameCamelCase}} = data.{{nameCamelCase}};
     {{/if}}
     {{/fieldDescriptors}}
-    fetch(`http://localhost:8088/{{../namePlural}}/{{nameCamelCase}}/{{#fieldDescriptors}}{{#if isKey}}{{#addMustache nameCamelCase}}{{/addMustache}}{{/if}}{{/fieldDescriptors}}`, {
+    fetch(`/{{../namePlural}}/{{nameCamelCase}}/{{#fieldDescriptors}}{{#if isKey}}{{#addMustache nameCamelCase}}{{/addMustache}}{{/if}}{{/fieldDescriptors}}`, {
         method: '{{controllerInfo.method}}',
         headers: {
             'Content-Type': 'application/json'
@@ -234,7 +234,7 @@ function searchResult(params) {
     const queryParams = new URLSearchParams(params).toString();
 
     $.ajax({
-        url: `https://localhost:8088/{{aggregate.namePlural}}?${queryParams}`,
+        url: `/{{aggregate.namePlural}}?${queryParams}`,
         method: 'GET',
         headers: {
             "Cache-Control": "no-cache",
