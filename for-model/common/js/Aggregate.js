@@ -102,16 +102,22 @@ function retrieve(){
     }).then(res => {
         return res.json();
     }).then(json => {
-        json.forEach(row => {
-            row.No = row.{{#aggregateRoot.fieldDescriptors}}{{#if isKey}}{{nameCamelCase}}{{/if}}{{/aggregateRoot.fieldDescriptors}}
-        {{#aggregateRoot}}
-        {{#fieldDescriptors}}
-        {{#if isVO}}
-        {{#disassembleVO ../entities}}{{/disassembleVO}}
-        {{/if}}
-        {{/fieldDescriptors}}
-        {{/aggregateRoot}}
-        });
+        for(var i = 0; i < json.length; i++){
+            json[i].No = json[i].{{#aggregateRoot.fieldDescriptors}}{{#if isKey}}{{nameCamelCase}}{{/if}}{{/aggregateRoot.fieldDescriptors}}
+            {{#aggregateRoot}}
+            {{#fieldDescriptors}}
+            {{#if isVO}}
+            {{#disassembleVO ../entities}}{{/disassembleVO}}
+            {{/if}}
+            {{/fieldDescriptors}}
+            {{/aggregateRoot}}
+
+            {{#aggregateRoot.fieldDescriptors}}
+            {{#checkDateType nameCamelCase className}}
+            {{/checkDateType}}
+            {{/aggregateRoot.fieldDescriptors}}
+        }
+        
         rowData = json;
         sheet.loadSearchData(json)
     }).catch(error => {
@@ -144,28 +150,28 @@ function save(data){
 
 function saveRow(){
     var rows = sheet.getSaveJson()?.data;
-    rows.forEach(row => {
-        rows.{{#aggregateRoot.fieldDescriptors}}{{#if isKey}}{{nameCamelCase}}{{/if}}{{/aggregateRoot.fieldDescriptors}} = rows.No
-        delete rows.No
-    {{#aggregateRoot}}
-    {{#fieldDescriptors}}
-    {{#if isVO}}
-    {{#combineVO ../entities}}{{/combineVO}}
-    {{/if}}
-    {{/fieldDescriptors}}
-    {{/aggregateRoot}}
-    });
+    for(var i = 0; i < rows.length; i++){
+        rows[i].{{#aggregateRoot.fieldDescriptors}}{{#if isKey}}{{nameCamelCase}}{{/if}}{{/aggregateRoot.fieldDescriptors}} = rows[i].No
+        delete rows[i].No
+
+        {{#aggregateRoot}}
+        {{#fieldDescriptors}}
+        {{#if isVO}}
+        {{#combineVO ../entities}}{{/combineVO}}
+        {{/if}}
+        {{/fieldDescriptors}}
+        {{/aggregateRoot}}
+    }
+    
     rowData = rows;
 
     for(var i=0; i<rows.length;i++){
-        if(rows[i].id.includes("AR")){
-            rows[i].id = rows[i].id.replace(/AR/g, "");
-        }
         switch(rows[i].STATUS){
             case "Changed":
                 var rowObj = sheet.getRowById(rows[i].id);
                 var changedData = JSON.parse(sheet.getChangedData(rowObj))["Changes"][0];
-                var id = rows[i].seq;
+                changedData.id = rows[i].id
+                var id = changedData.id 
                 $.ajax({
                     url: `/{{namePlural}}/${id}`,
                     method: "PATCH",
@@ -174,7 +180,7 @@ function saveRow(){
                 });
                 break;
             case "Deleted":
-                var id = rows[i].seq;
+                var id = rows[i].id
                 $.ajax({
                     url: `/{{namePlural}}/${id}`,
                     method: "DELETE",
@@ -251,6 +257,11 @@ function searchResult(params) {
 {{/isQuery}}
 {{/attached}}
 <function>
+window.$HandleBars.registerHelper('checkDateType', function (type, name) {
+    if(type === "Date"){
+        return `json[i].${name} = json[i].name.split('T')[0];`;
+    }
+});
 window.$HandleBars.registerHelper('isQuery', function (mode, options) {
     if(mode == 'query-for-aggregate'){
         return options.fn(this);
@@ -302,14 +313,14 @@ window.$HandleBars.registerHelper('combineVO', function (voField) {
                 var deletions = [];
                 vo.fieldDescriptors.forEach(fd => {
                     var fieldName = fd.name; // 필드 이름을 가져옴
-                    conditions.push(`row.${fieldName}`);
-                    assignments.push(`${fieldName}: row.${fieldName}`);
-                    deletions.push(`delete row.${fieldName}`);
+                    conditions.push(`rows[i].${fieldName}`);
+                    assignments.push(`${fieldName}: rows[i].${fieldName}`);
+                    deletions.push(`delete rows[i].${fieldName}`);
                 });
 
                 result.push(`
                 if (${conditions.join(' && ')}) {
-                    row.${vo.name} = {
+                    rows[i].${vo.name} = {
                         ${assignments.join(',\n')}
                     };
                     ${deletions.join(';\n')}
@@ -333,11 +344,15 @@ window.$HandleBars.registerHelper('disassembleVO', function (voField) {
                 var assignments = [];
                 vo.fieldDescriptors.forEach(fd => {
                     var fieldName = fd.name;
-                    assignments.push(`row.${fieldName} = row.${vo.name}.${fieldName}`);
+                    if(fd.className === "Date"){
+                        assignments.push(`json[i].${fieldName} = json[i].${vo.name}.${fieldName}.split('T')[0]`);
+                    }else{
+                        assignments.push(`json[i].${fieldName} = json[i].${vo.name}.${fieldName}`);
+                    }
                 });
 
                 result.push(`
-                if (row.${vo.name}) {
+                if (json[i].${vo.name}) {
                     ${assignments.join(';\n')}
                 }
                 `);

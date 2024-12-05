@@ -99,8 +99,8 @@ fileName: {{namePascalCase}}.html
         <h1>{{boundedContext.namePascalCase}}</h1>
         <p>{{namePascalCase}}</p>
         <button type="button" class='buttonLabelSearch' onclick="retrieve()">조회</button>
-        <button type="button" class='buttonLabelSave' onclick="save()">저장</button>
-        <button type="button" class='buttonLabelAddRow' onclick="open{{namePascalCase}}Dialog()">신규</button>
+        <button type="button" class='buttonLabelSave' onclick="save{{namePascalCase}}()">저장</button>
+        <button type="button" class='buttonLabelAddRow' onclick="openDialog('{{nameCamelCase}}Dialog')">신규</button>
         <button type="button" class='buttonLabelDeleteRow' onclick="deleteData()">삭제</button>
         {{#commands}}
         {{^isRestRepository}}
@@ -126,7 +126,7 @@ fileName: {{namePascalCase}}.html
         <!-- 등록 Dialog -->
         <div id="{{nameCamelCase}}Dialog" style="z-index:99;" class="modal">
             <div class="modal-content">
-                <span class="close" onclick="close{{namePascalCase}}Dialog()">&times;</span>
+                <span class="close" onclick="closeDialog('{{nameCamelCase}}Dialog')">&times;</span>
                 <h2>{{namePascalCase}}</h2>
                 <form id="{{nameCamelCase}}Form">
                     {{#aggregateRoot}}
@@ -219,25 +219,13 @@ fileName: {{namePascalCase}}.html
         {{/commands}}
 
         <script>
-            function open{{namePascalCase}}Dialog() {
-                openDialog('{{nameCamelCase}}');
-            }
-            function close{{namePascalCase}}Dialog() {
-                closeDialog('{{nameCamelCase}}');
-            }
-            {{#commands}}
-            {{#if isRestRepository}}
-            {{else}}
             function openDialog(id) {
                 document.getElementById(id).style.display = "block";
             }
 
-            // Function to close the dialog
             function closeDialog(id) {
                 document.getElementById(id).style.display = "none";
             }
-            {{/if}}
-            {{/commands}}
 
             {{#commands}}
             {{^isRestRepository}}
@@ -298,7 +286,7 @@ fileName: {{namePascalCase}}.html
                     {{nameCamelCase}}: search{{namePascalCase}},
                     {{/queryParameters}}
                 };
-                searchMultipleResult(searchParams);
+                searchResult(searchParams);
             }
             {{/isQuery}}
             {{/attached}}
@@ -311,7 +299,7 @@ fileName: {{namePascalCase}}.html
                 inputList.appendChild(newInputContainer);
             }
             {{/if}}
-            function saveCarAssignment(){
+            function save{{namePascalCase}}(){
                 {{#aggregateRoot.fieldDescriptors}}
                 {{#if isList}}
                 const {{nameCamelCase}}Elements = document.getElementsByName('{{nameCamelCase}}[]');
@@ -324,22 +312,27 @@ fileName: {{namePascalCase}}.html
                     {{#if isKey}}
                     No: document.getElementById('No').value,
                     {{else}}
-                    {{#if isVO}}
-                    period: {
-                        from: document.getElementById('from').value,
-                        to: document.getElementById('to').value
-                    }
-                    {{else}}
                     {{#if isList}}
                     {{nameCamelCase}}: {{nameCamelCase}}Fields,
-                    {{/if}}
+                    {{else}}
                     {{nameCamelCase}}: document.getElementById('{{nameCamelCase}}').value,
                     {{/if}}
                     {{/if}}
                     {{/aggregateRoot.fieldDescriptors}}
+                    {{#aggregateRoot}}
+                    {{#entities.relations}}
+                    {{#if targetElement.isVO}}
+                    {{targetElement.nameCamelCase}}: {
+                        {{#targetElement.fieldDescriptors}}
+                        {{nameCamelCase}}: document.getElementById('{{nameCamelCase}}').value,
+                        {{/targetElement.fieldDescriptors}}
+                    }
+                    {{/if}}
+                    {{/entities.relations}}
+                    {{/aggregateRoot}}
                 };
                 save(data);
-                closeCarAssignmentDialog();
+                closeDialog('{{nameCamelCase}}Dialog');
             }
         </script>
     </body>
