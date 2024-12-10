@@ -79,28 +79,33 @@
     </style>
 </head>
 <body>
+
     <div id="mySidebar" class="sidebar">
         <a href="javascript:void(0)" class="closebtn" onclick="toggleSidebar()">×</a>
-        {{#boundedContexts}}
-        {{#aggregates}}
-        <a href="/common/{{namePlural}}">{{namePascalCase}}</a>
-        {{/aggregates}}
-        {{/boundedContexts}}
+        <a href="/common/carAssignments">CarAssignment</a>
+        <a href="/common/vehiclePerformances">VehiclePerformance</a>
+        <a href="/common/users">User</a>
+        <a href="/common/vehicles">Vehicle</a>
     </div>
 
-    <div class="header">
+    <div class="header"></div>
         <div class="hamburger" onclick="toggleSidebar()">☰</div>
-        <h1>{{options.rootPackage}}</h1>
+        <h1>vehiclemgmt</h1>
     </div>
 
     <div class="content">
-        {{#boundedContexts}}
-        {{#aggregates}}
-        <div class="card" onclick="location.href='/common/{{namePlural}}'">
-            <h2>{{namePascalCase}}</h2>
+        <div class="card" onclick="location.href='/common/carAssignments'">
+            <h2>CarAssignment</h2>
         </div>
-        {{/aggregates}}
-        {{/boundedContexts}}
+        <div class="card" onclick="location.href='/common/vehiclePerformances'">
+            <h2>VehiclePerformance</h2>
+        </div>
+        <div class="card" onclick="location.href='/common/users'">
+            <h2>User</h2>
+        </div>
+        <div class="card" onclick="location.href='/common/vehicles'">
+            <h2>Vehicle</h2>
+        </div>
     </div>
 
     <script>
