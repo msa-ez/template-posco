@@ -1,3 +1,5 @@
+path: common
+---
 ### 1. Install nginx
 
 ```
