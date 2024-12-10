@@ -315,7 +315,7 @@ fileName: {{namePascalCase}}.html
             {{/options.rootModel}}
         </div>
         
-        <div class="sticker"></div>
+        <div class="sticker">
             <p class="sticker-header"><< Aggregate >></p>
             <p class="sticker-content">CarAssignment</p>
         </div>
@@ -353,7 +353,7 @@ fileName: {{namePascalCase}}.html
             <!-- 등록 Dialog -->
             <div id="{{nameCamelCase}}Dialog" style="z-index:99;" class="modal">
                 <div class="modal-content">
-                    <div class="default-row"></div>
+                    <div class="default-row">
                         <h2>CarAssignment</h2>
                         <div class="v-space"></div>
                         <span class="close" onclick="closeDialog('{{nameCamelCase}}Dialog')">&times;</span>
@@ -370,7 +370,7 @@ fileName: {{namePascalCase}}.html
                         {{#checkEquals ../fieldDescriptors targetElement.name}}
                         <div class="select-container">
                             <label for="{{targetElement.nameCamelCase}}">{{targetElement.namePascalCase}}:</label>
-                            <select id="{{targetElement.nameCamelCase}}" name="{{targetElement.nameCamelCase}}">
+                            <select id="{{targetElement.nameCamelCase}}" required>
                                 {{#targetElement.items}}
                                 <option value="{{value}}">{{value}}</option>
                                 {{/targetElement.items}}
