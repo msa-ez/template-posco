@@ -480,6 +480,9 @@ fileName: {{namePascalCase}}.html
             {{^isRestRepository}}
             function {{nameCamelCase}}() {
                 {{#fieldDescriptors}}
+                {{#if isKey}}
+                const No = document.getElementById('{{nameCamelCase}}').value;
+                {{else}}
                 {{#isDefaultType className namePascalCase isVO isList}}
                 const {{nameCamelCase}} = document.getElementById('{{nameCamelCase}}').value;
                 {{/isDefaultType}}
@@ -501,6 +504,7 @@ fileName: {{namePascalCase}}.html
                 {{/../../aggregateRoot.entities.relations}}
                 };
                 {{/isVOType}}
+                {{/if}}
                 {{/fieldDescriptors}}
 
                 // JSON 객체 생성
@@ -559,7 +563,7 @@ fileName: {{namePascalCase}}.html
                 const data = {
                     {{#aggregateRoot.fieldDescriptors}}
                     {{#if isKey}}
-                    No: document.getElementById('No').value,
+                    No: document.getElementById('{{nameCamelCase}}').value,
                     {{else}}
                     {{#if isList}}
                     {{nameCamelCase}}: {{nameCamelCase}}Fields,
