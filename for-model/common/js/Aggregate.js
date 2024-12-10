@@ -194,10 +194,10 @@ function saveRow(){
 function submit{{namePascalCase}}(data){
     {{#fieldDescriptors}}
     {{#if isKey}}
-    const {{nameCamelCase}} = data.{{nameCamelCase}};
+    const id = data.{{nameCamelCase}};
     {{/if}}
     {{/fieldDescriptors}}
-    fetch(`/{{../namePlural}}/{{nameCamelCase}}/{{#fieldDescriptors}}{{#if isKey}}{{#addMustache nameCamelCase}}{{/addMustache}}{{/if}}{{/fieldDescriptors}}`, {
+    fetch(`/{{../namePlural}}/{{nameCamelCase}}/${id}`, {
         method: '{{controllerInfo.method}}',
         headers: {
             'Content-Type': 'application/json'
@@ -405,11 +405,6 @@ window.$HandleBars.registerHelper('checkEnum', function (type, voField, field) {
             }
         }
     }
-});
-window.$HandleBars.registerHelper('addMustache', function (id) {
-    var result = '';
-    result = "{" + id + "}"
-    return result;
 });
 window.$HandleBars.registerHelper('createVoField', function (type, field) {
     var result = [];
