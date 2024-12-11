@@ -367,7 +367,7 @@ fileName: {{namePascalCase}}.html
                         {{/isDefaultType}}
                         {{/fieldDescriptors}}
                         {{#entities.relations}}
-                        {{#checkEquals ../fieldDescriptors targetElement.name}}
+                        {{#checkEquals ../fieldDescriptors targetElement}}
                         <div class="select-container">
                             <label for="{{targetElement.nameCamelCase}}">{{targetElement.namePascalCase}}:</label>
                             <select id="{{targetElement.nameCamelCase}}" required>
@@ -427,7 +427,7 @@ fileName: {{namePascalCase}}.html
                         <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
                         <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
                         {{/isDefaultType}}
-                        {{#isEnumType className namePascalCase isVO}}
+                        {{#isEnumType className namePascalCase isVO ../../aggregateRoot.entities.relations}}
                         <div class="select-container">
                             <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
                             <select id="{{nameCamelCase}}" name="{{nameCamelCase}}">
@@ -486,7 +486,7 @@ fileName: {{namePascalCase}}.html
                 {{#isDefaultType className namePascalCase isVO isList}}
                 const {{nameCamelCase}} = document.getElementById('{{nameCamelCase}}').value;
                 {{/isDefaultType}}
-                {{#isEnumType className namePascalCase isVO}}
+                {{#isEnumType className namePascalCase isVO ../../aggregateRoot.entities.relations}}
                 {{#../../aggregateRoot.entities.relations}}
                 {{#compareField name ../../../commands "isNotVO" targetElement}}
                 const {{targetElement.nameCamelCase}} = document.getElementById('{{targetElement.nameCamelCase}}').value;
@@ -591,9 +591,9 @@ fileName: {{namePascalCase}}.html
     </body>
 </html>
 <function>
-    window.$HandleBars.registerHelper('checkEquals', function (aggField, name, options) {
+    window.$HandleBars.registerHelper('checkEquals', function (aggField, enumField, options) {
         for(var i = 0; i < aggField.length; i++){
-            if(aggField[i].namePascalCase == name && !aggField[i].isVO){
+            if(aggField[i].namePascalCase == enumField.namePascalCase && !aggField[i].isVO && enumField._type.endsWith('enum')){
                 return options.fn(this);
                 break;
             }
@@ -675,9 +675,15 @@ fileName: {{namePascalCase}}.html
             return options.inverse(this);
         }
     });
-    window.$HandleBars.registerHelper('isEnumType', function (type, name, voField, options) {
-        if(!voField && type == name){
-            return options.fn(this);
+    window.$HandleBars.registerHelper('isEnumType', function (type, name, voField, enumField, options) {
+        if(enumField){
+            for(var i = 0; i < enumField.length; i++){
+                if(name == enumField[i].targetElement.namePascalCase && enumField[i].targetElement._type.endsWith('enum') && !voField){
+                    return options.fn(this);
+                }else{
+                    return options.inverse(this);
+                }
+            }
         }else{
             return options.inverse(this);
         }
