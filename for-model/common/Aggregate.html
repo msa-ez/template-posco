@@ -489,7 +489,7 @@ fileName: {{namePascalCase}}.html
                 {{#isEnumType className namePascalCase isVO ../../aggregateRoot.entities.relations}}
                 {{#../../aggregateRoot.entities.relations}}
                 {{#compareField name ../../../commands "isNotVO" targetElement}}
-                const {{targetElement.nameCamelCase}} = document.getElementById('{{targetElement.nameCamelCase}}').value;
+                const {{camelCase name}} = document.getElementById('{{camelCase name}}').value;
                 {{/compareField}}
                 {{/../../aggregateRoot.entities.relations}}
                 {{/isEnumType}}
