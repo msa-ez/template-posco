@@ -25,7 +25,7 @@ $(document).ready(function(){
             {{#if isKey}}
             {"Header": "No", "Name": "No", "Type": "{{#checkFieldType className isVO namePascalCase}}{{/checkFieldType}}", "Align": "Center", "Width":140, "CanEdit":0},
             {{else}}
-            {"Header": "{{#checkName nameCamelCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVO namePascalCase}}{{/checkFieldType}}",{{#isDate className}}"Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요",{{/isDate}}{{#isEnum isVO className ../entities}} "Enum": {{/isEnum}}{{#checkEnum className isVO ../entities}}{{/checkEnum}}{{#isEnum isVO className ../entities}},{{/isEnum}}{{#isEnum isVO className ../entities}} "EnumKeys": {{/isEnum}}{{#checkEnum className isVO ../entities}}{{/checkEnum}}{{#isEnum isVO className ../entities}},{{/isEnum}} "Align": "Center", "Width":140, "CanEdit":1},  
+            {"Header": "{{#checkName nameCamelCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVO namePascalCase}}{{/checkFieldType}}",{{#isDate className}}"Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요",{{/isDate}}{{#isEnum isVO namePascalCase ../entities}} "Enum": {{/isEnum}}{{#checkEnum namePascalCase isVO ../entities}}{{/checkEnum}}{{#isEnum isVO namePascalCase ../entities}},{{/isEnum}}{{#isEnum isVO namePascalCase ../entities}} "EnumKeys": {{/isEnum}}{{#checkEnum namePascalCase isVO ../entities}}{{/checkEnum}}{{#isEnum isVO namePascalCase ../entities}},{{/isEnum}} "Align": "Center", "Width":140, "CanEdit":1},  
             {{/if}}
             {{/if}}
             {{/fieldDescriptors}}
@@ -37,14 +37,58 @@ $(document).ready(function(){
             {{/if}}
             {{/fieldDescriptors}}
             {{/aggregateRoot}}
-       ]
-   };
+        ],
+        Events: {
+            onClick: function(evtParam) {
+                var originalRowData = rowData.find(item => item.No === evtParam.row.No);
+                var detailData = [];
+                {{#aggregateRoot.fieldDescriptors}}
+                {{#if isList}}
+                if (evtParam.col === "{{nameCamelCase}}") {
+                    var {{nameCamelCase}}Fields = originalRowData.{{nameCamelCase}};
+                    if (Array.isArray({{nameCamelCase}}Fields)) {
+                        {{nameCamelCase}}Fields.forEach(function(data) {
+                            detailData.push({ "{{nameCamelCase}}": data });
+                        });
+                    } else {
+                        detailData.push({ "{{nameCamelCase}}": {{nameCamelCase}}Fields });
+                    }
+                }
+                {{/if}}
+                {{/aggregateRoot.fieldDescriptors}}
+        
+                detailSheet.loadSearchData(detailData);
+            }
+        }
+    };
+    
+    var detailSheetOptions = {
+        "Cfg": {
+            "SearchMode": 2,
+            "HeaderMerge": 3,
+            "MessageWidth": 300,
+        },
+        Cols:[
+            {{#aggregateRoot.fieldDescriptors}}
+            {{#if isList}}
+            {"Header": "{{nameCamelCase}}", "Name": "{{nameCamelCase}}", "Type": "Text", "Align": "Center", "Width":140, "CanEdit":0},
+            {{/if}}
+            {{/aggregateRoot.fieldDescriptors}}
+        ]
+    };
 
-   IBSheet.create({
+    IBSheet.create({
        id:"sheet",
        el:"sheet_DIV",
-       options:OPT
-   });
+       options: OPT
+    });
+    
+    IBSheet.create({
+        id:"detailSheet",
+        el:"detailSheet_DIV",
+        options: detailSheetOptions
+    });
+   
 });
 
 function retrieve(){
@@ -58,16 +102,22 @@ function retrieve(){
     }).then(res => {
         return res.json();
     }).then(json => {
-        json.forEach(row => {
-            row.No = row.{{#aggregateRoot.fieldDescriptors}}{{#if isKey}}{{nameCamelCase}}{{/if}}{{/aggregateRoot.fieldDescriptors}}
-        {{#aggregateRoot}}
-        {{#fieldDescriptors}}
-        {{#if isVO}}
-        {{#disassembleVO ../entities}}{{/disassembleVO}}
-        {{/if}}
-        {{/fieldDescriptors}}
-        {{/aggregateRoot}}
-        });
+        for(var i = 0; i < json.length; i++){
+            json[i].No = json[i].{{#aggregateRoot.fieldDescriptors}}{{#if isKey}}{{nameCamelCase}}{{/if}}{{/aggregateRoot.fieldDescriptors}}
+            {{#aggregateRoot}}
+            {{#fieldDescriptors}}
+            {{#if isVO}}
+            {{#disassembleVO ../entities}}{{/disassembleVO}}
+            {{/if}}
+            {{/fieldDescriptors}}
+            {{/aggregateRoot}}
+
+            {{#aggregateRoot.fieldDescriptors}}
+            {{#checkDateType nameCamelCase className}}
+            {{/checkDateType}}
+            {{/aggregateRoot.fieldDescriptors}}
+        }
+        
         rowData = json;
         sheet.loadSearchData(json)
     }).catch(error => {
@@ -83,39 +133,45 @@ function deleteData(){
     sheet.deleteRow(sheet.getFocusedRow());
 }
 
-function save(){
-    var rows = sheet.getSaveJson()?.data;
-    rows.forEach(row => {
-        rows.{{#aggregateRoot.fieldDescriptors}}{{#if isKey}}{{nameCamelCase}}{{/if}}{{/aggregateRoot.fieldDescriptors}} = rows.No
-        delete rows.No
-    {{#aggregateRoot}}
-    {{#fieldDescriptors}}
-    {{#if isVO}}
-    {{#combineVO ../entities}}{{/combineVO}}
-    {{/if}}
-    {{/fieldDescriptors}}
-    {{/aggregateRoot}}
+function save(data){
+    var rows = data;
+    rows.id = rows.No
+    delete rows.No
+
+    $.ajax({
+        url: "/{{namePlural}}",
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(rows)
     });
+    retrieve();
+
+}
+
+function saveRow(){
+    var rows = sheet.getSaveJson()?.data;
+    for(var i = 0; i < rows.length; i++){
+        rows[i].{{#aggregateRoot.fieldDescriptors}}{{#if isKey}}{{nameCamelCase}}{{/if}}{{/aggregateRoot.fieldDescriptors}} = rows[i].No
+        delete rows[i].No
+
+        {{#aggregateRoot}}
+        {{#fieldDescriptors}}
+        {{#if isVO}}
+        {{#combineVO ../entities}}{{/combineVO}}
+        {{/if}}
+        {{/fieldDescriptors}}
+        {{/aggregateRoot}}
+    }
+    
     rowData = rows;
 
     for(var i=0; i<rows.length;i++){
-        if(rows[i].id.includes("AR")){
-            rows[i].id = rows[i].id.replace(/AR/g, "");
-        }
         switch(rows[i].STATUS){
-            case "Added":
-                var saveRow = rows[i];
-                $.ajax({
-                    url: "/{{namePlural}}",
-                    method: "POST",
-                    contentType: "application/json",
-                    data: JSON.stringify(saveRow)
-                });
-                break;
             case "Changed":
                 var rowObj = sheet.getRowById(rows[i].id);
                 var changedData = JSON.parse(sheet.getChangedData(rowObj))["Changes"][0];
-                var id = rows[i].seq;
+                changedData.id = rows[i].id
+                var id = changedData.id 
                 $.ajax({
                     url: `/{{namePlural}}/${id}`,
                     method: "PATCH",
@@ -124,7 +180,7 @@ function save(){
                 });
                 break;
             case "Deleted":
-                var id = rows[i].seq;
+                var id = rows[i].id
                 $.ajax({
                     url: `/{{namePlural}}/${id}`,
                     method: "DELETE",
@@ -138,10 +194,10 @@ function save(){
 function submit{{namePascalCase}}(data){
     {{#fieldDescriptors}}
     {{#if isKey}}
-    const {{nameCamelCase}} = data.{{nameCamelCase}};
+    const id = data.{{nameCamelCase}};
     {{/if}}
     {{/fieldDescriptors}}
-    fetch(`http://localhost:8088/{{../namePlural}}/{{nameCamelCase}}/{{#fieldDescriptors}}{{#if isKey}}{{#addMustache nameCamelCase}}{{/addMustache}}{{/if}}{{/fieldDescriptors}}`, {
+    fetch(`/{{../namePlural}}/{{nameCamelCase}}/${id}`, {
         method: '{{controllerInfo.method}}',
         headers: {
             'Content-Type': 'application/json'
@@ -178,7 +234,7 @@ function searchResult(params) {
     const queryParams = new URLSearchParams(params).toString();
 
     $.ajax({
-        url: `https://localhost:8088/{{aggregate.namePlural}}?${queryParams}`,
+        url: `/{{aggregate.namePlural}}?${queryParams}`,
         method: 'GET',
         headers: {
             "Cache-Control": "no-cache",
@@ -201,6 +257,11 @@ function searchResult(params) {
 {{/isQuery}}
 {{/attached}}
 <function>
+window.$HandleBars.registerHelper('checkDateType', function (type, name) {
+    if(type === "Date"){
+        return `json[i].${name} = json[i].name.split('T')[0];`;
+    }
+});
 window.$HandleBars.registerHelper('isQuery', function (mode, options) {
     if(mode == 'query-for-aggregate'){
         return options.fn(this);
@@ -233,7 +294,7 @@ window.$HandleBars.registerHelper('isDate', function (type, options) {
     }
     return options.inverse(this);
 });
-window.$HandleBars.registerHelper('isVO', function (vo, options) {
+window.$HandleBars.registerHelper('canVO', function (vo, options) {
     if(vo){
         return options.fn(this);
     }
@@ -252,14 +313,14 @@ window.$HandleBars.registerHelper('combineVO', function (voField) {
                 var deletions = [];
                 vo.fieldDescriptors.forEach(fd => {
                     var fieldName = fd.name; // 필드 이름을 가져옴
-                    conditions.push(`row.${fieldName}`);
-                    assignments.push(`${fieldName}: row.${fieldName}`);
-                    deletions.push(`delete row.${fieldName}`);
+                    conditions.push(`rows[i].${fieldName}`);
+                    assignments.push(`${fieldName}: rows[i].${fieldName}`);
+                    deletions.push(`delete rows[i].${fieldName}`);
                 });
 
                 result.push(`
                 if (${conditions.join(' && ')}) {
-                    row.${vo.name} = {
+                    rows[i].${vo.name} = {
                         ${assignments.join(',\n')}
                     };
                     ${deletions.join(';\n')}
@@ -283,11 +344,15 @@ window.$HandleBars.registerHelper('disassembleVO', function (voField) {
                 var assignments = [];
                 vo.fieldDescriptors.forEach(fd => {
                     var fieldName = fd.name;
-                    assignments.push(`row.${fieldName} = row.${vo.name}.${fieldName}`);
+                    if(fd.className === "Date"){
+                        assignments.push(`json[i].${fieldName} = json[i].${vo.name}.${fieldName}.split('T')[0]`);
+                    }else{
+                        assignments.push(`json[i].${fieldName} = json[i].${vo.name}.${fieldName}`);
+                    }
                 });
 
                 result.push(`
-                if (row.${vo.name}) {
+                if (json[i].${vo.name}) {
                     ${assignments.join(';\n')}
                 }
                 `);
@@ -298,47 +363,52 @@ window.$HandleBars.registerHelper('disassembleVO', function (voField) {
     }
     return new window.$HandleBars.SafeString(result.join('\n'));
 });
-window.$HandleBars.registerHelper('isEnum', function (voField, type, field, options) {
+window.$HandleBars.registerHelper('isEnum', function (voField, fieldName, field, options) {
     if(voField){
         return options.inverse(this);
     }else{
         var relation = field.relations
         if(relation){
             for(var i = 0; i < relation.length; i++){
-                if(relation[i].targetElement){
-                    if(relation[i].targetElement.name){
-                        if(type === relation[i].targetElement.name){
-                            return options.fn(this);
+                if(relation[i] && relation[i].name){
+                    var name = '';
+                    name = relation[i].name.charAt(0).toUpperCase() + relation[i].name.slice(1);
+                    if(name == fieldName){
+                        return options.fn(this);
                             
-                        }
+                    }else{
+                        return
                     }
                 }
             }
         }
     }
 });
-window.$HandleBars.registerHelper('checkEnum', function (type, voField, field) {
+window.$HandleBars.registerHelper('checkEnum', function (fieldName, voField, field) {
     if(voField){
         return;
     }else{
         var relation = field.relations
-        for(var i = 0; i < relation.length; i++){
-            if(relation[i].targetElement && relation[i].targetElement.name){
-                if(type === relation[i].targetElement.name){
-                    var items = relation[i].targetElement.items;
-                    if(items){
-                        var result = items.map(item => item.value).join('|');
-                        return `"|${result}"`;
+        if(relation){
+            for(var i = 0; i < relation.length; i++){
+                if(relation[i] && relation[i].name){
+                    var name = '';
+                    name = relation[i].name.charAt(0).toUpperCase() + relation[i].name.slice(1);
+                    if(fieldName === name){
+                        if(relation[i].targetElement && relation[i].targetElement.items){
+                            var items = relation[i].targetElement.items;
+                            if(items){
+                                var result = items.map(item => item.value).join('|');
+                                return `"|${result}"`;
+                            }
+                        }
                     }
+                }else{
+                    return;
                 }
             }
         }
     }
-});
-window.$HandleBars.registerHelper('addMustache', function (id) {
-    var result = '';
-    result = "{" + id + "}"
-    return result;
 });
 window.$HandleBars.registerHelper('createVoField', function (type, field) {
     var result = [];
