@@ -367,7 +367,7 @@ fileName: {{namePascalCase}}.html
                         {{/isDefaultType}}
                         {{/fieldDescriptors}}
                         {{#entities.relations}}
-                        {{#checkEquals ../fieldDescriptors this targetElement}}
+                        {{#checkEquals ../fieldDescriptors name targetElement}}
                         <div class="select-container">
                             <label for="{{targetElement.nameCamelCase}}">{{targetElement.namePascalCase}}:</label>
                             <select id="{{targetElement.nameCamelCase}}" required>
@@ -592,8 +592,10 @@ fileName: {{namePascalCase}}.html
 </html>
 <function>
     window.$HandleBars.registerHelper('checkEquals', function (aggField, enumName, enumField, options) {
+        var name = '';
+        name = enumName.charAt(0).toLowerCase() + enumName.slice(1);
         for(var i = 0; i < aggField.length; i++){
-            if(aggField[i].namePascalCase == enumName && !aggField[i].isVO && enumField._type.endsWith('enum')){
+            if(aggField[i].namePascalCase == name && !aggField[i].isVO && enumField._type.endsWith('enum')){
                 return options.fn(this);
                 break;
             }
@@ -677,10 +679,13 @@ fileName: {{namePascalCase}}.html
     });
     window.$HandleBars.registerHelper('isEnumType', function (type, name, voField, enumField, options) {
         var fields = [];
+        
         if(enumField){
             fields = enumField.filter(field => field != null);
             for(var i = 0; i< fields.length; i++){
-                if(name == fields[i].name && fields[i].targetElement && fields[i].targetElement._type.endsWith("enum")){
+                var enumName ='';
+                enumName = fields[i].name.charAt(0).toLowerCase() + fields[i].name.slice(1);
+                if(name == enumName && fields[i].targetElement && fields[i].targetElement._type.endsWith("enum")){
                     return options.fn(this);
                 }else{
                     return options.inverse(this);
