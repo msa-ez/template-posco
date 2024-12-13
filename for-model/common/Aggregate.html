@@ -367,7 +367,7 @@ fileName: {{namePascalCase}}.html
                         {{/isDefaultType}}
                         {{/fieldDescriptors}}
                         {{#entities.relations}}
-                        {{#checkEquals ../fieldDescriptors targetElement}}
+                        {{#checkEquals ../fieldDescriptors name targetElement}}
                         <div class="select-container">
                             <label for="{{targetElement.nameCamelCase}}">{{targetElement.namePascalCase}}:</label>
                             <select id="{{targetElement.nameCamelCase}}" required>
@@ -591,9 +591,9 @@ fileName: {{namePascalCase}}.html
     </body>
 </html>
 <function>
-    window.$HandleBars.registerHelper('checkEquals', function (aggField, enumField, options) {
+    window.$HandleBars.registerHelper('checkEquals', function (aggField, enumName, enumField, options) {
         for(var i = 0; i < aggField.length; i++){
-            if(aggField[i].namePascalCase == enumField.namePascalCase && !aggField[i].isVO && enumField._type.endsWith('enum')){
+            if(aggField[i].namePascalCase == enumName && !aggField[i].isVO && enumField._type.endsWith('enum')){
                 return options.fn(this);
                 break;
             }
@@ -676,9 +676,11 @@ fileName: {{namePascalCase}}.html
         }
     });
     window.$HandleBars.registerHelper('isEnumType', function (type, name, voField, enumField, options) {
+        var fields = [];
         if(enumField){
-            for(var i = 0; i < enumField.length; i++){
-                if(name == enumField[i].targetElement.namePascalCase && enumField[i].targetElement._type.endsWith('enum') && !voField){
+            fields = enumField.filter(field => field != null);
+            for(var i = 0; i< fields.length; i++){
+                if(name == fields[i].name && fields[i].targetElement && fields[i].targetElement._type.endsWith("enum")){
                     return options.fn(this);
                 }else{
                     return options.inverse(this);
