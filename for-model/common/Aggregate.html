@@ -593,7 +593,9 @@ fileName: {{namePascalCase}}.html
 <function>
     window.$HandleBars.registerHelper('checkEquals', function (aggField, enumName, enumField, options) {
         var name = '';
-        name = enumName.charAt(0).toUpperCase() + enumName.slice(1);
+        if(enumName){
+            name = enumName.charAt(0).toUpperCase() + enumName.slice(1);
+        }
         for(var i = 0; i < aggField.length; i++){
             if(aggField[i].namePascalCase == name && !aggField[i].isVO && enumField._type.endsWith('enum')){
                 return options.fn(this);
