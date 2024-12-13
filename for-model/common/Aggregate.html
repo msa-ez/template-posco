@@ -700,7 +700,9 @@ fileName: {{namePascalCase}}.html
             for(var i = 0; i < command.length; i++){
                 if(!command[i].isRestRepository){
                     for(var j = 0; j < command[i].fieldDescriptors.length; j++){
-                        if(command[i].fieldDescriptors[j].nameCamelCase == aggFieldName){
+                        var name = '';
+                        name = voField.name.charAt(0).toUpperCase() + voField.name.slice(1);
+                        if(command[i].fieldDescriptors[j].className == name){
                             if(voField.isVO){
                                 return options.inverse(this);
                             }else{
