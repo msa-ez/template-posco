@@ -369,8 +369,8 @@ fileName: {{namePascalCase}}.html
                         {{#entities.relations}}
                         {{#checkEquals ../fieldDescriptors name targetElement}}
                         <div class="select-container">
-                            <label for="{{targetElement.nameCamelCase}}">{{targetElement.namePascalCase}}:</label>
-                            <select id="{{targetElement.nameCamelCase}}" required>
+                            <label for="{{camelCase name}}">{{pascalCase name}}:</label>
+                            <select id="{{camelCase name}}" required>
                                 {{#targetElement.items}}
                                 <option value="{{value}}">{{value}}</option>
                                 {{/targetElement.items}}
