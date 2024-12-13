@@ -367,7 +367,7 @@ fileName: {{namePascalCase}}.html
                         {{/isDefaultType}}
                         {{/fieldDescriptors}}
                         {{#entities.relations}}
-                        {{#checkEquals ../fieldDescriptors name targetElement}}
+                        {{#checkEquals ../fieldDescriptors this targetElement}}
                         <div class="select-container">
                             <label for="{{targetElement.nameCamelCase}}">{{targetElement.namePascalCase}}:</label>
                             <select id="{{targetElement.nameCamelCase}}" required>
