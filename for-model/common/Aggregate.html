@@ -649,7 +649,7 @@ fileName: {{namePascalCase}}.html
     });
 
     window.$HandleBars.registerHelper('isDefaultType', function (type, name, voField, listField, options) {
-        if(!voField && type != name && !listField){
+        if(!voField && type != name && !listField && (type == 'String' || type == 'Integer' || type == 'Long' || type == 'Double' || type == 'Float' || type == 'BigDecimal' || type == 'Boolean' || type == 'Date')){
             return options.fn(this);
         }else{
             return options.inverse(this);
