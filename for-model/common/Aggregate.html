@@ -686,8 +686,10 @@ fileName: {{namePascalCase}}.html
             fields = enumField.filter(field => field != null);
             for(var i = 0; i< fields.length; i++){
                 var enumName ='';
-                enumName = fields[i].name.charAt(0).toUpperCase() + fields[i].name.slice(1);
-                if(name == enumName && fields[i].targetElement && fields[i].targetElement._type.endsWith("enum")){
+                if(fields[i].targetElement){
+                    enumName = fields[i].targetElement.name.charAt(0).toUpperCase() + fields[i].targetElement.name.slice(1);
+                }
+                if(type == enumName && fields[i].targetElement && fields[i].targetElement._type.endsWith("enum")){
                     return options.fn(this);
                 }else{
                     return options.inverse(this);
