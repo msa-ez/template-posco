@@ -28,18 +28,14 @@ import com.posco.{{boundedContext.name}}.{{../options.package}}.domain.{{../name
 @Transactional
 public class {{namePascalCase}}Service {
     private final {{namePascalCase}}Repository {{nameCamelCase}}Repository;
-    {{#attached 'View' this}}
-    private final {{../namePascalCase}}Mapper {{../nameCamelCase}}Mapper;
-    {{/attached}}
+    private final {{namePascalCase}}Mapper {{nameCamelCase}}Mapper;
     
     @Autowired
     public {{namePascalCase}}Service(
         {{namePascalCase}}Repository {{nameCamelCase}}Repository
-        {{#attached 'View' this}},{{../namePascalCase}}Mapper {{../nameCamelCase}}Mapper{{/attached}}) {
+        ,{{namePascalCase}}Mapper {{nameCamelCase}}Mapper) {
         this.{{nameCamelCase}}Repository = {{nameCamelCase}}Repository;
-        {{#attached 'View' this}}
-        this.{{../nameCamelCase}}Mapper = {{../nameCamelCase}}Mapper;
-        {{/attached}}
+        this.{{nameCamelCase}}Mapper = {{nameCamelCase}}Mapper;
     }
 
     {{#commands}}
