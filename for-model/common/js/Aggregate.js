@@ -371,7 +371,9 @@ window.$HandleBars.registerHelper('isEnum', function (voField, fieldName, field,
         if(relation){
             for(var i = 0; i < relation.length; i++){
                 if(relation[i] && relation[i].name){
-                    if(relation[i].name == fieldName){
+                    var name = '';
+                    name = relation[i].name.charAt(0).toUpperCase() + relation[i].name.slice(1);
+                    if(name == fieldName){
                         return options.fn(this);
                             
                     }else{
@@ -390,7 +392,9 @@ window.$HandleBars.registerHelper('checkEnum', function (fieldName, voField, fie
         if(relation){
             for(var i = 0; i < relation.length; i++){
                 if(relation[i] && relation[i].name){
-                    if(fieldName === relation[i]..name){
+                    var name = '';
+                    name = relation[i].name.charAt(0).toUpperCase() + relation[i].name.slice(1);
+                    if(fieldName === name){
                         if(relation[i].targetElement && relation[i].targetElement.items){
                             var items = relation[i].targetElement.items;
                             if(items){
