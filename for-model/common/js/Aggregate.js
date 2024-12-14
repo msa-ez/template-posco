@@ -410,8 +410,9 @@ window.$HandleBars.registerHelper('createVoField', function (relationField) {
     var result = [];
     for(var i = 0; i < relationField.length; i++){
         if(relationField[i].targetElement && relationField[i].targetElement.isVO){
-            for(var j = 0; j < relationField[i].targetElement.fieldDescriptors.length; j++){
-                var voField = relationField[i].targetElement.fieldDescriptors[j];
+            var vo = relationField[i].targetElement;
+            for(var j = 0; j < vo.fieldDescriptors.length; j++){
+                var voField = vo.fieldDescriptors[j];
                 var voFieldType = '';
                 if(voField.className === "String"){
                     voFieldType = 'Text';
@@ -424,7 +425,7 @@ window.$HandleBars.registerHelper('createVoField', function (relationField) {
                 }else if(voField.className ==="Boolean"){
                     voFieldType = 'Bool';
                 }
-                result.push(`{"Header": ["${relationField[i].targetElement.namePascalCase}", "${voField.nameCamelCase}"], "Name": "${voField.nameCamelCase}", "Type": ${voFieldType}, "Width": 140, "CanEdit": 1},`);
+                result.push(`{"Header": ["${vo.namePascalCase}", "${voField.nameCamelCase}"], "Name": "${voField.nameCamelCase}", "Type": ${voFieldType}, "Width": 140, "CanEdit": 1},`);
             }
         }
     }
