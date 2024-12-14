@@ -451,14 +451,18 @@ window.$HandleBars.registerHelper('checkFieldType', function (type, voField, fie
     }else if(type === "Boolean"){
         return "Bool";
     }else{
-        if(enumField){
-            for(var i = 0; i < enumField.length; i++){
-                if(type == enumField[i].targetElement.namePascalCase && enumField[i].targetElement._type.endsWith("enum")){
-                    return "Enum";
-                }else{
+        if (enumField) {
+            let result;
+            enumField.forEach(field => {
+                if (type === field.targetElement.namePascalCase && 
+                    field.targetElement._type.endsWith("enum")) {
+                    result = "Enum";
+                    return result;
+                }
+                else{
                     return;
                 }
-            }
+            });
         }
     }
 });
