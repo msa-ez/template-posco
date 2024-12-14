@@ -30,9 +30,7 @@ $(document).ready(function(){
             {{/aggregateRoot}}
             {{#aggregateRoot}}
             {{#entities.relations}}
-            {{#if isVO}}
             {{#createVoField ../fieldDescriptors targetElement}}{{/createVoField}}
-            {{/if}}
             {{/entities.relations}}
             {{/aggregateRoot}}
         ],
