@@ -437,7 +437,7 @@ window.$HandleBars.registerHelper('createVoField', function (type, field) {
             }
         }
     }
-    return result.join(',\n'); 
+    return result.join('\n'); 
 });
 window.$HandleBars.registerHelper('checkFieldType', function (type, voField, fieldName, enumField) {
     if(type === 'String'){
