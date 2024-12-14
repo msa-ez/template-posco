@@ -23,7 +23,7 @@ $(document).ready(function(){
             {{#if isKey}}
             {"Header": "No", "Name": "No", "Type": "{{#checkFieldType className isVO namePascalCase}}{{/checkFieldType}}", "Align": "Center", "Width":140, "CanEdit":0},
             {{else}}
-            {"Header": "{{#checkName nameCamelCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVO namePascalCase}}{{/checkFieldType}}",{{#isDate className}}"Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요",{{/isDate}}{{#isEnum isVO namePascalCase ../entities}} "Enum": {{/isEnum}}{{#checkEnum namePascalCase isVO ../entities}}{{/checkEnum}}{{#isEnum isVO namePascalCase ../entities}},{{/isEnum}}{{#isEnum isVO namePascalCase ../entities}} "EnumKeys": {{/isEnum}}{{#checkEnum namePascalCase isVO ../entities}}{{/checkEnum}}{{#isEnum isVO namePascalCase ../entities}},{{/isEnum}} "Align": "Center", "Width":140, "CanEdit":1},  
+            {"Header": "{{#checkName nameCamelCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVO namePascalCase ../entities.relations}}{{/checkFieldType}}",{{#isDate className}}"Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요",{{/isDate}}{{#isEnum isVO namePascalCase ../entities}} "Enum": {{/isEnum}}{{#checkEnum namePascalCase isVO ../entities}}{{/checkEnum}}{{#isEnum isVO namePascalCase ../entities}},{{/isEnum}}{{#isEnum isVO namePascalCase ../entities}} "EnumKeys": {{/isEnum}}{{#checkEnum namePascalCase isVO ../entities}}{{/checkEnum}}{{#isEnum isVO namePascalCase ../entities}},{{/isEnum}} "Align": "Center", "Width":140, "CanEdit":1},  
             {{/if}}
             {{/if}}
             {{/fieldDescriptors}}
@@ -439,7 +439,7 @@ window.$HandleBars.registerHelper('createVoField', function (type, field) {
     }
     return result.join(',\n'); 
 });
-window.$HandleBars.registerHelper('checkFieldType', function (type, voField, fieldName) {
+window.$HandleBars.registerHelper('checkFieldType', function (type, voField, fieldName, enumField) {
     if(type === 'String'){
         return "Text";
     }else if(type === "Long" || type === "Integer" || type === "Double" || type === "BigDecimal"){
@@ -450,11 +450,13 @@ window.$HandleBars.registerHelper('checkFieldType', function (type, voField, fie
         return "Date";
     }else if(type === "Boolean"){
         return "Bool";
-    }else if(type == fieldName){
-        if(voField){
-            return;
-        }else{
-            return "Enum";
+    }else{
+        if(enumField){
+            if(type == enumField.targetElement.namePascalCase && enumField.targetElement._type.endsWith("enum")){
+                return "Enum";
+            }else if(type == enumField.targetElement.namePascalCase && enumField.targetElement.isVO){
+                return ;
+            }
         }
     }
 });
