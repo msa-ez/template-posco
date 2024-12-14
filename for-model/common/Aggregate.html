@@ -390,6 +390,7 @@ fileName: {{namePascalCase}}.html
                         {{#fieldDescriptors}}
                         {{#if isVO}}
                         {{#../entities.relations}}
+                        {{#checkVOField targetElement.isVO}}
                         <div class="vue-card" style="margin-bottom:10px;">
                             <label for="{{targetElement.nameCamelCase}}">{{targetElement.nameCamelCase}}</label><br><br>
                             {{#targetElement.fieldDescriptors}}
@@ -397,6 +398,7 @@ fileName: {{namePascalCase}}.html
                             <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
                             {{/targetElement.fieldDescriptors}}
                         </div>
+                        {{/checkVOField}}
                         {{/../entities.relations}}
                         {{/if}}
                         {{/fieldDescriptors}}
@@ -453,11 +455,11 @@ fileName: {{namePascalCase}}.html
                         {{/isEnumType}}
                         {{#isVOType isVO}}
                         <div class="vue-card" style="margin-bottom:10px;">
-                            <label for="{{nameCamelCase}}">{{namePascalCase}}</label>
+                            <label for="{{nameCamelCase}}">{{nameCamelCase}}</label>
                             {{#../../aggregateRoot.entities.relations}}
                             {{#compareField name ../../../commands "isVO" targetElement.isVO}}
                             {{#targetElement.fieldDescriptors}}
-                            <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
+                            <label for="{{nameCamelCase}}">{{nameCamelCase}}:</label>
                             <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
                             {{/targetElement.fieldDescriptors}}
                             {{/compareField}}
@@ -602,6 +604,13 @@ fileName: {{namePascalCase}}.html
     </body>
 </html>
 <function>
+    window.$HandleBars.registerHelper('checkEquals', function (voField, options) {
+        if(voField){
+            return options.fn(this);
+        }else{
+            return options.inverse(this);
+        }
+    });
     window.$HandleBars.registerHelper('checkEquals', function (aggField, enumName, enumField, options) {
         var name = '';
         if(enumName){
