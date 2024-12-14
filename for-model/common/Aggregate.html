@@ -604,7 +604,7 @@ fileName: {{namePascalCase}}.html
     </body>
 </html>
 <function>
-    window.$HandleBars.registerHelper('checkEquals', function (voField, options) {
+    window.$HandleBars.registerHelper('checkVOField', function (voField, options) {
         if(voField){
             return options.fn(this);
         }else{
