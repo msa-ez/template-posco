@@ -453,16 +453,14 @@ window.$HandleBars.registerHelper('checkFieldType', function (type, voField, fie
     }else{
         if (enumField) {
             let result;
-            enumField.forEach(field => {
+            for (let field of enumField) {
                 if (type === field.targetElement.namePascalCase && 
                     field.targetElement._type.endsWith("enum")) {
                     result = "Enum";
-                    return result;
+                    break; 
                 }
-                else{
-                    return;
-                }
-            });
+            }
+            return result;
         }
     }
 });
