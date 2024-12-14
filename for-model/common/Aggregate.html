@@ -391,7 +391,7 @@ fileName: {{namePascalCase}}.html
                         {{#if isVO}}
                         {{#../entities.relations}}
                         <div class="vue-card" style="margin-bottom:10px;">
-                            <label for="{{nameCamelCase}}">{{namePascalCase}}</label><br><br>
+                            <label for="{{targetElement.nameCamelCase}}">{{targetElement.nameCamelCase}}</label><br><br>
                             {{#targetElement.fieldDescriptors}}
                             <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
                             <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
