@@ -2,9 +2,7 @@ forEach: Aggregate
 fileName: {{namePascalCase}}.js
 path: common/js
 ---
-{{#attached 'View' this}}
 let rowData = [];
-{{/attached}}
 $(document).ready(function(){
     var OPT = {
         "Cfg": {
@@ -170,7 +168,7 @@ function saveRow(){
             case "Changed":
                 var rowObj = sheet.getRowById(rows[i].id);
                 var changedData = JSON.parse(sheet.getChangedData(rowObj))["Changes"][0];
-                changedData.id = rows[i].id
+                changedData.id = rows[i].{{#aggregateRoot.fieldDescriptors}}{{#if isKey}}{{nameCamelCase}}{{/if}}{{/aggregateRoot.fieldDescriptors}}
                 var id = changedData.id 
                 $.ajax({
                     url: `/{{namePlural}}/${id}`,
@@ -180,7 +178,7 @@ function saveRow(){
                 });
                 break;
             case "Deleted":
-                var id = rows[i].id
+                var id = rows[i].{{#aggregateRoot.fieldDescriptors}}{{#if isKey}}{{nameCamelCase}}{{/if}}{{/aggregateRoot.fieldDescriptors}}
                 $.ajax({
                     url: `/{{namePlural}}/${id}`,
                     method: "DELETE",
@@ -421,7 +419,7 @@ window.$HandleBars.registerHelper('createVoField', function (type, field) {
                 for(var j = 0; j < vo.fieldDescriptors.length; j++){
                     var voField = vo.fieldDescriptors[j];
                     var voFieldType = '';
-                    if(voField.className ==="String"){
+                    if(voField.className === "String"){
                         voFieldType = 'Text';
                     }else if(voField.className ==="Long" || voField.className ==="Integer" || voField.className ==="Double" || voField.className ==="BigDecimal"){
                         voFieldType = 'Int';
@@ -432,7 +430,7 @@ window.$HandleBars.registerHelper('createVoField', function (type, field) {
                     }else if(voField.className ==="Boolean"){
                         voFieldType = 'Bool';
                     }
-                    result.push(`{"Header": ["${vo.namePascalCase}", "${voField.nameCamelCase}"], "Name": "${voField.nameCamelCase}", "Type": ${voFieldType}, "Width": 140}`);
+                    result.push(`{"Header": ["${vo.namePascalCase}", "${voField.nameCamelCase}"], "Name": "${voField.nameCamelCase}", "Type": ${voFieldType}, "Width": 140},`);
                 }
             }else{
                 return;

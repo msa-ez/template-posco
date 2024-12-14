@@ -45,13 +45,22 @@ fileName: {{namePascalCase}}.html
                 flex-direction: column; /* 세로 정렬 */
             }
 
-            #carAssignmentForm {
+            #{{nameCamelCase}}Dialog {
                 overflow: auto; /* 내부 스크롤 활성화 */
                 flex: 1; /* form이 나머지 공간 차지 */
                 padding: 10px; /* form 내부 여백 */
                 max-height: 100%; /* form 최대 높이 */
             }
-
+            {{#commands}}
+            {{^isRestRepository}}
+            #{{nameCamelCase}}Form {
+                overflow: auto; /* 내부 스크롤 활성화 */
+                flex: 1; /* form이 나머지 공간 차지 */
+                padding: 10px; /* form 내부 여백 */
+                max-height: 100%; /* form 최대 높이 */
+            }
+            {{/isRestRepository}}
+            {{/commands}}
 
             .close {
                 color: #aaa;
@@ -309,7 +318,7 @@ fileName: {{namePascalCase}}.html
                 <h1>{{boundedContext.namePascalCase}}</h1>
                 <a href="javascript:void(0)" class="closebtn" onclick="toggleSidebar()">×</a>
             </div>
-            <a href="/" style="font-size: 20px;">Home</a>
+            <a href="/common" style="font-size: 20px;">Home</a>
             {{#options.rootModel}}
             {{#findByAgg elements}}{{/findByAgg}}
             {{/options.rootModel}}
@@ -321,7 +330,7 @@ fileName: {{namePascalCase}}.html
         </div>
         <div style="padding:10px;">
             <button type="button" class='buttonLabelSearch' onclick="retrieve()">조회</button>
-            <button type="button" class='buttonLabelSave' onclick="save{{namePascalCase}}()">저장</button>
+            <button type="button" class='buttonLabelSave' onclick="saveRow()">저장</button>
             <button type="button" class='buttonLabelAddRow' onclick="openDialog('{{nameCamelCase}}Dialog')">신규</button>
             <button type="button" class='buttonLabelDeleteRow' onclick="deleteData()">삭제</button>
             {{#commands}}
@@ -581,7 +590,7 @@ fileName: {{namePascalCase}}.html
                         {{#targetElement.fieldDescriptors}}
                         {{nameCamelCase}}: document.getElementById('{{nameCamelCase}}').value,
                         {{/targetElement.fieldDescriptors}}
-                    }
+                    },
                     {{/if}}
                     {{/entities.relations}}
                     {{/aggregateRoot}}
