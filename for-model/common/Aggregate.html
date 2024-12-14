@@ -581,7 +581,10 @@ fileName: {{namePascalCase}}.html
                     {{#if isList}}
                     {{nameCamelCase}}: {{nameCamelCase}}Fields,
                     {{else}}
+                    {{#if isVO}}
+                    {{else}}
                     {{nameCamelCase}}: document.getElementById('{{nameCamelCase}}').value,
+                    {{/if}}
                     {{/if}}
                     {{/if}}
                     {{/aggregateRoot.fieldDescriptors}}
