@@ -430,7 +430,7 @@ window.$HandleBars.registerHelper('createVoField', function (type, field) {
                     }else if(voField.className ==="Boolean"){
                         voFieldType = 'Bool';
                     }
-                    result.push(`{"Header": ["${vo.namePascalCase}", "${voField.nameCamelCase}"], "Name": "${voField.nameCamelCase}", "Type": ${voFieldType}, "Width": 140},`);
+                    result.push(`{"Header": ["${vo.namePascalCase}", "${voField.nameCamelCase}"], "Name": "${voField.nameCamelCase}", "Type": ${voFieldType}, "Width": 140, "CanEdit": 1},`);
                 }
             }else{
                 return;
