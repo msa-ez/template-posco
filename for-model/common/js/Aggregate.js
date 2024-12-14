@@ -29,11 +29,11 @@ $(document).ready(function(){
             {{/fieldDescriptors}}
             {{/aggregateRoot}}
             {{#aggregateRoot}}
-            {{#fieldDescriptors}}
+            {{#entities.relations}}
             {{#if isVO}}
-            {{#createVoField className ../entities}}{{/createVoField}}
+            {{#createVoField ../fieldDescriptors targetElement}}{{/createVoField}}
             {{/if}}
-            {{/fieldDescriptors}}
+            {{/entities.relations}}
             {{/aggregateRoot}}
         ],
         Events: {
@@ -408,37 +408,31 @@ window.$HandleBars.registerHelper('checkEnum', function (fieldName, voField, fie
         }
     }
 });
-window.$HandleBars.registerHelper('createVoField', function (type, field) {
+window.$HandleBars.registerHelper('createVoField', function (field, relationField) {
     var result = [];
-    var relation = field.relations
-
-    for(var i = 0; i < relation.length; i++){
-        if(relation[i].targetElement && relation[i].targetElement.isVO){
-            var vo = relation[i].targetElement;
-            if(vo && vo.fieldDescriptors){
-                for(var j = 0; j < vo.fieldDescriptors.length; j++){
-                    var voField = vo.fieldDescriptors[j];
-                    var voFieldType = '';
-                    if(voField.className === "String"){
-                        voFieldType = 'Text';
-                    }else if(voField.className ==="Long" || voField.className ==="Integer" || voField.className ==="Double" || voField.className ==="BigDecimal"){
-                        voFieldType = 'Int';
-                    }else if(voField.className ==="Float"){
-                        voFieldType = 'Float';
-                    }else if(voField.className ==="Date"){
-                        voFieldType = `"Date", "Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요"`;
-                    }else if(voField.className ==="Boolean"){
-                        voFieldType = 'Bool';
-                    }
-                    result.push(`{"Header": ["${vo.namePascalCase}", "${voField.nameCamelCase}"], "Name": "${voField.nameCamelCase}", "Type": ${voFieldType}, "Width": 140, "CanEdit": 1},`);
+    if(field.isVO){
+        if(relationField.targetElement && relationField.targetElement.isVO && field.className == relationField.targetElement.namePascalCase){
+            for(var i = 0; i < relationField.targetElement.fieldDescriptors.length; i++){
+                var voField = relationField.targetElement.fieldDescriptors[i];
+                var voFieldType = '';
+                if(voField.className === "String"){
+                    voFieldType = 'Text';
+                }else if(voField.className ==="Long" || voField.className ==="Integer" || voField.className ==="Double" || voField.className ==="BigDecimal"){
+                    voFieldType = 'Int';
+                }else if(voField.className ==="Float"){
+                    voFieldType = 'Float';
+                }else if(voField.className ==="Date"){
+                    voFieldType = `"Date", "Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요"`;
+                }else if(voField.className ==="Boolean"){
+                    voFieldType = 'Bool';
                 }
-            }else{
-                return;
+                result.push(`{"Header": ["${vo.namePascalCase}", "${voField.nameCamelCase}"], "Name": "${voField.nameCamelCase}", "Type": ${voFieldType}, "Width": 140, "CanEdit": 1},`);
             }
         }
     }
     return result.join('\n'); 
 });
+
 window.$HandleBars.registerHelper('checkFieldType', function (type, voField, fieldName, enumField) {
     if(type === 'String'){
         return "Text";
