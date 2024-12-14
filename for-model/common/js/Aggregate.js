@@ -410,8 +410,8 @@ window.$HandleBars.registerHelper('createVoField', function (relationField) {
     var result = [];
     if(relationField.isVO){
         var vo = relationField.namePascalCase;
-        for(var i = 0; i < relationField.fieldDescriptors.length; j++){
-            var voField = relationField.fieldDescriptors[j];
+        for(var i = 0; i < relationField.fieldDescriptors.length; i++){
+            var voField = relationField.fieldDescriptors[i];
             var voFieldType = '';
             if(voField.className === "String"){
                 voFieldType = 'Text';
