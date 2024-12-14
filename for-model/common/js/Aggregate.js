@@ -408,23 +408,24 @@ window.$HandleBars.registerHelper('checkEnum', function (fieldName, voField, fie
 });
 window.$HandleBars.registerHelper('createVoField', function (relationField) {
     var result = [];
+    var quote = "'";
     if(relationField.isVO){
         var vo = relationField.namePascalCase;
         for(var i = 0; i < relationField.fieldDescriptors.length; i++){
             var voField = relationField.fieldDescriptors[i];
             var voFieldType = '';
             if(voField.className === "String"){
-                voFieldType = 'Text';
+                voFieldType = quote + 'Text' + quote;
             }else if(voField.className ==="Long" || voField.className ==="Integer" || voField.className ==="Double" || voField.className ==="BigDecimal"){
-                voFieldType = 'Int';
+                voFieldType = quote + 'Int' + quote;
             }else if(voField.className ==="Float"){
-                voFieldType = 'Float';
+                voFieldType = quote + 'Float' + quote;
             }else if(voField.className ==="Date"){
                 voFieldType = `"Date", "Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요"`;
             }else if(voField.className ==="Boolean"){
-                voFieldType = 'Bool';
+                voFieldType = quote + 'Bool' + quote;
             }
-            result.push(`{"Header": ["${vo}", "${voField.nameCamelCase}"], "Name": "${voField.nameCamelCase}", "Type": "${voFieldType}", "Width": 140, "CanEdit": 1},`);
+            result.push(`{"Header": ["${vo}", "${voField.nameCamelCase}"], "Name": "${voField.nameCamelCase}", "Type": ${voFieldType}, "Width": 140, "CanEdit": 1},`);
         }
     }
     return result.join('\n'); 
