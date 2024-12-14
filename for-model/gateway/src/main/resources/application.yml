@@ -23,10 +23,10 @@ spring:
           uri: http://localhost:8090
           predicates:
             - Path=/.well-known/**, /auth/**, /users/**
-        - id: frontend
-          uri: http://localhost:8080
+        - id: nginx
+          uri: http://localhost:8081
           predicates:
-            - Path=/**
+            - Path=/common/**
 #>>> API Gateway / Routes
       globalcors:
         corsConfigurations:
