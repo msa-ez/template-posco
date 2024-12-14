@@ -407,34 +407,42 @@ window.$HandleBars.registerHelper('checkEnum', function (fieldName, voField, fie
     }
 });
 window.$HandleBars.registerHelper('createVoField', function (field, relationField) {
-    var result = [];
-    if(field){
-        for(var i = 0; i < field.length; i++){
-            if(field[i].isVO){
-                for(var j = 0; j < relationField.length; j++){
-                    if(relationField[j].targetElement && relationField[j].targetElement.isVO && field[i].className == relationField[j].targetElement.namePascalCase){
-                        for(var k = 0; k < relationField.targetElement.fieldDescriptors.length; k++){
-                            var voField = relationField.targetElement.fieldDescriptors[k];
-                            var voFieldType = '';
-                            if(voField.className === "String"){
-                                voFieldType = 'Text';
-                            }else if(voField.className ==="Long" || voField.className ==="Integer" || voField.className ==="Double" || voField.className ==="BigDecimal"){
-                                voFieldType = 'Int';
-                            }else if(voField.className ==="Float"){
-                                voFieldType = 'Float';
-                            }else if(voField.className ==="Date"){
-                                voFieldType = `"Date", "Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요"`;
-                            }else if(voField.className ==="Boolean"){
-                                voFieldType = 'Bool';
-                            }
-                            result.push(`{"Header": ["${vo.namePascalCase}", "${voField.nameCamelCase}"], "Name": "${voField.nameCamelCase}", "Type": ${voFieldType}, "Width": 140, "CanEdit": 1},`);
-                        }
-                    }
-                }
-            }
-        }
-    }
-    return result.join('\n'); 
+    if (!field) return '';
+
+    const getVoFieldType = (className) => {
+        const typeMap = {
+            'String': 'Text',
+            'Long': 'Int',
+            'Integer': 'Int',
+            'Double': 'Int',
+            'BigDecimal': 'Int',
+            'Float': 'Float',
+            'Boolean': 'Bool',
+            'Date': `"Date", "Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요"`
+        };
+        return typeMap[className] || '';
+    };
+
+    const createFieldDescriptor = (vo, voField) => {
+        const voFieldType = getVoFieldType(voField.className);
+        return `{"Header": ["${vo.namePascalCase}", "${voField.nameCamelCase}"], "Name": "${voField.nameCamelCase}", "Type": ${voFieldType}, "Width": 140, "CanEdit": 1}`;
+    };
+
+    return field
+        .filter(f => f.isVO)
+        .flatMap(voField => 
+            relationField
+                .filter(rf => 
+                    rf.targetElement && 
+                    rf.targetElement.isVO && 
+                    voField.className === rf.targetElement.namePascalCase
+                )
+                .flatMap(rf => 
+                    rf.targetElement.fieldDescriptors
+                        .map(descriptor => createFieldDescriptor(rf.targetElement, descriptor))
+                )
+        )
+        .join('\n');
 });
 
 window.$HandleBars.registerHelper('checkFieldType', function (type, voField, fieldName, enumField) {
