@@ -385,6 +385,8 @@ window.$HandleBars.registerHelper('disassembleVO', function (voField) {
             }else{
                 return;
             }
+        }else{
+            return;
         }
     }
     return new window.$HandleBars.SafeString(result.join('\n'));
