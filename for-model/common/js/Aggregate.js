@@ -30,7 +30,7 @@ $(document).ready(function(){
             {{/aggregateRoot}}
             {{#aggregateRoot}}
             {{#entities.relations}}
-            {{#createVoField targetElement}}{{/createVoField}}
+            {{#createVoField targetElement this}}{{/createVoField}}
             {{/entities.relations}}
             {{/aggregateRoot}}
         ],
@@ -406,7 +406,8 @@ window.$HandleBars.registerHelper('checkEnum', function (fieldName, voField, fie
         }
     }
 });
-window.$HandleBars.registerHelper('createVoField', function (relationField) {
+window.$HandleBars.registerHelper('createVoField', function (relationField, enumField) {
+    var enumFields = enumField.filter(field => field.targetElement._type.endsWith("enum"));
     var result = [];
     var quote = "'";
     if(relationField.isVO){
