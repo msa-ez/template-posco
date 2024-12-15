@@ -333,6 +333,24 @@ window.$HandleBars.registerHelper('combineVO', function (voField) {
     }
     return new window.$HandleBars.SafeString(result.join('\n'));
 });
+window.$HandleBars.registerHelper('isEnum', function (type, enumField, options) {
+    if(type && enumField){
+        let isEnumType = false;
+        for(let field of enumField){
+            if(field.targetElement && field.targetElement.namePascalCase){
+                if(type == field.targetElement.namePascalCase && field.targetElement._type.endsWith('enum')){
+                    options.fn(this)
+                    break;
+                }else {
+                    options.inverse(this);
+                }
+            }else {
+                options.inverse(this);
+            }
+        }
+    }
+    return options.inverse(this);
+});
 window.$HandleBars.registerHelper('disassembleVO', function (voField) {
     var result = [];
     var relation = voField.relations
@@ -362,25 +380,6 @@ window.$HandleBars.registerHelper('disassembleVO', function (voField) {
         }
     }
     return new window.$HandleBars.SafeString(result.join('\n'));
-});
-window.$HandleBars.registerHelper('isEnum', function (type, enumField, options) {
-    if(type && enumField){
-        let isEnumType = false;
-        for(let field of enumField){
-            if(field.targetElement && field.targetElement.namePascalCase){
-                if(type == field.targetElement.namePascalCase && field.targetElement._type.endsWith('enum')){
-                    isEnumType = true;
-                    break;
-                }else{
-                    isEnumType = false;
-                }
-            }else{
-                isEnumType = false;
-            }
-        }
-        return isEnumType ? options.fn(this) : options.inverse(this);
-    }
-    return options.inverse(this);
 });
 window.$HandleBars.registerHelper('checkEnum', function (fieldName, voField, field) {
     if(voField){
