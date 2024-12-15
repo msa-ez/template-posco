@@ -339,14 +339,18 @@ window.$HandleBars.registerHelper('isEnum', function (type, enumField, options) 
         for(let field of enumField){
             if(field){
                 if(field.targetElement){
-                    if(type == field.targetElement.namePascalCase && field.targetElement._type.endsWith('enum')){
-                        options.fn(this)
-                    break;
-                    }else {
-                        options.inverse(this);
+                    if(field.targetElement.namePascalCase){
+                        if(type == field.targetElement.namePascalCase && field.targetElement._type.endsWith('enum')){
+                            options.fn(this)
+                            break;
+                        }else {
+                            options.inverse(this);
+                        }
                     }else{
                         options.inverse(this);
                     }
+                }else{
+                    options.inverse(this);
                 }
             }else {
                 options.inverse(this);
