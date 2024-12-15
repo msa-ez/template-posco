@@ -363,9 +363,15 @@ window.$HandleBars.registerHelper('isEnum', function (type, enumField, options) 
     if(type && enumField){
         let isEnumType = false;
         for(let field of enumField){
-            if(type == field.targetElement.namePascalCase && field.targetElement._type.endsWith('enum')){
-                isEnumType = true;
-                break;
+            if(field.targetElement && field.targetElement.namePascalCase){
+                if(type == field.targetElement.namePascalCase && field.targetElement._type.endsWith('enum')){
+                    isEnumType = true;
+                    break;
+                }else{
+                    isEnumType = false;
+                }
+            }else{
+                isEnumType = false;
             }
         }
         return isEnumType ? options.fn(this) : options.inverse(this);
