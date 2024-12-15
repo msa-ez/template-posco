@@ -399,7 +399,6 @@ window.$HandleBars.registerHelper('checkEnum', function (fieldName, voField, fie
     }
 });
 window.$HandleBars.registerHelper('createVoField', function (relationField, enumField) {
-    var enumFields = enumField.filter(field => field.targetElement._type.endsWith("enum"));
     var result = [];
     var quote = "'";
     if(relationField.isVO){
@@ -407,7 +406,6 @@ window.$HandleBars.registerHelper('createVoField', function (relationField, enum
         for(var i = 0; i < relationField.fieldDescriptors.length; i++){
             var voField = relationField.fieldDescriptors[i];
             var voFieldType = '';
-            var enumValues = '';
             if(voField.className === "String"){
                 voFieldType = quote + 'Text' + quote;
             }else if(voField.className ==="Long" || voField.className ==="Integer" || voField.className ==="Double" || voField.className ==="BigDecimal"){
@@ -418,10 +416,11 @@ window.$HandleBars.registerHelper('createVoField', function (relationField, enum
                 voFieldType = `"Date", "Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요"`;
             }else if(voField.className ==="Boolean"){
                 voFieldType = quote + 'Bool' + quote;
-            }else{
-                var matchEnum = enumFields.find(field => field.targetElement.namePascalCase === voField.className);
-                if(matchEnum){
-                    voFieldType = `"Enum", "Enum": ${matchEnum.targetElement.items.map(item => item.value).join('|')}, "EnumKeys": ${matchEnum.targetElement.items.map(item => item.value).join('|')}`;
+            }else if(enumField.some(ef => ef.targetElement.namePascalCase === voField.className)) {
+                var matchEnum = enumField.find(ef => ef.targetElement.namePascalCase === voField.className);
+                if(matchEnum && matchEnum.targetElement.items) {
+                    var enumValues = matchEnum.targetElement.items.map(item => item.value).join('|');
+                    voFieldType = `"Enum", "Enum": "${enumValues}", "EnumKeys": "${enumValues}"`;
                 }
             }
             result.push(`{"Header": ["${vo}", "${voField.nameCamelCase}"], "Name": "${voField.nameCamelCase}", "Type": ${voFieldType}, "Width": 140, "CanEdit": 1},`);
