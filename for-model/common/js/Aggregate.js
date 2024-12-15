@@ -364,24 +364,28 @@ window.$HandleBars.registerHelper('disassembleVO', function (voField) {
     var relation = voField.relations
 
     for(var i = 0; i < relation.length; i++){
-        if(relation[i].targetElement && relation[i].targetElement.isVO){
-            var vo = relation[i].targetElement;
-            if(vo && vo.fieldDescriptors){
-                var assignments = [];
-                vo.fieldDescriptors.forEach(fd => {
-                    var fieldName = fd.name;
-                    if(fd.className === "Date"){
-                        assignments.push(`json[i].${fieldName} = json[i].${vo.name}.${fieldName}.split('T')[0]`);
-                    }else{
-                        assignments.push(`json[i].${fieldName} = json[i].${vo.name}.${fieldName}`);
-                    }
-                });
+        if(relation[i].targetElement){
+            if(relation[i].targetElement.isVO){
+                var vo = relation[i].targetElement;
+                if(vo && vo.fieldDescriptors){
+                    var assignments = [];
+                    vo.fieldDescriptors.forEach(fd => {
+                        var fieldName = fd.name;
+                        if(fd.className === "Date"){
+                            assignments.push(`json[i].${fieldName} = json[i].${vo.name}.${fieldName}.split('T')[0]`);
+                        }else{
+                            assignments.push(`json[i].${fieldName} = json[i].${vo.name}.${fieldName}`);
+                        }
+                    });
 
-                result.push(`
-                if (json[i].${vo.name}) {
-                    ${assignments.join(';\n')}
+                    result.push(`
+                    if (json[i].${vo.name}) {
+                        ${assignments.join(';\n')}
+                    }
+                    `);
+                }else{
+                    return;
                 }
-                `);
             }else{
                 return;
             }
