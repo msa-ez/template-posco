@@ -23,7 +23,7 @@ $(document).ready(function(){
             {{#if isKey}}
             {"Header": "No", "Name": "No", "Type": "{{#checkFieldType className isVO namePascalCase}}{{/checkFieldType}}", "Align": "Center", "Width":140, "CanEdit":0},
             {{else}}
-            {"Header": "{{#checkName nameCamelCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVO namePascalCase ../entities.relations}}{{/checkFieldType}}",{{#isDate className}}"Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요",{{/isDate}}{{#isEnum isVO namePascalCase ../entities}} "Enum": {{/isEnum}}{{#checkEnum namePascalCase isVO ../entities}}{{/checkEnum}}{{#isEnum isVO namePascalCase ../entities}},{{/isEnum}}{{#isEnum isVO namePascalCase ../entities}} "EnumKeys": {{/isEnum}}{{#checkEnum namePascalCase isVO ../entities}}{{/checkEnum}}{{#isEnum isVO namePascalCase ../entities}},{{/isEnum}} "Align": "Center", "Width":140, "CanEdit":1},  
+            {"Header": "{{#checkName nameCamelCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVO namePascalCase ../entities.relations}}{{/checkFieldType}}",{{#isDate className}}"Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요",{{/isDate}}{{#isEnum className ../entities.relations}} "Enum": {{/isEnum}}{{#checkEnum namePascalCase isVO ../entities}}{{/checkEnum}}{{#isEnum className ../entities.relations}},{{/isEnum}}{{#isEnum className ../entities.relations}} "EnumKeys": {{/isEnum}}{{#checkEnum namePascalCase isVO ../entities}}{{/checkEnum}}{{#isEnum className ../entities.relations}},{{/isEnum}} "Align": "Center", "Width":140, "CanEdit":1},  
             {{/if}}
             {{/if}}
             {{/fieldDescriptors}}
@@ -131,7 +131,7 @@ function deleteData(){
 
 function save(data){
     var rows = data;
-    rows.id = rows.No
+    rows.{{#aggregateRoot.fieldDescriptors}}{{#if isKey}}{{nameCamelCase}}{{/if}}{{/aggregateRoot.fieldDescriptors}} = rows.No
     delete rows.No
 
     $.ajax({
@@ -359,26 +359,18 @@ window.$HandleBars.registerHelper('disassembleVO', function (voField) {
     }
     return new window.$HandleBars.SafeString(result.join('\n'));
 });
-window.$HandleBars.registerHelper('isEnum', function (voField, fieldName, field, options) {
-    if(voField){
-        return options.inverse(this);
-    }else{
-        var relation = field.relations
-        if(relation){
-            for(var i = 0; i < relation.length; i++){
-                if(relation[i] && relation[i].name){
-                    var name = '';
-                    name = relation[i].name.charAt(0).toUpperCase() + relation[i].name.slice(1);
-                    if(name == fieldName){
-                        return options.fn(this);
-                            
-                    }else{
-                        return
-                    }
-                }
+window.$HandleBars.registerHelper('isEnum', function (type, enumField, options) {
+    if(type && enumField){
+        let isEnumType = false;
+        for(let field of enumField){
+            if(type == field.targetElement.namePascalCase && field.targetElement._type.endsWith('enum')){
+                isEnumType = true;
+                break;
             }
         }
+        return isEnumType ? options.fn(this) : options.inverse(this);
     }
+    return options.inverse(this);
 });
 window.$HandleBars.registerHelper('checkEnum', function (fieldName, voField, field) {
     if(voField){
