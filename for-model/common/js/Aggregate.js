@@ -32,7 +32,7 @@ $(document).ready(function(){
             {{#entities.relations}}
             {{#if targetElement.fieldDescriptors}}
             {{#targetElement.fieldDescriptors}}
-            {"Header": ["{{../targetElement.nameCamelCase}}", "{{nameCamelCase}}"], "Name": "{{nameCamelCase}}", {{#checkVOFieldType className}}{{/checkVOFieldType}} "Width": 140, "CanEdit": 1},
+            {"Header": ["{{../targetElement.nameCamelCase}}", "{{nameCamelCase}}"], "Name": "{{nameCamelCase}}", {{#checkVOFieldType className}}{{/checkVOFieldType}}{{#isInternalEnum className ../../entities.relations}}{{/isInternalEnum}} "Width": 140, "CanEdit": 1},
             {{/targetElement.fieldDescriptors}}
             {{/if}}
             {{/entities.relations}}
@@ -474,23 +474,23 @@ window.$HandleBars.registerHelper('checkVOFieldType', function (type) {
     }
 });
 
-// window.$HandleBars.registerHelper('isInternalEnum', function (type, enumField) {
-//     if(type !== "String" && type !== "Long" && type !== "Integer" && type !== "Double" && type !== "BigDecimal" && type !== "Float" && type !== "Date" && type !== "Boolean"){
-//         for(var i = 0; i < enumField.length; i++){
-//             if(enumField[i].targetElement && enumField[i].targetElement.namePascalCase){
-//                 if(type === enumField[i].targetElement.namePascalCase && enumField[i].targetElement._type.endsWith("enum")){
-//                     if(enumField[i].targetElement.items){
-//                         var items = enumField[i].targetElement.items;
-//                         if(items){
-//                             var result = items.map(item => item.value).join('|');
-//                             return `"Enum", "Enum": "${result}", "EnumKeys": "${result}",`;
-//                         }
-//                     }
-//                 }
-//             }
-//         }
-//     }
-// });
+window.$HandleBars.registerHelper('isInternalEnum', function (type, enumField) {
+    if(type !== "String" && type !== "Long" && type !== "Integer" && type !== "Double" && type !== "BigDecimal" && type !== "Float" && type !== "Date" && type !== "Boolean"){
+        for(var i = 0; i < enumField.length; i++){
+            if(enumField[i].targetElement && enumField[i].targetElement.namePascalCase){
+                if(type === enumField[i].targetElement.namePascalCase && enumField[i].targetElement._type.endsWith("enum")){
+                    if(enumField[i].targetElement.items){
+                        var items = enumField[i].targetElement.items;
+                        if(items){
+                            var result = items.map(item => item.value).join('|');
+                            return `"Enum", "Enum": "${result}", "EnumKeys": "${result}",`;
+                        }
+                    }
+                }
+            }
+        }
+    }
+});
 
 window.$HandleBars.registerHelper('checkFieldType', function (type, voField, fieldName, enumField) {
     if(type === 'String'){
