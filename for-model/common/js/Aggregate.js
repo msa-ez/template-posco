@@ -364,7 +364,7 @@ window.$HandleBars.registerHelper('disassembleVO', function (voField) {
     var relation = voField.relations
 
     for(var i = 0; i < relation.length; i++){
-        if(relation[i].targetElement){
+        if(relation[i] && relation[i].targetElement){
             if(relation[i].targetElement.isVO){
                 var vo = relation[i].targetElement;
                 if(vo && vo.fieldDescriptors){
