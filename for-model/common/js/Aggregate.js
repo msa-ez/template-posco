@@ -477,18 +477,32 @@ window.$HandleBars.registerHelper('checkVOFieldType', function (type) {
 window.$HandleBars.registerHelper('isInternalEnum', function (type, enumField) {
     if(type !== "String" && type !== "Long" && type !== "Integer" && type !== "Double" && type !== "BigDecimal" && type !== "Float" && type !== "Date" && type !== "Boolean"){
         for(var i = 0; i < enumField.length; i++){
-            if(enumField[i].targetElement && enumField[i].targetElement.namePascalCase){
-                if(type === enumField[i].targetElement.namePascalCase && enumField[i].targetElement._type.endsWith("enum")){
-                    if(enumField[i].targetElement.items){
-                        var items = enumField[i].targetElement.items;
-                        if(items){
-                            var result = items.map(item => item.value).join('|');
-                            return `"Enum", "Enum": "${result}", "EnumKeys": "${result}",`;
+            if(enumField[i] && enumField[i].targetElement){
+                if(enumField[i].targetElement.namePascalCase){
+                    if(type === enumField[i].targetElement.namePascalCase && enumField[i].targetElement._type.endsWith("enum")){
+                        if(enumField[i].targetElement.items){
+                            var items = enumField[i].targetElement.items;
+                            if(items){
+                                var result = items.map(item => item.value).join('|');
+                                return `"Enum", "Enum": "${result}", "EnumKeys": "${result}",`;
+                            }else{
+                                return;
+                            }
+                        }else{
+                            return;
                         }
+                    }else{
+                        return;
                     }
+                }else{
+                    return;
                 }
+            }else{
+                return;
             }
         }
+    }else{
+        return;
     }
 });
 
