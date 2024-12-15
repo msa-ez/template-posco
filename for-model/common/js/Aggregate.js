@@ -23,7 +23,7 @@ $(document).ready(function(){
             {{#if isKey}}
             {"Header": "No", "Name": "No", "Type": "{{#checkFieldType className isVO namePascalCase}}{{/checkFieldType}}", "Align": "Center", "Width":140, "CanEdit":0},
             {{else}}
-            {"Header": "{{#checkName nameCamelCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVO namePascalCase ../entities.relations}}{{/checkFieldType}}",{{#isDate className}}"Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요",{{/isDate}}{{#isEnum className ../entities.relations}} "Enum": {{/isEnum}}{{#checkEnum namePascalCase isVO ../entities}}{{/checkEnum}}{{#isEnum className ../entities.relations}},{{/isEnum}}{{#isEnum className ../entities.relations}} "EnumKeys": {{/isEnum}}{{#checkEnum namePascalCase isVO ../entities}}{{/checkEnum}}{{#isEnu className ../entities.relations}},{{/isEnum}} "Align": "Center", "Width":140, "CanEdit":1},  
+            {"Header": "{{#checkName nameCamelCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVO namePascalCase ../entities.relations}}{{/checkFieldType}}",{{#isDate className}}"Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요",{{/isDate}}{{#isEnum className ../entities.relations}} "Enum": {{/isEnum}}{{#checkEnum namePascalCase isVO ../entities}}{{/checkEnum}}{{#isEnum className ../entities.relations}},{{/isEnum}}{{#isEnum className ../entities.relations}} "EnumKeys": {{/isEnum}}{{#checkEnum namePascalCase isVO ../entities}}{{/checkEnum}}{{#isEnum className ../entities.relations}},{{/isEnum}} "Align": "Center", "Width":140, "CanEdit":1},  
             {{/if}}
             {{/if}}
             {{/fieldDescriptors}}
