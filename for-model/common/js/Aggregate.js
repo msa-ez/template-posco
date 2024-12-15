@@ -361,15 +361,16 @@ window.$HandleBars.registerHelper('disassembleVO', function (voField) {
 });
 window.$HandleBars.registerHelper('isEnum', function (type, enumField, options) {
     if(type && enumField){
-        for(var i = 0; i < enumField.length; i++){
-            if(type == enumField[i].targetElement.namePascalCase && enumField[i].targetElement._type.endsWith('enum')){
-                return options.fn(this);
-            }else{
-                return options.inverse(this);
-            }   
+        let isEnumType = false;
+        for(let field of enumField){
+            if(type == field.targetElement.namePascalCase && field.targetElement._type.endsWith('enum')){
+                isEnumType = true;
+                break;
+            }
         }
+        return isEnumType ? options.fn(this) : options.inverse(this);
     }
-    
+    return options.inverse(this);
 });
 window.$HandleBars.registerHelper('checkEnum', function (fieldName, voField, field) {
     if(voField){
