@@ -32,7 +32,7 @@ $(document).ready(function(){
             {{#entities.relations}}
             {{#if targetElement.fieldDescriptors}}
             {{#targetElement.fieldDescriptors}}
-            {"Header": ["{{../targetElement.nameCamelCase}}", "{{nameCamelCase}}"], "Name": "{{nameCamelCase}}", "Type":, "Width": 140, "CanEdit": 1},
+            {"Header": ["{{../targetElement.nameCamelCase}}", "{{nameCamelCase}}"], "Name": "{{nameCamelCase}}", "{{#checkVOFieldType className}}{{/checkVOFieldType}}", "Width": 140, "CanEdit": 1},
             {{/targetElement.fieldDescriptors}}
             {{/if}}
             {{/entities.relations}}
@@ -437,6 +437,22 @@ window.$HandleBars.registerHelper('createVoField', function (relationField, enum
         }
     }
     return result.join('\n'); 
+});
+
+window.$HandleBars.registerHelper('checkVOFieldType', function (type) {
+    if(type === 'String'){
+        return '"Type": "Text"';
+    }else if(type === "Long" || type === "Integer" || type === "Double" || type === "BigDecimal"){
+        return '"Type": "Int"';
+    }else if(type === "Float"){
+        return '"Type": "Float"';
+    }else if(type === "Date"){
+        return '"Type": "Date"';
+    }else if(type === "Boolean"){
+        return '"Type": "Bool"';
+    }else{
+        return;
+    }
 });
 
 window.$HandleBars.registerHelper('checkFieldType', function (type, voField, fieldName, enumField) {
