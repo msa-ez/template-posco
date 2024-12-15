@@ -305,30 +305,36 @@ window.$HandleBars.registerHelper('combineVO', function (voField) {
     var relation = voField.relations
 
     for(var i = 0; i < relation.length; i++){
-        if(relation[i].targetElement && relation[i].targetElement.isVO){
-            var vo = relation[i].targetElement;
-            if(vo && vo.fieldDescriptors){
-                var conditions = [];
-                var assignments = [];
-                var deletions = [];
-                vo.fieldDescriptors.forEach(fd => {
-                    var fieldName = fd.name; // 필드 이름을 가져옴
-                    conditions.push(`rows[i].${fieldName}`);
-                    assignments.push(`${fieldName}: rows[i].${fieldName}`);
-                    deletions.push(`delete rows[i].${fieldName}`);
-                });
-
-                result.push(`
-                if (${conditions.join(' && ')}) {
-                    rows[i].${vo.name} = {
-                        ${assignments.join(',\n')}
-                    };
-                    ${deletions.join(';\n')}
-                }
-                `);
+        if(relation[i] && relation[i].targetElement){
+            if(relation[i].targetElement.isVO){
+                var vo = relation[i].targetElement;
+                if(vo && vo.fieldDescriptors){
+                    var conditions = [];
+                    var assignments = [];
+                    var deletions = [];
+                    vo.fieldDescriptors.forEach(fd => {
+                        var fieldName = fd.name; // 필드 이름을 가져옴
+                        conditions.push(`rows[i].${fieldName}`);
+                        assignments.push(`${fieldName}: rows[i].${fieldName}`);
+                        deletions.push(`delete rows[i].${fieldName}`);
+                    });
+    
+                    result.push(`
+                    if (${conditions.join(' && ')}) {
+                        rows[i].${vo.name} = {
+                            ${assignments.join(',\n')}
+                        };
+                        ${deletions.join(';\n')}
+                    }
+                    `);
+                }else{
+                    return;
+                } 
             }else{
                 return;
             }
+        }else{
+            return;
         }
     }
     return new window.$HandleBars.SafeString(result.join('\n'));
