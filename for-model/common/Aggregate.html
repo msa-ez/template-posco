@@ -387,10 +387,8 @@ fileName: {{namePascalCase}}.html
                         </div>
                         {{/checkEquals}}
                         {{/entities.relations}}
-                        {{#fieldDescriptors}}
-                        {{#if isVO}}
-                        {{#../entities.relations}}
-                        {{#checkVOField targetElement.isVO}}
+                        {{#entities.relations}}
+                        {{#if targetElement.isVO}}
                         <div class="vue-card" style="margin-bottom:10px;">
                             <label for="{{targetElement.nameCamelCase}}">{{targetElement.nameCamelCase}}</label><br><br>
                             {{#targetElement.fieldDescriptors}}
@@ -398,10 +396,8 @@ fileName: {{namePascalCase}}.html
                             <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
                             {{/targetElement.fieldDescriptors}}
                         </div>
-                        {{/checkVOField}}
-                        {{/../entities.relations}}
                         {{/if}}
-                        {{/fieldDescriptors}}
+                        {{/entities.relations}}
                         {{/aggregateRoot}}
                         {{#if isList}}
                         <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
