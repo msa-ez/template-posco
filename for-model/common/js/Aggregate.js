@@ -32,7 +32,7 @@ $(document).ready(function(){
             {{#entities.relations}}
             {{#if targetElement.fieldDescriptors}}
             {{#targetElement.fieldDescriptors}}
-            {"Header": ["{{../targetElement.nameCamelCase}}", "{{nameCamelCase}}"], "Name": "{{nameCamelCase}}", "{{#checkVOFieldType className}}{{/checkVOFieldType}}", "Width": 140, "CanEdit": 1},
+            {"Header": ["{{../targetElement.nameCamelCase}}", "{{nameCamelCase}}"], "Name": "{{nameCamelCase}}", {{#checkVOFieldType className}}{{/checkVOFieldType}}, "Width": 140, "CanEdit": 1},
             {{/targetElement.fieldDescriptors}}
             {{/if}}
             {{/entities.relations}}
