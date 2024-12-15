@@ -30,7 +30,9 @@ $(document).ready(function(){
             {{/aggregateRoot}}
             {{#aggregateRoot}}
             {{#entities.relations}}
-            {{#createVoField targetElement ../entities.relations}}{{/createVoField}}
+            {{#if targetElement.fieldDescriptors}}
+            {"Header": ["{{../nameCamelCase}}", "{{nameCamelCase}}"], "Name": "{{nameCamelCase}}", "Type":, "Width": 140, "CanEdit": 1},
+            {{/if}}
             {{/entities.relations}}
             {{/aggregateRoot}}
         ],
