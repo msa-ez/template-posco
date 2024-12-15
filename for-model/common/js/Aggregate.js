@@ -361,10 +361,12 @@ window.$HandleBars.registerHelper('disassembleVO', function (voField) {
 });
 window.$HandleBars.registerHelper('isEnum', function (type, enumField, options) {
     if(type && enumField){
-        if(type == enumField.targetElement.namePascalCase && enumField.targetElement._type.endsWith('enum')){
-            return options.fn(this);
-        }else{
-            return options.inverse(this);
+        for(var i = 0; i < enumField[i].length; i++){
+            if(type == enumField[i].targetElement.namePascalCase && enumField[i].targetElement._type.endsWith('enum')){
+                return options.fn(this);
+            }else{
+                return options.inverse(this);
+            }   
         }
     }
     
