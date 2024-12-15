@@ -416,7 +416,7 @@ window.$HandleBars.registerHelper('createVoField', function (relationField, enum
                 voFieldType = `"Date", "Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요"`;
             }else if(voField.className ==="Boolean"){
                 voFieldType = quote + 'Bool' + quote;
-            }else {
+            }else if(voField.className !== "String" && voField.className !== "Long" && voField.className !== "Integer" && voField.className !== "Double" && voField.className !== "BigDecimal" && voField.className !== "Float" && voField.className !== "Date" && voField.className !== "Boolean"){
                 var matchEnum = enumField.find(ef => ef.targetElement.namePascalCase === voField.className);
                 if(matchEnum && matchEnum.targetElement.items) {
                     var enumValues = matchEnum.targetElement.items.map(item => item.value).join('|');
