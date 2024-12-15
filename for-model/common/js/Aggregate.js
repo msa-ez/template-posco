@@ -448,7 +448,11 @@ window.$HandleBars.registerHelper('checkFieldType', function (type, voField, fie
                     if (type === field.targetElement.namePascalCase && field.targetElement._type.endsWith("enum")) {
                         result = "Enum";
                         break; 
+                    }else{
+                        return;
                     }
+                }else{
+                    return;
                 }
             }
             return result;
