@@ -2,9 +2,7 @@ forEach: Aggregate
 fileName: {{namePascalCase}}.js
 path: common/js
 ---
-{{#attached 'View' this}}
 let rowData = [];
-{{/attached}}
 $(document).ready(function(){
     var OPT = {
         "Cfg": {
@@ -25,17 +23,19 @@ $(document).ready(function(){
             {{#if isKey}}
             {"Header": "No", "Name": "No", "Type": "{{#checkFieldType className isVO namePascalCase}}{{/checkFieldType}}", "Align": "Center", "Width":140, "CanEdit":0},
             {{else}}
-            {"Header": "{{#checkName nameCamelCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVO namePascalCase}}{{/checkFieldType}}",{{#isDate className}}"Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요",{{/isDate}}{{#isEnum isVO namePascalCase ../entities}} "Enum": {{/isEnum}}{{#checkEnum namePascalCase isVO ../entities}}{{/checkEnum}}{{#isEnum isVO namePascalCase ../entities}},{{/isEnum}}{{#isEnum isVO namePascalCase ../entities}} "EnumKeys": {{/isEnum}}{{#checkEnum namePascalCase isVO ../entities}}{{/checkEnum}}{{#isEnum isVO namePascalCase ../entities}},{{/isEnum}} "Align": "Center", "Width":140, "CanEdit":1},  
+            {"Header": "{{#checkName nameCamelCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVO namePascalCase ../entities.relations}}{{/checkFieldType}}",{{#isDate className}}"Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요",{{/isDate}}{{#isEnum className ../entities.relations}} "Enum": {{/isEnum}}{{#checkEnum namePascalCase isVO ../entities}}{{/checkEnum}}{{#isEnum className ../entities.relations}},{{/isEnum}}{{#isEnum className ../entities.relations}} "EnumKeys": {{/isEnum}}{{#checkEnum namePascalCase isVO ../entities}}{{/checkEnum}}{{#isEnum className ../entities.relations}},{{/isEnum}} "Align": "Center", "Width":140, "CanEdit":1},  
             {{/if}}
             {{/if}}
             {{/fieldDescriptors}}
             {{/aggregateRoot}}
             {{#aggregateRoot}}
-            {{#fieldDescriptors}}
-            {{#if isVO}}
-            {{#createVoField className ../entities}}{{/createVoField}}
+            {{#entities.relations}}
+            {{#if targetElement.fieldDescriptors}}
+            {{#targetElement.fieldDescriptors}}
+            {"Header": ["{{../targetElement.nameCamelCase}}", "{{nameCamelCase}}"], "Name": "{{nameCamelCase}}", {{#checkVOFieldType className}}{{/checkVOFieldType}}{{#isInternalEnum className ../../entities.relations}}{{/isInternalEnum}} "Width": 140, "CanEdit": 1},
+            {{/targetElement.fieldDescriptors}}
             {{/if}}
-            {{/fieldDescriptors}}
+            {{/entities.relations}}
             {{/aggregateRoot}}
         ],
         Events: {
@@ -135,7 +135,7 @@ function deleteData(){
 
 function save(data){
     var rows = data;
-    rows.id = rows.No
+    rows.{{#aggregateRoot.fieldDescriptors}}{{#if isKey}}{{nameCamelCase}}{{/if}}{{/aggregateRoot.fieldDescriptors}} = rows.No
     delete rows.No
 
     $.ajax({
@@ -170,7 +170,7 @@ function saveRow(){
             case "Changed":
                 var rowObj = sheet.getRowById(rows[i].id);
                 var changedData = JSON.parse(sheet.getChangedData(rowObj))["Changes"][0];
-                changedData.id = rows[i].id
+                changedData.id = rows[i].{{#aggregateRoot.fieldDescriptors}}{{#if isKey}}{{nameCamelCase}}{{/if}}{{/aggregateRoot.fieldDescriptors}}
                 var id = changedData.id 
                 $.ajax({
                     url: `/{{namePlural}}/${id}`,
@@ -180,7 +180,7 @@ function saveRow(){
                 });
                 break;
             case "Deleted":
-                var id = rows[i].id
+                var id = rows[i].{{#aggregateRoot.fieldDescriptors}}{{#if isKey}}{{nameCamelCase}}{{/if}}{{/aggregateRoot.fieldDescriptors}}
                 $.ajax({
                     url: `/{{namePlural}}/${id}`,
                     method: "DELETE",
@@ -305,84 +305,87 @@ window.$HandleBars.registerHelper('combineVO', function (voField) {
     var relation = voField.relations
 
     for(var i = 0; i < relation.length; i++){
-        if(relation[i].targetElement && relation[i].targetElement.isVO){
-            var vo = relation[i].targetElement;
-            if(vo && vo.fieldDescriptors){
-                var conditions = [];
-                var assignments = [];
-                var deletions = [];
-                vo.fieldDescriptors.forEach(fd => {
-                    var fieldName = fd.name; // 필드 이름을 가져옴
-                    conditions.push(`rows[i].${fieldName}`);
-                    assignments.push(`${fieldName}: rows[i].${fieldName}`);
-                    deletions.push(`delete rows[i].${fieldName}`);
-                });
-
-                result.push(`
-                if (${conditions.join(' && ')}) {
-                    rows[i].${vo.name} = {
-                        ${assignments.join(',\n')}
-                    };
-                    ${deletions.join(';\n')}
-                }
-                `);
+        if(relation[i] && relation[i].targetElement){
+            if(relation[i].targetElement.isVO){
+                var vo = relation[i].targetElement;
+                if(vo && vo.fieldDescriptors){
+                    var conditions = [];
+                    var assignments = [];
+                    var deletions = [];
+                    vo.fieldDescriptors.forEach(fd => {
+                        var fieldName = fd.name; // 필드 이름을 가져옴
+                        conditions.push(`rows[i].${fieldName}`);
+                        assignments.push(`${fieldName}: rows[i].${fieldName}`);
+                        deletions.push(`delete rows[i].${fieldName}`);
+                    });
+    
+                    result.push(`
+                    if (${conditions.join(' && ')}) {
+                        rows[i].${vo.name} = {
+                            ${assignments.join(',\n')}
+                        };
+                        ${deletions.join(';\n')}
+                    }
+                    `);
+                }else{
+                    return;
+                } 
             }else{
                 return;
             }
+        }else{
+            return;
         }
     }
     return new window.$HandleBars.SafeString(result.join('\n'));
+});
+window.$HandleBars.registerHelper('isEnum', function (type, enumField, options) {
+    if(type && enumField){
+        for(let field of enumField){
+            if(field && field.targetElement && field.targetElement.namePascalCase){
+                if(type == field.targetElement.namePascalCase && field.targetElement._type.endsWith('enum')){
+                    return options.fn(this); // 조건이 만족되면 즉시 결과 반환
+                }
+            }
+        }
+    }
+    return options.inverse(this); // 조건이 만족되지 않으면 inverse 반환
 });
 window.$HandleBars.registerHelper('disassembleVO', function (voField) {
     var result = [];
     var relation = voField.relations
 
     for(var i = 0; i < relation.length; i++){
-        if(relation[i].targetElement && relation[i].targetElement.isVO){
-            var vo = relation[i].targetElement;
-            if(vo && vo.fieldDescriptors){
-                var assignments = [];
-                vo.fieldDescriptors.forEach(fd => {
-                    var fieldName = fd.name;
-                    if(fd.className === "Date"){
-                        assignments.push(`json[i].${fieldName} = json[i].${vo.name}.${fieldName}.split('T')[0]`);
-                    }else{
-                        assignments.push(`json[i].${fieldName} = json[i].${vo.name}.${fieldName}`);
-                    }
-                });
+        if(relation[i] && relation[i].targetElement){
+            if(relation[i].targetElement.isVO){
+                var vo = relation[i].targetElement;
+                if(vo && vo.fieldDescriptors){
+                    var assignments = [];
+                    vo.fieldDescriptors.forEach(fd => {
+                        var fieldName = fd.name;
+                        if(fd.className === "Date"){
+                            assignments.push(`json[i].${fieldName} = json[i].${vo.name}.${fieldName}.split('T')[0]`);
+                        }else{
+                            assignments.push(`json[i].${fieldName} = json[i].${vo.name}.${fieldName}`);
+                        }
+                    });
 
-                result.push(`
-                if (json[i].${vo.name}) {
-                    ${assignments.join(';\n')}
+                    result.push(`
+                    if (json[i].${vo.name}) {
+                        ${assignments.join(';\n')}
+                    }
+                    `);
+                }else{
+                    return;
                 }
-                `);
             }else{
                 return;
             }
+        }else{
+            return;
         }
     }
     return new window.$HandleBars.SafeString(result.join('\n'));
-});
-window.$HandleBars.registerHelper('isEnum', function (voField, fieldName, field, options) {
-    if(voField){
-        return options.inverse(this);
-    }else{
-        var relation = field.relations
-        if(relation){
-            for(var i = 0; i < relation.length; i++){
-                if(relation[i] && relation[i].name){
-                    var name = '';
-                    name = relation[i].name.charAt(0).toUpperCase() + relation[i].name.slice(1);
-                    if(name == fieldName){
-                        return options.fn(this);
-                            
-                    }else{
-                        return
-                    }
-                }
-            }
-        }
-    }
 });
 window.$HandleBars.registerHelper('checkEnum', function (fieldName, voField, field) {
     if(voField){
@@ -410,38 +413,86 @@ window.$HandleBars.registerHelper('checkEnum', function (fieldName, voField, fie
         }
     }
 });
-window.$HandleBars.registerHelper('createVoField', function (type, field) {
+window.$HandleBars.registerHelper('createVoField', function (relationField, enumField) {
     var result = [];
-    var relation = field.relations
+    var quote = "'";
+    if(relationField.isVO){
+        var vo = relationField.namePascalCase;
+        for(var i = 0; i < relationField.fieldDescriptors.length; i++){
+            var voField = relationField.fieldDescriptors[i];
+            var voFieldType = '';
+            if(voField.className === "String"){
+                voFieldType = quote + 'Text' + quote;
+            }else if(voField.className ==="Long" || voField.className ==="Integer" || voField.className ==="Double" || voField.className ==="BigDecimal"){
+                voFieldType = quote + 'Int' + quote;
+            }else if(voField.className ==="Float"){
+                voFieldType = quote + 'Float' + quote;
+            }else if(voField.className ==="Date"){
+                voFieldType = `"Date", "Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요"`;
+            }else if(voField.className ==="Boolean"){
+                voFieldType = quote + 'Bool' + quote;
+            }else if(voField.className !== "String" && voField.className !== "Long" && voField.className !== "Integer" && voField.className !== "Double" && voField.className !== "BigDecimal" && voField.className !== "Float" && voField.className !== "Date" && voField.className !== "Boolean"){
+                var matchEnum = enumField.find(ef => ef.targetElement.namePascalCase === voField.className);
+                if(matchEnum && matchEnum.targetElement.items) {
+                    var enumValues = matchEnum.targetElement.items.map(item => item.value).join('|');
+                    voFieldType = `"Enum", "Enum": "${enumValues}", "EnumKeys": "${enumValues}"`;
+                }
+            }
+            result.push(`{"Header": ["${vo}", "${voField.nameCamelCase}"], "Name": "${voField.nameCamelCase}", "Type": ${voFieldType}, "Width": 140, "CanEdit": 1},`);
+        }
+    }
+    return result.join('\n'); 
+});
 
-    for(var i = 0; i < relation.length; i++){
-        if(relation[i].targetElement && relation[i].targetElement.isVO){
-            var vo = relation[i].targetElement;
-            if(vo && vo.fieldDescriptors){
-                for(var j = 0; j < vo.fieldDescriptors.length; j++){
-                    var voField = vo.fieldDescriptors[j];
-                    var voFieldType = '';
-                    if(voField.className ==="String"){
-                        voFieldType = 'Text';
-                    }else if(voField.className ==="Long" || voField.className ==="Integer" || voField.className ==="Double" || voField.className ==="BigDecimal"){
-                        voFieldType = 'Int';
-                    }else if(voField.className ==="Float"){
-                        voFieldType = 'Float';
-                    }else if(voField.className ==="Date"){
-                        voFieldType = `"Date", "Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요"`;
-                    }else if(voField.className ==="Boolean"){
-                        voFieldType = 'Bool';
+window.$HandleBars.registerHelper('checkVOFieldType', function (type) {
+    if(type === 'String'){
+        return '"Type": "Text",';
+    }else if(type === "Long" || type === "Integer" || type === "Double" || type === "BigDecimal"){
+        return '"Type": "Int",';
+    }else if(type === "Float"){
+        return '"Type": "Float",';
+    }else if(type === "Date"){
+        return '"Type": "Date",';
+    }else if(type === "Boolean"){
+        return '"Type": "Bool",';
+    }else{
+        return;
+    }
+});
+
+window.$HandleBars.registerHelper('isInternalEnum', function (type, enumField) {
+    if(type !== "String" && type !== "Long" && type !== "Integer" && type !== "Double" && type !== "BigDecimal" && type !== "Float" && type !== "Date" && type !== "Boolean"){
+        for(var i = 0; i < enumField.length; i++){
+            if(enumField[i] && enumField[i].targetElement){
+                if(enumField[i].targetElement.namePascalCase){
+                    if(type === enumField[i].targetElement.namePascalCase && enumField[i].targetElement._type.endsWith("enum")){
+                        if(enumField[i].targetElement.items){
+                            var items = enumField[i].targetElement.items;
+                            if(items){
+                                var result = items.map(item => item.value).join('|');
+                                return `"Enum", "Enum": "${result}", "EnumKeys": "${result}",`;
+                            }else{
+                                return;
+                            }
+                        }else{
+                            return;
+                        }
+                    }else{
+                        return;
                     }
-                    result.push(`{"Header": ["${vo.namePascalCase}", "${voField.nameCamelCase}"], "Name": "${voField.nameCamelCase}", "Type": ${voFieldType}, "Width": 140}`);
+                }else{
+                    return;
                 }
             }else{
                 return;
             }
         }
+    }else{
+        return;
     }
-    return result.join(',\n'); 
 });
-window.$HandleBars.registerHelper('checkFieldType', function (type, voField, fieldName) {
+
+window.$HandleBars.registerHelper('checkFieldType', function (type, voField, fieldName, enumField) {
     if(type === 'String'){
         return "Text";
     }else if(type === "Long" || type === "Integer" || type === "Double" || type === "BigDecimal"){
@@ -452,11 +503,22 @@ window.$HandleBars.registerHelper('checkFieldType', function (type, voField, fie
         return "Date";
     }else if(type === "Boolean"){
         return "Bool";
-    }else if(type == fieldName){
-        if(voField){
-            return;
-        }else{
-            return "Enum";
+    }else{
+        if (enumField) {
+            let result;
+            for (let field of enumField) {
+                if(field.targetElement && field.targetElement.namePascalCase){
+                    if (type === field.targetElement.namePascalCase && field.targetElement._type.endsWith("enum")) {
+                        result = "Enum";
+                        break; 
+                    }else{
+                        return;
+                    }
+                }else{
+                    return;
+                }
+            }
+            return result;
         }
     }
 });

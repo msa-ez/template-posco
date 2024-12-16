@@ -17,16 +17,16 @@ spring:
         - id: {{name}}
           uri: http://localhost:{{portGenerated}}
           predicates:
-            - Path={{#printRoute aggregates}}{{/printRoute}}, {{#printRouteView viewes}}{{/printRouteView}}{{#each aggregates}}{{#each aggregateRoot.entities.relations}}{{#if (isGeneralization targetElement.namePascalCase ../namePascalCase relationType)}}, /{{#toURL sourceElement.nameCamelCase}}{{/toURL}}/**{{/if}}{{/each}}{{/each}}
+            - Path={{#printRoute aggregates}}{{/printRoute}}, 
         {{/boundedContexts}}
         - id: oauth
           uri: http://localhost:8090
           predicates:
             - Path=/.well-known/**, /auth/**, /users/**
-        - id: frontend
-          uri: http://localhost:8080
+        - id: nginx
+          uri: http://localhost:8081
           predicates:
-            - Path=/**
+            - Path=/common/**
 #>>> API Gateway / Routes
       globalcors:
         corsConfigurations:
