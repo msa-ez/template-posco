@@ -157,13 +157,11 @@ function saveRow(){
         rows[i].{{#aggregateRoot.fieldDescriptors}}{{#if isKey}}{{nameCamelCase}}{{/if}}{{/aggregateRoot.fieldDescriptors}} = rows[i].No
         delete rows[i].No
 
-        {{#aggregateRoot}}
-        {{#fieldDescriptors}}
-        {{#if isVO}}
-        {{#combineVO ../entities}}{{/combineVO}}
+        {{#aggregateRoot.entities.relations}}
+        {{#if targetElement.isVO}}
+        {{#combineVO this}}{{/combineVO}}
         {{/if}}
-        {{/fieldDescriptors}}
-        {{/aggregateRoot}}
+        {{/aggregateRoot.entities.relations}}
     }
     
     rowData = rows;
@@ -312,33 +310,31 @@ window.$HandleBars.registerHelper('canVO', function (vo, options) {
 });
 window.$HandleBars.registerHelper('combineVO', function (voField) {
     var result = [];
-    var relation = voField.relations
+    var relation = voField
 
-    for(var i = 0; i < relation.length; i++){
-        if(relation[i] && relation[i].targetElement){
-            if(relation[i].targetElement.isVO){
-                var vo = relation[i].targetElement;
-                if(vo && vo.fieldDescriptors){
-                    var conditions = [];
-                    var assignments = [];
-                    var deletions = [];
-                    vo.fieldDescriptors.forEach(fd => {
-                        var fieldName = fd.name; // 필드 이름을 가져옴
-                        conditions.push(`rows[i].${fieldName}`);
-                        assignments.push(`${fieldName}: rows[i].${fieldName}`);
-                        deletions.push(`delete rows[i].${fieldName}`);
-                    });
-    
-                    result.push(`
-                    if (${conditions.join(' && ')}) {
-                        rows[i].${vo.name} = {
-                            ${assignments.join(',\n')}
-                        };
-                        ${deletions.join(';\n')}
-                    }
-                    `);
-                } 
-            }
+    if(relation && relation.targetElement){
+        if(relation.targetElement.isVO){
+            var vo = relation.targetElement;
+            if(vo && vo.fieldDescriptors){
+                var conditions = [];
+                var assignments = [];
+                var deletions = [];
+                vo.fieldDescriptors.forEach(fd => {
+                    var fieldName = fd.name; // 필드 이름을 가져옴
+                    conditions.push(`rows[i].${fieldName}`);
+                    assignments.push(`${fieldName}: rows[i].${fieldName}`);
+                    deletions.push(`delete rows[i].${fieldName}`);
+                });
+
+                result.push(`
+                if (${conditions.join(' && ')}) {
+                    rows[i].${vo.name} = {
+                        ${assignments.join(',\n')}
+                    };
+                    ${deletions.join(';\n')}
+                }
+                `);
+            } 
         }
     }
     return new window.$HandleBars.SafeString(result.join('\n'));
