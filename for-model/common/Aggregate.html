@@ -392,8 +392,19 @@ fileName: {{namePascalCase}}.html
                         <div class="vue-card" style="margin-bottom:10px;">
                             <label for="{{targetElement.nameCamelCase}}">{{targetElement.nameCamelCase}}</label><br><br>
                             {{#targetElement.fieldDescriptors}}
+                            {{#checkDefaultVOField className}}
                             <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
                             <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
+                            {{/checkDefaultVOField}}
+                            {{^checkDefaultVOField className}}
+                            <div class="select-container">
+                                <label for="{{camelCase name}}">{{pascalCase name}}:</label>
+                                <select id="{{camelCase name}}" required>
+                                    {{#checkInternalEnum className ../../entities.relations}}
+                                    {{/checkInternalEnum}}
+                                </select>
+                            </div>
+                            {{/checkDefaultVOField}}
                             {{/targetElement.fieldDescriptors}}
                         </div>
                         {{/if}}
@@ -603,6 +614,13 @@ fileName: {{namePascalCase}}.html
     </body>
 </html>
 <function>
+    window.$HandleBars.registerHelper('checkDefaultVOField', function (type, options) {
+        if(type == 'String' || type == 'Integer' || type == 'Long' || type == 'Double' || type == 'Float' || type == 'BigDecimal' || type == 'Boolean' || type == 'Date'){
+            return options.fn(this);
+        }else{
+            return options.inverse(this);
+        }
+    });
     window.$HandleBars.registerHelper('checkVOField', function (voField, options) {
         if(voField){
             return options.fn(this);
@@ -748,6 +766,39 @@ fileName: {{namePascalCase}}.html
         }
         else{
             return options.inverse(this);
+        }
+    });
+
+    window.$HandleBars.registerHelper('isInternalEnum', function (type, enumField) {
+        if(type !== "String" && type !== "Long" && type !== "Integer" && type !== "Double" && type !== "BigDecimal" && type !== "Float" && type !== "Date" && type !== "Boolean"){
+            for(var i = 0; i < enumField.length; i++){
+                if(enumField[i] && enumField[i].targetElement){
+                    if(enumField[i].targetElement.namePascalCase){
+                        if(type === enumField[i].targetElement.namePascalCase && enumField[i].targetElement._type.endsWith("enum")){
+                            if(enumField[i].targetElement.items){
+                                var items = enumField[i].targetElement.items;
+                                if(items){
+                                    return items.map(item => 
+                                    `<option value="${item.value}">${item.value}</option>`
+                                ).join('\n');
+                                }else{
+                                    return;
+                                }
+                            }else{
+                                return;
+                            }
+                        }else{
+                            return;
+                        }
+                    }else{
+                        return;
+                    }
+                }else{
+                    return;
+                }
+            }
+        }else{
+            return;
         }
     });
 </function>
