@@ -341,29 +341,15 @@ window.$HandleBars.registerHelper('combineVO', function (voField) {
 });
 window.$HandleBars.registerHelper('isEnum', function (type, enumField, options) {
     if(type && enumField){
-        let isEnumType = false;
         for(let field of enumField){
-            if(field){
-                if(field.targetElement){
-                    if(field.targetElement.namePascalCase){
-                        if(type == field.targetElement.namePascalCase && field.targetElement._type.endsWith('enum')){
-                            options.fn(this)
-                            break;
-                        }else {
-                            options.inverse(this);
-                        }
-                    }else{
-                        options.inverse(this);
-                    }
-                }else{
-                    options.inverse(this);
+            if(field && field.targetElement && field.targetElement.namePascalCase){
+                if(type == field.targetElement.namePascalCase && field.targetElement._type.endsWith('enum')){
+                    return options.fn(this); // 조건이 만족되면 즉시 결과 반환
                 }
-            }else {
-                options.inverse(this);
             }
         }
     }
-    return options.inverse(this);
+    return options.inverse(this); // 조건이 만족되지 않으면 inverse 반환
 });
 window.$HandleBars.registerHelper('disassembleVO', function (voField) {
     var result = [];
