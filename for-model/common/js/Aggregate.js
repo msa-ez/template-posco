@@ -291,9 +291,7 @@ window.$HandleBars.registerHelper('addMustache', function (name) {
 });
 window.$HandleBars.registerHelper('checkName', function (name, type) {
     if(type === "Boolean"){
-        var leftSingleMustache = '{';
-        var rightSingleMustache = '}';
-        return leftSingleMustache + `"Value": "${name}", "HeaderCheck": 1` + rightSingleMustache;
+        return `{"Value": "${name}", "HeaderCheck": 1}`;
     }else{
         return name;
     }
