@@ -61,6 +61,16 @@ fileName: {{namePascalCase}}.html
             }
             {{/isRestRepository}}
             {{/commands}}
+            {{#attached 'View' this}}
+            {{#isQueryMultiple dataProjection}}
+            #{{nameCamelCase}}Form {
+                overflow: auto; /* 내부 스크롤 활성화 */
+                flex: 1; /* form이 나머지 공간 차지 */
+                padding: 10px; /* form 내부 여백 */
+                max-height: 100%; /* form 최대 높이 */
+            }
+            {{/isQueryMultiple}}
+            {{/attached}}
 
             .close {
                 color: #aaa;
@@ -338,6 +348,11 @@ fileName: {{namePascalCase}}.html
             <button type="button" onclick="openDialog('{{nameCamelCase}}')">{{#if displayName}}{{displayName}}{{else}}{{name}}{{/if}}</button>
             {{/isRestRepository}}
             {{/commands}}
+            {{#attached 'View' this}}
+            {{#isQueryMultiple dataProjection}}
+            <button type="button" onclick="openDialog('{{nameCamelCase}}Dialog')">{{#if displayName}}{{displayName}}{{else}}{{name}}{{/if}}</button>
+            {{/isQueryMultiple}}
+            {{/attached}}
 
             {{#attached 'View' this}}
             {{#isQuery dataProjection}}
@@ -484,6 +499,42 @@ fileName: {{namePascalCase}}.html
         </div>
         {{/isRestRepository}}
         {{/commands}}
+        {{#attached 'View' this}}
+        {{#isQueryMultiple dataProjection}}
+        <div id="{{nameCamelCase}}Dialog" style="z-index:99;" class="modal">
+            <div class="modal-content">
+                <div class="default-row">
+                    <h2>{{namePascalCase}}</h2>
+                    <div class="v-space"></div>
+                    <span class="close" onclick="closeDialog('{{nameCamelCase}}Dialog')">&times;</span>
+                </div>
+                <form id="{{nameCamelCase}}Form">
+                    {{#queryParameters}}
+                    {{#isDefaultType className namePascalCase isVO isList}}
+                    <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
+                    <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
+                    {{/isDefaultType}}
+                    {{#checkEnumParameter className ../aggregate.aggregateRoot.entities.relations}}
+                    <div class="select-container">
+                        <label for="{{enumName.nameCamelCase}}">{{enumName.namePascalCase}}:</label>
+                        <select id="{{enumName.nameCamelCase}}" name="{{enumName.nameCamelCase}}">
+                            {{#each enumName.items}}
+                            <option value="{{this}}">{{this}}</option>
+                            {{/each}}
+                        </select>
+                        <br><br>
+                    </div>
+                    {{/checkEnumParameter}}
+                    {{/queryParameters}}
+                    <div class="default-row">
+                        <div class="v-space"></div>
+                        <button type="button" onclick="save{{namePascalCase}}()">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {{/isQueryMultiple}}
+        {{/attached}}
 
         <script>
             function openDialog(id) {
@@ -621,6 +672,19 @@ fileName: {{namePascalCase}}.html
             return options.inverse(this);
         }
     });
+    window.$HandleBars.registerHelper('checkEnumParameter', function (type, enumField, options) {
+        if(enumField && enumField.targetElement){
+            if(type == enumField.targetElement.namePascalCase && enumField.targetElement._type.endsWith("enum")){
+                var enumName = enumField.targetElement;
+                if(enumName.items){
+                    return options.fn({
+                        enumName: enumName
+                    });
+                }
+            }
+        }
+        return options.inverse(this);
+    });
     window.$HandleBars.registerHelper('checkVOField', function (voField, options) {
         if(voField){
             return options.fn(this);
@@ -643,6 +707,13 @@ fileName: {{namePascalCase}}.html
     });
     window.$HandleBars.registerHelper('isQuery', function (mode, options) {
         if(mode == 'query-for-aggregate'){
+            return options.fn(this);
+        }else{
+            return options.inverse(this);
+        }
+    });
+    window.$HandleBars.registerHelper('isQueryMultiple', function (mode, options) {
+        if(mode == 'query-for-multiple-aggregate'){
             return options.fn(this);
         }else{
             return options.inverse(this);
