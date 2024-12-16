@@ -112,7 +112,7 @@ function retrieve(){
             {{#aggregateRoot}}
             {{#fieldDescriptors}}
             {{#if isVO}}
-            {{#disassembleVO ../entities}}{{/disassembleVO}}
+            {{#disassembleVO ../entities.relations}}{{/disassembleVO}}
             {{/if}}
             {{/fieldDescriptors}}
             {{/aggregateRoot}}
@@ -359,7 +359,7 @@ window.$HandleBars.registerHelper('isEnum', function (type, enumField, options) 
 });
 window.$HandleBars.registerHelper('disassembleVO', function (voField) {
     var result = [];
-    var relation = voField.relations
+    var relation = voField
 
     for(var i = 0; i < relation.length; i++){
         if(relation[i] && relation[i].targetElement){
