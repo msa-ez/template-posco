@@ -369,7 +369,7 @@ window.$HandleBars.registerHelper('disassembleVO', function (voField) {
                 });
 
                 result.push(`
-                if (json[i].${vo.namePascalCase}) {
+                if (json[i].${vo.nameCamelCase}) {
                     ${assignments.join(';\n')}
                 }
                 `);
