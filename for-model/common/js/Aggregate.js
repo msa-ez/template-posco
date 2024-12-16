@@ -110,13 +110,11 @@ function retrieve(){
         for(var i = 0; i < json.length; i++){
             json[i].No = json[i].{{#aggregateRoot.fieldDescriptors}}{{#if isKey}}{{nameCamelCase}}{{/if}}{{/aggregateRoot.fieldDescriptors}}
             {{#aggregateRoot}}
-            {{#fieldDescriptors}}
-            {{#if isVO}}
-            {{#../entities.relations}}
+            {{#entities.relations}}
+            {{#if targetElement.isVO}}
             {{#disassembleVO this}}{{/disassembleVO}}
-            {{/../entities.relations}}
             {{/if}}
-            {{/fieldDescriptors}}
+            {{/entities.relations}}
             {{/aggregateRoot}}
 
             {{#aggregateRoot.fieldDescriptors}}
