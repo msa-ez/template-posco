@@ -482,6 +482,7 @@ window.$HandleBars.registerHelper('isInternalEnum', function (type, enumField) {
                             var items = enumField[i].targetElement.items;
                             if(items){
                                 var result = items.map(item => item.value).join('|');
+                                result = '|' + result;
                                 return `"Type": "Enum", "Enum": "${result}", "EnumKeys": "${result}",`;
                             }else{
                                 return;
