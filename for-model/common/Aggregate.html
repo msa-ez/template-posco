@@ -673,13 +673,14 @@ fileName: {{namePascalCase}}.html
         }
     });
     window.$HandleBars.registerHelper('checkEnumParameter', function (type, enumField, options) {
-        if(enumField && enumField.targetElement){
-            if(type == enumField.targetElement.namePascalCase && enumField.targetElement._type.endsWith("enum")){
-                var enumName = enumField.targetElement;
-                if(enumName.items){
-                    return options.fn({
-                        enumName: enumName
-                    });
+        if(enumField){
+            for(var i = 0; i < enumField.length; i++){
+                if(enumField[i] && enumField[i].targetElement){
+                    if(type == enumField[i].targetElement.namePascalCase && enumField[i].targetElement._type.endsWith("enum")){
+                        return options.fn({
+                            enumName: enumField[i].targetElement
+                        });
+                    }
                 }
             }
         }
