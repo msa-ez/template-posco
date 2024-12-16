@@ -23,7 +23,9 @@ $(document).ready(function(){
             {{#if isKey}}
             {"Header": "No", "Name": "No", "Type": "{{#checkFieldType className isVO namePascalCase}}{{/checkFieldType}}", "Align": "Center", "Width":140, "CanEdit":0},
             {{else}}
-            {"Header": "{{#checkName nameCamelCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVO namePascalCase ../entities.relations}}{{/checkFieldType}}",{{#isDate className}}"Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요",{{/isDate}}{{#isEnum className ../entities.relations}} "Enum": {{/isEnum}}{{#checkEnum namePascalCase isVO ../entities}}{{/checkEnum}}{{#isEnum className ../entities.relations}},{{/isEnum}}{{#isEnum className ../entities.relations}} "EnumKeys": {{/isEnum}}{{#checkEnum namePascalCase isVO ../entities}}{{/checkEnum}}{{#isEnum className ../entities.relations}},{{/isEnum}} "Align": "Center", "Width":140, "CanEdit":1},  
+            {{#checkDefaultType className}}
+            {"Header": "{{#checkName nameCamelCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVO namePascalCase ../entities.relations}}{{/checkFieldType}}",{{#isDate className}}"Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요",{{/isDate}} "Align": "Center", "Width":140, "CanEdit":1},  
+            {{/checkDefaultType}}
             {{/if}}
             {{/if}}
             {{/fieldDescriptors}}
@@ -34,6 +36,10 @@ $(document).ready(function(){
             {{#targetElement.fieldDescriptors}}
             {"Header": ["{{../targetElement.nameCamelCase}}", "{{nameCamelCase}}"], "Name": "{{nameCamelCase}}", {{#checkVOFieldType className}}{{/checkVOFieldType}}{{#isInternalEnum className ../../entities.relations}}{{/isInternalEnum}} "Width": 140, "CanEdit": 1},
             {{/targetElement.fieldDescriptors}}
+            {{/if}}
+            {{#if targetElement.items}}
+            {{#targetElement}}
+            {"Header": "{{nameCamelCase}}", "Name": "{{nameCamelCase}}", "Type": "Enum", "Enum": "{{#items}}{{^@last}}|{{/@last}}{{value}}{{/items}}", "EnumKeys": "{{#items}}{{^@last}}|{{/@last}}{{value}}{{/items}}", "Align": "Center", "Width":140, "CanEdit":0},
             {{/if}}
             {{/entities.relations}}
             {{/aggregateRoot}}
@@ -257,6 +263,13 @@ function searchResult(params) {
 {{/isQuery}}
 {{/attached}}
 <function>
+window.$HandleBars.registerHelper('checkDefaultType', function (type, options) {
+    if(type === "String" || type === "Long" || type === "Integer" || type === "Double" || type === "BigDecimal" || type === "Float" || type === "Date" || type === "Boolean"){
+        return options.fn(this);
+    }else{
+        return options.inverse(this);
+    }
+});
 window.$HandleBars.registerHelper('checkDateType', function (type, name) {
     if(type === "Date"){
         return `json[i].${name} = json[i].name.split('T')[0];`;
