@@ -7,6 +7,7 @@ package com.posco.{{boundedContext.name}}.{{options.package}}.domain.{{nameCamel
 
 import com.posco.{{boundedContext.name}}.{{options.package}}.domain.{{nameCamelCase}}.{{namePascalCase}};
 import com.posco.{{boundedContext.name}}.{{options.package}}.domain.{{nameCamelCase}}.{{namePascalCase}}Repository;
+import com.posco.{{boundedContext.name}}.{{options.package}}.domain.{{nameCamelCase}}.mybatis.{{namePascalCase}}Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +19,6 @@ import org.springframework.beans.BeanUtils;
 {{#attached 'View' this}}
 import com.posco.{{boundedContext.name}}.{{../options.package}}.domain.{{aggregate.nameCamelCase}}.mybatis.{{namePascalCase}}Response;
 import com.posco.{{boundedContext.name}}.{{../options.package}}.domain.{{aggregate.nameCamelCase}}.mybatis.{{namePascalCase}}DTO;
-import com.posco.{{boundedContext.name}}.{{../options.package}}.domain.{{aggregate.nameCamelCase}}.mybatis.{{../namePascalCase}}Mapper;
 {{/attached}}
 {{#commands}}
 import com.posco.{{boundedContext.name}}.{{../options.package}}.domain.{{../nameCamelCase}}.{{namePascalCase}}Command;
