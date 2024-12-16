@@ -518,9 +518,9 @@ fileName: {{namePascalCase}}.html
                     <div class="select-container">
                         <label for="{{enumName.nameCamelCase}}">{{enumName.namePascalCase}}:</label>
                         <select id="{{enumName.nameCamelCase}}" name="{{enumName.nameCamelCase}}">
-                            {{#each enumName.items}}
-                            <option value="{{this}}">{{this}}</option>
-                            {{/each}}
+                            {{#enumName.items}}
+                            <option value="{{value}}">{{value}}</option>
+                            {{/#enumName.items}}
                         </select>
                         <br><br>
                     </div>
