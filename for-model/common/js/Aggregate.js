@@ -339,14 +339,8 @@ window.$HandleBars.registerHelper('combineVO', function (voField) {
                         ${deletions.join(';\n')}
                     }
                     `);
-                }else{
-                    return;
                 } 
-            }else{
-                return;
             }
-        }else{
-            return;
         }
     }
     return new window.$HandleBars.SafeString(result.join('\n'));
@@ -387,14 +381,8 @@ window.$HandleBars.registerHelper('disassembleVO', function (voField) {
                         ${assignments.join(';\n')}
                     }
                     `);
-                }else{
-                    return;
                 }
-            }else{
-                return;
             }
-        }else{
-            return;
         }
     }
     return new window.$HandleBars.SafeString(result.join('\n'));
