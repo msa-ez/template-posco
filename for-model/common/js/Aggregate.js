@@ -320,7 +320,7 @@ window.$HandleBars.registerHelper('combineVO', function (voField) {
                 var assignments = [];
                 var deletions = [];
                 vo.fieldDescriptors.forEach(fd => {
-                    var fieldName = fd.name; // 필드 이름을 가져옴
+                    var fieldName = fd.namePascalCase; // 필드 이름을 가져옴
                     conditions.push(`rows[i].${fieldName}`);
                     assignments.push(`${fieldName}: rows[i].${fieldName}`);
                     deletions.push(`delete rows[i].${fieldName}`);
@@ -328,7 +328,7 @@ window.$HandleBars.registerHelper('combineVO', function (voField) {
 
                 result.push(`
                 if (${conditions.join(' && ')}) {
-                    rows[i].${vo.name} = {
+                    rows[i].${vo.namePascalCase} = {
                         ${assignments.join(',\n')}
                     };
                     ${deletions.join(';\n')}
@@ -360,16 +360,16 @@ window.$HandleBars.registerHelper('disassembleVO', function (voField) {
             if(vo && vo.fieldDescriptors){
                 var assignments = [];
                 vo.fieldDescriptors.forEach(fd => {
-                    var fieldName = fd.name;
+                    var fieldName = fd.namePascalCase;
                     if(fd.className === "Date"){
-                        assignments.push(`json[i].${fieldName} = json[i].${vo.name}.${fieldName}.split('T')[0]`);
+                        assignments.push(`json[i].${fieldName} = json[i].${vo.namePascalCase}.${fieldName}.split('T')[0]`);
                     }else{
-                        assignments.push(`json[i].${fieldName} = json[i].${vo.name}.${fieldName}`);
+                        assignments.push(`json[i].${fieldName} = json[i].${vo.namePascalCase}.${fieldName}`);
                     }
                 });
 
                 result.push(`
-                if (json[i].${vo.name}) {
+                if (json[i].${vo.namePascalCase}) {
                     ${assignments.join(';\n')}
                 }
                 `);
