@@ -525,6 +525,15 @@ fileName: {{namePascalCase}}.html
                         <br><br>
                     </div>
                     {{/checkEnumParameter}}
+                    {{#checkVOParameter className ../aggregate.aggregateRoot.entities.relations}}
+                    <div class="vue-card" style="margin-bottom:10px;">
+                        <label for="{{voName.nameCamelCase}}">{{voName.nameCamelCase}}</label>
+                        {{#voName.fieldDescriptors}}
+                        <label for="{{nameCamelCase}}">{{nameCamelCase}}:</label>
+                        <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
+                        {{/voName.fieldDescriptors}}
+                    </div>
+                    {{/checkVOParameter}}
                     {{/queryParameters}}
                     <div class="default-row">
                         <div class="v-space"></div>
@@ -679,6 +688,20 @@ fileName: {{namePascalCase}}.html
                     if(type == enumField[i].targetElement.namePascalCase && enumField[i].targetElement._type.endsWith("enum")){
                         return options.fn({
                             enumName: enumField[i].targetElement
+                        });
+                    }
+                }
+            }
+        }
+        return options.inverse(this);
+    });
+    window.$HandleBars.registerHelper('checkVOParameter', function (type, voField, options) {
+        if(voField){
+            for(var i = 0; i < voField.length; i++){
+                if(voField[i] && voField[i].targetElement){
+                    if(type == voField[i].targetElement.namePascalCase && voField[i].targetElement.isVO){
+                        return options.fn({
+                            voName: voField[i].targetElement
                         });
                     }
                 }
