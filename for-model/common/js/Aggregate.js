@@ -24,7 +24,7 @@ $(document).ready(function(){
             {"Header": "No", "Name": "No", "Type": "{{#checkFieldType className isVO namePascalCase}}{{/checkFieldType}}", "Align": "Center", "Width":140, "CanEdit":0},
             {{else}}
             {{#checkDefaultType className}}
-            {"Header": "{{#checkName nameCamelCase className}}{{/checkName}}", "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVO namePascalCase ../entities.relations}}{{/checkFieldType}}",{{#isDate className}}"Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요",{{/isDate}} "Align": "Center", "Width":140, "CanEdit":1},  
+            {"Header": {{#checkName nameCamelCase className}}{{/checkName}}, "Name": "{{nameCamelCase}}", "Type": "{{#checkFieldType className isVO namePascalCase ../entities.relations}}{{/checkFieldType}}",{{#isDate className}}"Format": "yyyy-MM-dd", "EmptyValue": "날짜를 입력해주세요",{{/isDate}} "Align": "Center", "Width":140, "CanEdit":1},  
             {{/checkDefaultType}}
             {{/if}}
             {{/if}}
@@ -293,7 +293,7 @@ window.$HandleBars.registerHelper('checkName', function (name, type) {
     if(type === "Boolean"){
         return `{"Value": "${name}", "HeaderCheck": 1}`;
     }else{
-        return name;
+        return `"${name}"`;
     }
 });
 window.$HandleBars.registerHelper('isDate', function (type, options) {
