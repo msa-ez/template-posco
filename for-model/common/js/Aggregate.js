@@ -358,28 +358,25 @@ window.$HandleBars.registerHelper('isEnum', function (type, enumField, options) 
 window.$HandleBars.registerHelper('disassembleVO', function (voField) {
     var result = [];
     var relation = voField
-
-    for(var i = 0; i < relation.length; i++){
-        if(relation[i] && relation[i].targetElement){
-            if(relation[i].targetElement.isVO){
-                var vo = relation[i].targetElement;
-                if(vo && vo.fieldDescriptors){
-                    var assignments = [];
-                    vo.fieldDescriptors.forEach(fd => {
-                        var fieldName = fd.name;
-                        if(fd.className === "Date"){
-                            assignments.push(`json[i].${fieldName} = json[i].${vo.name}.${fieldName}.split('T')[0]`);
-                        }else{
-                            assignments.push(`json[i].${fieldName} = json[i].${vo.name}.${fieldName}`);
-                        }
-                    });
-
-                    result.push(`
-                    if (json[i].${vo.name}) {
-                        ${assignments.join(';\n')}
+    if(relation && relation.targetElement){
+        if(relation.targetElement.isVO){
+            var vo = relation.targetElement;
+            if(vo && vo.fieldDescriptors){
+                var assignments = [];
+                vo.fieldDescriptors.forEach(fd => {
+                    var fieldName = fd.name;
+                    if(fd.className === "Date"){
+                        assignments.push(`json[i].${fieldName} = json[i].${vo.name}.${fieldName}.split('T')[0]`);
+                    }else{
+                        assignments.push(`json[i].${fieldName} = json[i].${vo.name}.${fieldName}`);
                     }
-                    `);
+                });
+
+                result.push(`
+                if (json[i].${vo.name}) {
+                    ${assignments.join(';\n')}
                 }
+                `);
             }
         }
     }
