@@ -112,7 +112,9 @@ function retrieve(){
             {{#aggregateRoot}}
             {{#fieldDescriptors}}
             {{#if isVO}}
-            {{#disassembleVO ../entities.relations}}{{/disassembleVO}}
+            {{#../entities.relations}}
+            {{#disassembleVO this}}{{/disassembleVO}}
+            {{/../entities.relations}}
             {{/if}}
             {{/fieldDescriptors}}
             {{/aggregateRoot}}
