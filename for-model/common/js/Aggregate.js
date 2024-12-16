@@ -38,7 +38,7 @@ $(document).ready(function(){
             {{/targetElement.fieldDescriptors}}
             {{/if}}
             {{#if targetElement.items}}
-            {"Header": "{{targetElement.nameCamelCase}}", "Name": "{{targetElement.nameCamelCase}}", "Type": "Enum", "Enum": "{{#targetElement.items}}{{^@last}}|{{/@last}}{{value}}{{/targetElement.items}}", "EnumKeys": "{{#targetElement.items}}{{^@last}}|{{/@last}}{{value}}{{/targetElement.items}}", "Align": "Center", "Width":140, "CanEdit":0},
+            {"Header": "{{targetElement.nameCamelCase}}", "Name": "{{targetElement.nameCamelCase}}", "Type": "Enum", "Enum": "{{#targetElement.items}}|{{value}}{{/targetElement.items}}", "EnumKeys": "{{#targetElement.items}}{{^@last}}|{{/@last}}{{value}}{{/targetElement.items}}", "Align": "Center", "Width":140, "CanEdit":0},
             {{/if}}
             {{/entities.relations}}
             {{/aggregateRoot}}
