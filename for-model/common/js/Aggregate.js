@@ -320,7 +320,7 @@ window.$HandleBars.registerHelper('combineVO', function (voField) {
                 var assignments = [];
                 var deletions = [];
                 vo.fieldDescriptors.forEach(fd => {
-                    var fieldName = fd.namePascalCase; // 필드 이름을 가져옴
+                    var fieldName = fd.nameCamelCase; // 필드 이름을 가져옴
                     conditions.push(`rows[i].${fieldName}`);
                     assignments.push(`${fieldName}: rows[i].${fieldName}`);
                     deletions.push(`delete rows[i].${fieldName}`);
@@ -328,7 +328,7 @@ window.$HandleBars.registerHelper('combineVO', function (voField) {
 
                 result.push(`
                 if (${conditions.join(' && ')}) {
-                    rows[i].${vo.namePascalCase} = {
+                    rows[i].${vo.nameCamelCase} = {
                         ${assignments.join(',\n')}
                     };
                     ${deletions.join(';\n')}
@@ -360,11 +360,11 @@ window.$HandleBars.registerHelper('disassembleVO', function (voField) {
             if(vo && vo.fieldDescriptors){
                 var assignments = [];
                 vo.fieldDescriptors.forEach(fd => {
-                    var fieldName = fd.namePascalCase;
+                    var fieldName = fd.nameCamelCase;
                     if(fd.className === "Date"){
-                        assignments.push(`json[i].${fieldName} = json[i].${vo.namePascalCase}.${fieldName}.split('T')[0]`);
+                        assignments.push(`json[i].${fieldName} = json[i].${vo.nameCamelCase}.${fieldName}.split('T')[0]`);
                     }else{
-                        assignments.push(`json[i].${fieldName} = json[i].${vo.namePascalCase}.${fieldName}`);
+                        assignments.push(`json[i].${fieldName} = json[i].${vo.nameCamelCase}.${fieldName}`);
                     }
                 });
 
