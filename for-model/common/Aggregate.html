@@ -400,8 +400,8 @@ fileName: {{namePascalCase}}.html
                             <div class="select-container">
                                 <label for="{{camelCase name}}">{{pascalCase name}}:</label>
                                 <select id="{{camelCase name}}" required>
-                                    {{#checkInternalEnum className ../../entities.relations}}
-                                    {{/checkInternalEnum}}
+                                    {{#isInternalEnum className ../../entities.relations}}
+                                    {{/isInternalEnum}}
                                 </select>
                             </div>
                             {{/checkDefaultVOField}}
