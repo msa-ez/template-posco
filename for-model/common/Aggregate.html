@@ -516,7 +516,7 @@ fileName: {{namePascalCase}}.html
                     {{/isDefaultType}}
                     {{#checkEnumParameter className ../aggregate.aggregateRoot.entities.relations}}
                     <div class="select-container">
-                        <label for="{{camelCase ../aggregate.aggregateRoot.entities.relations.name}}">{{pascalCase ../aggregate.aggregateRoot.entities.relations.name}}:</label>
+                        <label for="{{camelCase name}}">{{pascalCase name}}:</label>
                         <select id="{{enumName.nameCamelCase}}" name="{{enumName.nameCamelCase}}">
                             {{#enumName.items}}
                             <option value="{{value}}">{{value}}</option>
@@ -739,7 +739,8 @@ fileName: {{namePascalCase}}.html
                 if(enumField[i] && enumField[i].targetElement){
                     if(type == enumField[i].targetElement.namePascalCase && enumField[i].targetElement._type.endsWith("enum")){
                         return options.fn({
-                            enumName: enumField[i].targetElement
+                            enumName: enumField[i].targetElement,
+                            name: enumField[i].name
                         });
                     }
                 }
