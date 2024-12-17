@@ -516,7 +516,7 @@ fileName: {{namePascalCase}}.html
                     {{/isDefaultType}}
                     {{#checkEnumParameter className ../aggregate.aggregateRoot.entities.relations}}
                     <div class="select-container">
-                        <label for="{{enumName.nameCamelCase}}">{{enumName.namePascalCase}}:</label>
+                        <label for="{{camelCase ../aggregate.aggregateRoot.entities.relations.name}}">{{pascalCase ../aggregate.aggregateRoot.entities.relations.name}}:</label>
                         <select id="{{enumName.nameCamelCase}}" name="{{enumName.nameCamelCase}}">
                             {{#enumName.items}}
                             <option value="{{value}}">{{value}}</option>
@@ -598,6 +598,58 @@ fileName: {{namePascalCase}}.html
             }
             {{/isRestRepository}}
             {{/commands}}
+
+            {{#attached 'View' this}}
+            {{#isQueryMultiple dataProjection}}
+            function save{{namePascalCase}}() {
+                {{#queryParameters}}
+                {{^isVO}}
+                const {{nameCamelCase}} = document.getElementById('{{nameCamelCase}}').value;
+                {{/isVO}}
+                {{/queryParameters}}
+
+
+                {{#fieldDescriptors}}
+                {{#if isKey}}
+                const No = document.getElementById('{{nameCamelCase}}').value;
+                {{else}}
+                {{#isDefaultType className namePascalCase isVO isList}}
+                const {{nameCamelCase}} = document.getElementById('{{nameCamelCase}}').value;
+                {{/isDefaultType}}
+                {{#isEnumType className namePascalCase isVO ../../aggregateRoot.entities.relations}}
+                {{#../../aggregateRoot.entities.relations}}
+                {{#compareField name ../../../commands "isNotVO" targetElement}}
+                {{#../../fieldDescriptors}}
+                const {{nameCamelCase}} = document.getElementById('{{nameCamelCase}}').value;
+                {{/../../fieldDescriptors}}
+                {{/compareField}}
+                {{/../../aggregateRoot.entities.relations}}
+                {{/isEnumType}}
+                {{#isVOType isVO}}
+                const {{nameCamelCase}} = {
+                {{#../../aggregateRoot.entities.relations}}
+                {{#compareField name ../../../commands "isVO" targetElement.isVO}}
+                {{#targetElement.fieldDescriptors}}
+                    {{nameCamelCase}}: document.getElementById('{{nameCamelCase}}').value,
+                {{/targetElement.fieldDescriptors}}
+                {{/compareField}}
+                {{/../../aggregateRoot.entities.relations}}
+                };
+                {{/isVOType}}
+                {{/if}}
+                {{/fieldDescriptors}}
+
+                // JSON 객체 생성
+                const data = {
+                    {{#fieldDescriptors}}
+                    {{nameCamelCase}}: {{nameCamelCase}},
+                    {{/fieldDescriptors}}
+                };
+                submit{{namePascalCase}}(data);
+                closeDialog();
+            }
+            {{/isQueryMultiple}}
+            {{/attached}}
 
             function toggleSidebar() {
                 const sidebar = document.getElementById("mySidebar");
