@@ -626,8 +626,8 @@ fileName: {{namePascalCase}}.html
                     {{nameCamelCase}}: {{nameCamelCase}},
                     {{/fieldDescriptors}}
                 };
-                submit{{namePascalCase}}(data);
-                closeDialog();
+                searchMultiple(data);
+                closeDialog('{{nameCamelCase}}Dialog');
             }
             {{/isQueryMultiple}}
             {{/attached}}
