@@ -609,10 +609,10 @@ fileName: {{namePascalCase}}.html
                 {{#isDefaultParameter className}}
                 const {{nameCamelCase}} = document.getElementById('{{nameCamelCase}}').value;
                 {{/isDefaultParameter}}
-                {{#isEnumParameter className aggregate.aggregateRoot.entities.relations}}
+                {{#isEnumParameter className ../aggregate.aggregateRoot.entities.relations}}
                 const {{camelCase enumName}} = document.getElementById('{{camelCase enumName}}').value;
                 {{/isEnumParameter}}
-                {{#isVOParameter className aggregate.aggregateRoot.entities.relations}}
+                {{#isVOParameter className ../aggregate.aggregateRoot.entities.relations}}
                 const {{camelCase voName}} = {
                     {{#voField.fieldDescriptors}}
                     {{nameCamelCase}}: document.getElementById('{{nameCamelCase}}').value,
