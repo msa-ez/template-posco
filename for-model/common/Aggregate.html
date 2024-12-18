@@ -849,7 +849,7 @@ fileName: {{namePascalCase}}.html
         }
     });
 
-    window.$HandleBars.registerHelper('isVOParameter, function (type, relationField, options) {
+    window.$HandleBars.registerHelper('isVOParameter', function (type, relationField, options) {
         if(relationField){
             for(var i = 0; i < relationField.length; i++){
                 if(relationField[i].targetElement){
