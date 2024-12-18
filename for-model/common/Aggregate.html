@@ -839,7 +839,7 @@ fileName: {{namePascalCase}}.html
                     if(relationField[i].targetElement.namePascalCase == type){
                         if(relationField[i].targetElement._type.endsWith("enum")){
                             return options.fn({
-                                enumName: relationField[i].nameCamelCase,
+                                enumName: relationField[i].name,
                                 enumField: relationField[i].targetElement
                             });
                         }
