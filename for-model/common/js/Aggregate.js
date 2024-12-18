@@ -257,6 +257,11 @@ function searchResult(params) {
 }
 {{/isQuery}}
 {{/attached}}
+{{#attached 'View' this}}
+{{#if (dataProjection "query-for-multiple-aggregate")}}
+abc
+{{/if}}
+{{/attached}}
 <function>
 window.$HandleBars.registerHelper('checkDefaultType', function (type, options) {
     if(type === "String" || type === "Long" || type === "Integer" || type === "Double" || type === "BigDecimal" || type === "Float" || type === "Date" || type === "Boolean"){
