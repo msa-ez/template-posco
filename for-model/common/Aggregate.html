@@ -603,42 +603,23 @@ fileName: {{namePascalCase}}.html
             {{#isQueryMultiple dataProjection}}
             function save{{namePascalCase}}() {
                 {{#queryParameters}}
-                {{^isVO}}
-                const {{nameCamelCase}} = document.getElementById('{{nameCamelCase}}').value;
-                {{/isVO}}
-                {{/queryParameters}}
-
-
-                {{#fieldDescriptors}}
                 {{#if isKey}}
                 const No = document.getElementById('{{nameCamelCase}}').value;
-                {{else}}
-                {{#isDefaultType className namePascalCase isVO isList}}
-                const {{nameCamelCase}} = document.getElementById('{{nameCamelCase}}').value;
-                {{/isDefaultType}}
-                {{#isEnumType className namePascalCase isVO ../../aggregateRoot.entities.relations}}
-                {{#../../aggregateRoot.entities.relations}}
-                {{#compareField name ../../../commands "isNotVO" targetElement}}
-                {{#../../fieldDescriptors}}
-                const {{nameCamelCase}} = document.getElementById('{{nameCamelCase}}').value;
-                {{/../../fieldDescriptors}}
-                {{/compareField}}
-                {{/../../aggregateRoot.entities.relations}}
-                {{/isEnumType}}
-                {{#isVOType isVO}}
-                const {{nameCamelCase}} = {
-                {{#../../aggregateRoot.entities.relations}}
-                {{#compareField name ../../../commands "isVO" targetElement.isVO}}
-                {{#targetElement.fieldDescriptors}}
-                    {{nameCamelCase}}: document.getElementById('{{nameCamelCase}}').value,
-                {{/targetElement.fieldDescriptors}}
-                {{/compareField}}
-                {{/../../aggregateRoot.entities.relations}}
-                };
-                {{/isVOType}}
                 {{/if}}
-                {{/fieldDescriptors}}
-
+                {{#isDefaultParameter className}}
+                const {{nameCamelCase}} = document.getElementById('{{nameCamelCase}}').value;
+                {{/isDefaultParameter}}
+                {{#isEnumParameter className aggregate.aggregateRoot.entities.relations}}
+                const {{camelCase enumName}} = document.getElementById('{{camelCase enumName}}').value;
+                {{/isEnumParameter}}
+                {{#isVOParameter className aggregate.aggregateRoot.entities.relations}}
+                const {{camelCase voName}} = {
+                    {{#voField.fieldDescriptors}}
+                    {{nameCamelCase}}: document.getElementById('{{nameCamelCase}}').value,
+                    {{/voField.fieldDescriptors}}
+                };
+                {{/isVOParameter}}
+                {{/queryParameters}}
                 // JSON 객체 생성
                 const data = {
                     {{#fieldDescriptors}}
@@ -840,6 +821,48 @@ fileName: {{namePascalCase}}.html
             return options.fn(this);
         }else{
             return options.inverse(this);
+        }
+    });
+
+    window.$HandleBars.registerHelper('isDefaultParameter', function (type, options) {
+        if(type == 'String' || type == 'Integer' || type == 'Long' || type == 'Double' || type == 'Float' || type == 'BigDecimal' || type == 'Boolean' || type == 'Date'){
+            return options.fn(this);
+        }else{
+            return options.inverse(this);
+        }
+    });
+
+    window.$HandleBars.registerHelper('isEnumParameter', function (type, relationField, options) {
+        if(relationField){
+            for(var i = 0; i < relationField.length; i++){
+                if(relationField[i].targetElement){
+                    if(relationField[i].targetElement.namePascalCase == type){
+                        if(relationField[i].targetElement._type.endsWith("enum")){
+                            return options.fn({
+                                enumName: relationField[i].nameCamelCase,
+                                enumField: relationField[i].targetElement
+                            });
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    window.$HandleBars.registerHelper('isVOParameter, function (type, relationField, options) {
+        if(relationField){
+            for(var i = 0; i < relationField.length; i++){
+                if(relationField[i].targetElement){
+                    if(relationField[i].targetElement.namePascalCase == type){
+                        if(relationField[i].targetElement.isVO){
+                            return options.fn({
+                                voName: relationField[i].name,
+                                voField: relationField[i].targetElement
+                            });
+                        }
+                    }
+                }
+            }
         }
     });
 
