@@ -258,7 +258,7 @@ function searchResult(params) {
 {{/isQuery}}
 {{/attached}}
 {{#attached 'View' this}}
-{{#isQueryMultiple}}
+{{#isQueryMultiple dataProjection}}
 function searchMultiple(data){
     const id = data.{{nameCamelCase}};
     fetch(`/{{aggregate.namePlural}}/{{nameCamelCase}}/${id}`, {
