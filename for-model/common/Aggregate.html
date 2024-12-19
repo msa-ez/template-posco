@@ -45,12 +45,19 @@ fileName: {{namePascalCase}}.html
                 flex-direction: column; /* 세로 정렬 */
             }
 
+            {{#commands}}
+            {{#isRestRepository}}
+            {{#checkMethod controllerInfo.method}}
             #{{nameCamelCase}}Form {
                 overflow: auto; /* 내부 스크롤 활성화 */
                 flex: 1; /* form이 나머지 공간 차지 */
                 padding: 10px; /* form 내부 여백 */
                 max-height: 100%; /* form 최대 높이 */
             }
+            {{/checkMethod}}
+            {{/isRestRepository}}
+            {{/commands}}
+
             {{#commands}}
             {{^isRestRepository}}
             #{{nameCamelCase}}Form {
@@ -341,7 +348,7 @@ fileName: {{namePascalCase}}.html
         <div style="padding:10px;">
             <button type="button" class='buttonLabelSearch' onclick="retrieve()">조회</button>
             <button type="button" class='buttonLabelSave' onclick="saveRow()">저장</button>
-            <button type="button" class='buttonLabelAddRow' onclick="openDialog('{{nameCamelCase}}Dialog')">신규</button>
+            <button type="button" class='buttonLabelAddRow' onclick="openDialog('{{#commands}}{{#isRestRepository}}{{#checkMethod controllerInfo.method}}{{nameCamelCase}}Dialog{{/checkMethod}}{{/isRestRepository}}{{/commands}}')">신규</button>
             <button type="button" class='buttonLabelDeleteRow' onclick="deleteData()">삭제</button>
             {{#commands}}
             {{^isRestRepository}}
