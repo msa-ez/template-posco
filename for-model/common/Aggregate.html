@@ -460,34 +460,26 @@ fileName: {{namePascalCase}}.html
                         <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
                         <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
                         {{/isDefaultType}}
-                        {{#isEnumType className namePascalCase isVO ../../aggregateRoot.entities.relations}}
+                        {{#checkEnumParameter className ../aggregate.aggregateRoot.entities.relations}}
                         <div class="select-container">
-                            <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
-                            <select id="{{nameCamelCase}}" name="{{nameCamelCase}}">
-                                {{#../../aggregateRoot.entities.relations}}
-                                {{#compareField name ../../../commands "isNotVO" targetElement}}
-                                {{#targetElement.items}}
+                            <label for="{{camelCase name}}">{{pascalCase name}}:</label>
+                            <select id="{{enumName.nameCamelCase}}" name="{{enumName.nameCamelCase}}">
+                                {{#enumName.items}}
                                 <option value="{{value}}">{{value}}</option>
-                                {{/targetElement.items}}
-                                {{/compareField}}
-                                {{/../../aggregateRoot.entities.relations}}
+                                {{/enumName.items}}
                             </select>
                             <br><br>
                         </div>
-                        {{/isEnumType}}
-                        {{#isVOType isVO}}
+                        {{/checkEnumParameter}}
+                        {{#checkVOParameter className ../aggregate.aggregateRoot.entities.relations}}
                         <div class="vue-card" style="margin-bottom:10px;">
-                            <label for="{{nameCamelCase}}">{{nameCamelCase}}</label>
-                            {{#../../aggregateRoot.entities.relations}}
-                            {{#compareField name ../../../commands "isVO" targetElement.isVO}}
-                            {{#targetElement.fieldDescriptors}}
+                            <label for="{{voName.nameCamelCase}}">{{voName.nameCamelCase}}</label>
+                            {{#voName.fieldDescriptors}}
                             <label for="{{nameCamelCase}}">{{nameCamelCase}}:</label>
                             <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
-                            {{/targetElement.fieldDescriptors}}
-                            {{/compareField}}
-                            {{/../../aggregateRoot.entities.relations}}
+                            {{/voName.fieldDescriptors}}
                         </div>
-                        {{/isVOType}}
+                        {{/checkVOParameter}}
                         {{/fieldDescriptors}}
                         <div class="default-row">
                             <div class="v-space"></div>
@@ -891,24 +883,7 @@ fileName: {{namePascalCase}}.html
         }
     });
     window.$HandleBars.registerHelper('isEnumType', function (type, name, voField, enumField, options) {
-        var fields = [];
         
-        if(enumField){
-            fields = enumField.filter(field => field != null);
-            for(var i = 0; i< fields.length; i++){
-                var enumName ='';
-                if(fields[i].targetElement){
-                    enumName = fields[i].targetElement.name.charAt(0).toUpperCase() + fields[i].targetElement.name.slice(1);
-                }
-                if(type == enumName && fields[i].targetElement && fields[i].targetElement._type.endsWith("enum")){
-                    return options.fn(this);
-                }else{
-                    return options.inverse(this);
-                }
-            }
-        }else{
-            return options.inverse(this);
-        }
     });
     window.$HandleBars.registerHelper('compareField', function (aggFieldName, command, mode, voField, options) {
         if(mode == 'isNotVO'){
