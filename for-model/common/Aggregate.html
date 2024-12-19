@@ -554,6 +554,25 @@ fileName: {{namePascalCase}}.html
                 document.getElementById(id).style.display = "none";
             }
 
+            function toggleSidebar() {
+                const sidebar = document.getElementById("mySidebar");
+                if (sidebar.style.width === "250px") {
+                    sidebar.style.width = "0";
+                } else {
+                    sidebar.style.width = "250px";
+                }
+            }
+
+            {{#if aggregateRoot.fieldDescriptors.isList}}
+            function addInput(name) {
+                const inputList = document.getElementById('inputList');
+                const newInputContainer = document.createElement('div');
+                newInputContainer.className = 'input-container';
+                newInputContainer.innerHTML = `'<input type="text" name="${name}[]" placeholder="${name}"><br>'`;
+                inputList.appendChild(newInputContainer);
+            }
+            {{/if}}
+
             {{#commands}}
             {{^isRestRepository}}
             function {{nameCamelCase}}() {
@@ -600,6 +619,23 @@ fileName: {{namePascalCase}}.html
             {{/commands}}
 
             {{#attached 'View' this}}
+            {{#isQuery dataProjection}}
+            function search() {
+                {{#queryParameters}}
+                const search{{namePascalCase}} = document.getElementById('search{{namePascalCase}}').value;
+                {{/queryParameters}}
+
+                const searchParams = {
+                    {{#queryParameters}}
+                    {{nameCamelCase}}: search{{namePascalCase}},
+                    {{/queryParameters}}
+                };
+                searchResult(searchParams);
+            }
+            {{/isQuery}}
+            {{/attached}}
+
+            {{#attached 'View' this}}
             {{#isQueryMultiple dataProjection}}
             function save{{namePascalCase}}() {
                 {{#queryParameters}}
@@ -626,45 +662,11 @@ fileName: {{namePascalCase}}.html
                     {{nameCamelCase}}: {{nameCamelCase}},
                     {{/fieldDescriptors}}
                 };
-                searchMultiple(data);
+                searchMultiple(data, '{{namePlural}}');
                 closeDialog('{{nameCamelCase}}Dialog');
             }
             {{/isQueryMultiple}}
             {{/attached}}
-
-            function toggleSidebar() {
-                const sidebar = document.getElementById("mySidebar");
-                if (sidebar.style.width === "250px") {
-                    sidebar.style.width = "0";
-                } else {
-                    sidebar.style.width = "250px";
-                }
-            }
-            {{#attached 'View' this}}
-            {{#isQuery dataProjection}}
-            function search() {
-                {{#queryParameters}}
-                const search{{namePascalCase}} = document.getElementById('search{{namePascalCase}}').value;
-                {{/queryParameters}}
-
-                const searchParams = {
-                    {{#queryParameters}}
-                    {{nameCamelCase}}: search{{namePascalCase}},
-                    {{/queryParameters}}
-                };
-                searchResult(searchParams);
-            }
-            {{/isQuery}}
-            {{/attached}}
-            {{#if aggregateRoot.fieldDescriptors.isList}}
-            function addInput(name) {
-                const inputList = document.getElementById('inputList');
-                const newInputContainer = document.createElement('div');
-                newInputContainer.className = 'input-container';
-                newInputContainer.innerHTML = `'<input type="text" name="${name}[]" placeholder="${name}"><br>'`;
-                inputList.appendChild(newInputContainer);
-            }
-            {{/if}}
             function save{{namePascalCase}}(){
                 {{#aggregateRoot.fieldDescriptors}}
                 {{#if isList}}

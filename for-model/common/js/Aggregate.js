@@ -259,9 +259,9 @@ function searchResult(params) {
 {{/attached}}
 {{#attached 'View' this}}
 {{#isQueryMultiple dataProjection}}
-function searchMultiple(data){
+function searchMultiple(data, path){
     const id = data.{{nameCamelCase}};
-    fetch(`/{{aggregate.namePlural}}/{{nameCamelCase}}/${id}`, {
+    fetch(`/{{namePlural}}/${path}/${id}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
