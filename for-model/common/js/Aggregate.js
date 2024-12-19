@@ -235,8 +235,23 @@ function searchResult(params) {
     {{/if}}
     const queryParams = new URLSearchParams(params).toString();
 
+    function flattenObject(obj, prefix = '') {
+        Object.keys(obj).forEach(key => {
+            const value = obj[key];
+            const newKey = prefix ? `${prefix}.${key}` : key;
+            
+            if (value && typeof value === 'object' && !Array.isArray(value)) {
+                flattenObject(value, newKey);
+            } else {
+                queryParams.append(newKey, value);
+            }
+        });
+    }
+    
+    flattenObject(params);
+
     $.ajax({
-        url: `/{{aggregate.namePlural}}?${queryParams}`,
+        url: `/{{aggregate.namePlural}}?${queryParams.toString()}`,
         method: 'GET',
         headers: {
             "Cache-Control": "no-cache",
