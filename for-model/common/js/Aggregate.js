@@ -258,11 +258,38 @@ function searchResult(params) {
 {{/isQuery}}
 {{/attached}}
 {{#attached 'View' this}}
-{{#if (dataProjection "query-for-multiple-aggregate")}}
-abc
-{{/if}}
+{{#isQueryMultiple}}
+function searchMultiple(data){
+    const id = data.{{nameCamelCase}};
+    fetch(`/{{aggregate.namePlural}}/{{nameCamelCase}}/${id}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        alert(error);
+    });
+}    
+{{/isQueryMultiple}}
 {{/attached}}
+
+
 <function>
+window.$HandleBars.registerHelper('isQueryMultiple', function (mode, options) {
+    if(mode == 'query-for-multiple-aggregate'){
+        return options.fn(this);
+    }else{
+        return options.inverse(this);
+    }
+});
+
 window.$HandleBars.registerHelper('checkDefaultType', function (type, options) {
     if(type === "String" || type === "Long" || type === "Integer" || type === "Double" || type === "BigDecimal" || type === "Float" || type === "Date" || type === "Boolean"){
         return options.fn(this);
