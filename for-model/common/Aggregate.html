@@ -657,16 +657,19 @@ fileName: {{namePascalCase}}.html
             }
             {{/isQueryMultiple}}
             {{/attached}}
+            {{#commands}}
+            {{#isRestRepository}}
+            {{#checkMethod controllerInfo.method}}
             function save{{namePascalCase}}(){
-                {{#aggregateRoot.fieldDescriptors}}
+                {{#fieldDescriptors}}
                 {{#if isList}}
                 const {{nameCamelCase}}Elements = document.getElementsByName('{{nameCamelCase}}[]');
                 const {{nameCamelCase}}Fields = Array.from(requesterNameElements).map(input => input.value);
                 {{/if}}
-                {{/aggregateRoot.fieldDescriptors}}
+                {{/fieldDescriptors}}
                 
                 const data = {
-                    {{#aggregateRoot.fieldDescriptors}}
+                    {{#fieldDescriptors}}
                     {{#if isKey}}
                     No: document.getElementById('{{nameCamelCase}}').value,
                     {{else}}
@@ -679,22 +682,21 @@ fileName: {{namePascalCase}}.html
                     {{/if}}
                     {{/if}}
                     {{/if}}
-                    {{/aggregateRoot.fieldDescriptors}}
-                    {{#aggregateRoot}}
-                    {{#entities.relations}}
-                    {{#if targetElement.isVO}}
-                    {{targetElement.nameCamelCase}}: {
-                        {{#targetElement.fieldDescriptors}}
+                    {{/fieldDescriptors}}
+                    {{#isVOParameter className ../aggregate.aggregateRoot.entities.relations}}
+                    {{camelCase voName}}: {
+                        {{#voField.fieldDescriptors}}
                         {{nameCamelCase}}: document.getElementById('{{nameCamelCase}}').value,
-                        {{/targetElement.fieldDescriptors}}
+                        {{/voField.fieldDescriptors}}
                     },
-                    {{/if}}
-                    {{/entities.relations}}
-                    {{/aggregateRoot}}
+                    {{/isVOParameter}}
                 };
                 save(data);
                 closeDialog('{{nameCamelCase}}Dialog');
             }
+            {{/checkMethod}}
+            {{/isRestRepository}}
+            {{/commands}}
         </script>
     </body>
 </html>
