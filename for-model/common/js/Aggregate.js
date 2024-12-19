@@ -256,30 +256,67 @@ function searchResult(params) {
     });
 }
 {{/isQuery}}
-{{/attached}}
-{{#attached 'View' this}}
-{{#isQueryMultiple dataProjection}}
-function searchMultiple(data, path){
-    const id = data.{{nameCamelCase}};
-    fetch(`/{{namePlural}}/${path}/${id}`, {
+{{/attached}}  
+function searchMultiple(data, path) {
+    // Convert data object to query parameters
+    const queryParams = new URLSearchParams();
+    
+    function flattenObject(obj, prefix = '') {
+        Object.keys(obj).forEach(key => {
+            const value = obj[key];
+            const newKey = prefix ? `${prefix}.${key}` : key;
+            
+            if (value && typeof value === 'object' && !Array.isArray(value)) {
+                flattenObject(value, newKey);
+            } else {
+                queryParams.append(newKey, value);
+            }
+        });
+    }
+    
+    flattenObject(data);
+    
+    fetch(`/{{namePlural}}/${path}?${queryParams.toString()}`, {
         method: 'GET',
         headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
+            'Accept': 'application/json'
+        }
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
     .then(data => {
         console.log('Success:', data);
+        if (data) {
+            sheet.loadSearchData([data]);
+        }
     })
     .catch((error) => {
         console.error('Error:', error);
-        alert(error);
+        alert('데이터 조회 중 오류가 발생했습니다: ' + error.message);
     });
-}    
-{{/isQueryMultiple}}
-{{/attached}}
+}
 
+// function searchMultiple(value, path){
+//     fetch(`/{{namePlural}}/${path}`, {
+//         method: 'GET',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify(value)
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//         console.log('Success:', data);
+//     })
+//     .catch((error) => {
+//         console.error('Error:', error);
+//         alert(error);
+//     });
+// }  
 
 <function>
 window.$HandleBars.registerHelper('isQueryMultiple', function (mode, options) {
