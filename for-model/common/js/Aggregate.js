@@ -143,9 +143,12 @@ function save(data){
         url: "/{{namePlural}}",
         method: "POST",
         contentType: "application/json",
-        data: JSON.stringify(rows)
+        data: JSON.stringify(rows),
+        success: function() {
+            retrieve();
+        }
     });
-    retrieve();
+    
 
 }
 
