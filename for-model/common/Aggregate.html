@@ -567,12 +567,27 @@ fileName: {{namePascalCase}}.html
             {{#isQuery dataProjection}}
             function search() {
                 {{#queryParameters}}
-                const search{{namePascalCase}} = document.getElementById('search{{namePascalCase}}').value;
+                {{#isDefaultParameter className}}
+                const {{nameCamelCase}} = document.getElementById('{{nameCamelCase}}').value;
+                {{/isDefaultParameter}}
+                {{#isBooleanParameter className}}
+                const {{nameCamelCase}} = document.getElementById('{{nameCamelCase}}').checked;
+                {{/isBooleanParameter}}
+                {{#isEnumParameter className ../aggregate.aggregateRoot.entities.relations}}
+                const {{camelCase enumName}} = document.getElementById('{{camelCase enumName}}').value;
+                {{/isEnumParameter}}
+                {{#isVOParameter className ../aggregate.aggregateRoot.entities.relations}}
+                const {{camelCase voName}} = {
+                    {{#voField.fieldDescriptors}}
+                    {{nameCamelCase}}: document.getElementById('{{nameCamelCase}}').value,
+                    {{/voField.fieldDescriptors}}
+                };
+                {{/isVOParameter}}
                 {{/queryParameters}}
-
+                // JSON 객체 생성
                 const searchParams = {
                     {{#queryParameters}}
-                    {{nameCamelCase}}: search{{namePascalCase}},
+                    {{nameCamelCase}}: {{nameCamelCase}},
                     {{/queryParameters}}
                 };
                 searchResult(searchParams);
@@ -587,6 +602,9 @@ fileName: {{namePascalCase}}.html
                 {{#isDefaultParameter className}}
                 const {{nameCamelCase}} = document.getElementById('{{nameCamelCase}}').value;
                 {{/isDefaultParameter}}
+                {{#isBooleanParameter className}}
+                const {{nameCamelCase}} = document.getElementById('{{nameCamelCase}}').checked;
+                {{/isBooleanParameter}}
                 {{#isEnumParameter className ../aggregate.aggregateRoot.entities.relations}}
                 const {{camelCase enumName}} = document.getElementById('{{camelCase enumName}}').value;
                 {{/isEnumParameter}}
@@ -624,6 +642,9 @@ fileName: {{namePascalCase}}.html
                 {{#isDefaultParameter className}}
                 const {{nameCamelCase}} = document.getElementById('{{nameCamelCase}}').value;
                 {{/isDefaultParameter}}
+                {{#isBooleanParameter className}}
+                const {{nameCamelCase}} = document.getElementById('{{nameCamelCase}}').checked;
+                {{/isBooleanParameter}}
                 {{#isEnumParameter className ../aggregate.aggregateRoot.entities.relations}}
                 const {{camelCase enumName}} = document.getElementById('{{camelCase enumName}}').value;
                 {{/isEnumParameter}}
@@ -662,6 +683,9 @@ fileName: {{namePascalCase}}.html
                 {{#isDefaultParameter className}}
                 const {{nameCamelCase}} = document.getElementById('{{nameCamelCase}}').value;
                 {{/isDefaultParameter}}
+                {{#isBooleanParameter className}}
+                const {{nameCamelCase}} = document.getElementById('{{nameCamelCase}}').checked;
+                {{/isBooleanParameter}}
                 {{#isEnumParameter className ../aggregate.aggregateRoot.entities.relations}}
                 const {{camelCase enumName}} = document.getElementById('{{camelCase enumName}}').value;
                 {{/isEnumParameter}}
@@ -814,7 +838,14 @@ fileName: {{namePascalCase}}.html
     });
 
     window.$HandleBars.registerHelper('isDefaultParameter', function (type, options) {
-        if(type == 'String' || type == 'Integer' || type == 'Long' || type == 'Double' || type == 'Float' || type == 'BigDecimal' || type == 'Boolean' || type == 'Date'){
+        if(type == 'String' || type == 'Integer' || type == 'Long' || type == 'Double' || type == 'Float' || type == 'BigDecimal' || type == 'Date'){
+            return options.fn(this);
+        }else{
+            return options.inverse(this);
+        }
+    });
+    window.$HandleBars.registerHelper('isBooleanParameter', function (type, options) {
+        if(type == 'Boolean'){
             return options.fn(this);
         }else{
             return options.inverse(this);
