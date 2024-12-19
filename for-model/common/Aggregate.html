@@ -374,57 +374,43 @@ fileName: {{namePascalCase}}.html
             <div id="sheet_DIV" style="width:100%;height:400px"></div>
             <div id="detailSheet_DIV" style="width:100%;height:100%"></div>
 
+            {{#commands}}
+            {{#isRestRepository}}
+            {{#checkMethod controllerInfo.method}}
             <!-- Command POST Dialog -->
-            <div id="{{nameCamelCase}}Dialog" style="z-index:99;" class="modal">
+            <div id="{{nameCamelCase}}Dialog" class="modal">
                 <div class="modal-content">
                     <div class="default-row">
                         <h2>{{namePascalCase}}</h2>
                         <div class="v-space"></div>
-                        <span class="close" onclick="closeDialog('{{nameCamelCase}}Dialog')">&times;</span>
+                        <span class="close" onclick="closeDialog('{{nameCamelCase}}')">&times;</span>
                     </div>
                     <form id="{{nameCamelCase}}Form">
-                        {{#aggregateRoot}}
                         {{#fieldDescriptors}}
                         {{#isDefaultType className namePascalCase isVO isList}}
                         <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
                         <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
                         {{/isDefaultType}}
-                        {{/fieldDescriptors}}
-                        {{#entities.relations}}
-                        {{#checkEquals ../fieldDescriptors name targetElement}}
+                        {{#checkEnumParameter className ../aggregate.aggregateRoot.entities.relations}}
                         <div class="select-container">
                             <label for="{{camelCase name}}">{{pascalCase name}}:</label>
-                            <select id="{{camelCase name}}" required>
-                                {{#targetElement.items}}
+                            <select id="{{enumName.nameCamelCase}}" name="{{enumName.nameCamelCase}}">
+                                {{#enumName.items}}
                                 <option value="{{value}}">{{value}}</option>
-                                {{/targetElement.items}}
+                                {{/enumName.items}}
                             </select>
+                            <br><br>
                         </div>
-                        {{/checkEquals}}
-                        {{/entities.relations}}
-                        {{#entities.relations}}
-                        {{#if targetElement.isVO}}
+                        {{/checkEnumParameter}}
+                        {{#checkVOParameter className ../aggregate.aggregateRoot.entities.relations}}
                         <div class="vue-card" style="margin-bottom:10px;">
-                            <label for="{{targetElement.nameCamelCase}}">{{targetElement.nameCamelCase}}</label><br><br>
-                            {{#targetElement.fieldDescriptors}}
-                            {{#checkDefaultVOField className}}
-                            <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
+                            <label for="{{voName.nameCamelCase}}">{{voName.nameCamelCase}}</label>
+                            {{#voName.fieldDescriptors}}
+                            <label for="{{nameCamelCase}}">{{nameCamelCase}}:</label>
                             <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
-                            {{/checkDefaultVOField}}
-                            {{^checkDefaultVOField className}}
-                            <div class="select-container">
-                                <label for="{{camelCase name}}">{{pascalCase name}}:</label>
-                                <select id="{{camelCase name}}" required>
-                                    {{#isInternalEnum className ../../entities.relations}}
-                                    {{/isInternalEnum}}
-                                </select>
-                            </div>
-                            {{/checkDefaultVOField}}
-                            {{/targetElement.fieldDescriptors}}
+                            {{/voName.fieldDescriptors}}
                         </div>
-                        {{/if}}
-                        {{/entities.relations}}
-                        {{/aggregateRoot}}
+                        {{/checkVOParameter}}
                         {{#if isList}}
                         <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
                         <div id="inputList">
@@ -437,17 +423,21 @@ fileName: {{namePascalCase}}.html
                             <button type="button" onclick="addInput('{{nameCamelCase}}')">Add</button><br><br>
                         </div>
                         {{/if}}
+                        {{/fieldDescriptors}}
                         <div class="default-row">
                             <div class="v-space"></div>
-                            <button type="button" onclick="save{{namePascalCase}}()">Save</button>
+                            <button type="button" onclick="{{nameCamelCase}}()">Register</button>
                         </div>
                     </form>
                 </div>
             </div>
+            {{/checkMethod}}
+            {{/isRestRepository}}
+            {{/commands}}
             {{#commands}}
             {{^isRestRepository}}
             <!-- Extend Command Dialog -->
-            <div id="{{nameCamelCase}}" class="modal">
+            <div id="{{nameCamelCase}}Dialog" class="modal">
                 <div class="modal-content">
                     <div class="default-row">
                         <h2>{{namePascalCase}}</h2>
@@ -702,6 +692,13 @@ fileName: {{namePascalCase}}.html
     </body>
 </html>
 <function>
+    window.$HandleBars.registerHelper('checkMethod', function (type, options) {
+        if(type == 'POST'){
+            return options.fn(this);
+        }else{
+            return options.inverse(this);
+        }
+    });
     window.$HandleBars.registerHelper('checkDefaultVOField', function (type, options) {
         if(type == 'String' || type == 'Integer' || type == 'Long' || type == 'Double' || type == 'Float' || type == 'BigDecimal' || type == 'Boolean' || type == 'Date'){
             return options.fn(this);
