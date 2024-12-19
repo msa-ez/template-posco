@@ -411,7 +411,7 @@ fileName: {{namePascalCase}}.html
                         {{/checkEnumParameter}}
                         {{#checkVOParameter className ../aggregate.aggregateRoot.entities.relations}}
                         <div class="vue-card" style="margin-bottom:10px;">
-                            <label for="{{voName.nameCamelCase}}">{{voName.nameCamelCase}}</label>
+                            <label for="{{voName.nameCamelCase}}">{{voName.nameCamelCase}}</label><br><br>
                             {{#voName.fieldDescriptors}}
                             <label for="{{nameCamelCase}}">{{nameCamelCase}}:</label>
                             <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
@@ -517,7 +517,7 @@ fileName: {{namePascalCase}}.html
                     {{/checkEnumParameter}}
                     {{#checkVOParameter className ../aggregate.aggregateRoot.entities.relations}}
                     <div class="vue-card" style="margin-bottom:10px;">
-                        <label for="{{voName.nameCamelCase}}">{{voName.nameCamelCase}}</label>
+                        <label for="{{voName.nameCamelCase}}">{{voName.nameCamelCase}}</label><br><br>
                         {{#voName.fieldDescriptors}}
                         <label for="{{nameCamelCase}}">{{nameCamelCase}}:</label>
                         <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
