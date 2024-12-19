@@ -301,24 +301,6 @@ function searchMultiple(data, path) {
     });
 }
 
-// function searchMultiple(value, path){
-//     fetch(`/{{namePlural}}/${path}`, {
-//         method: 'GET',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify(value)
-//     })
-//     .then(response => response.json())
-//     .then(data => {
-//         console.log('Success:', data);
-//     })
-//     .catch((error) => {
-//         console.error('Error:', error);
-//         alert(error);
-//     });
-// }  
-
 <function>
 window.$HandleBars.registerHelper('isQueryMultiple', function (mode, options) {
     if(mode == 'query-for-multiple-aggregate'){
