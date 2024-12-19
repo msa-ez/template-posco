@@ -584,9 +584,6 @@ fileName: {{namePascalCase}}.html
             {{#isQueryMultiple dataProjection}}
             function save{{namePascalCase}}() {
                 {{#queryParameters}}
-                {{#if isKey}}
-                const No = document.getElementById('{{nameCamelCase}}').value;
-                {{/if}}
                 {{#isDefaultParameter className}}
                 const {{nameCamelCase}} = document.getElementById('{{nameCamelCase}}').value;
                 {{/isDefaultParameter}}
@@ -624,9 +621,6 @@ fileName: {{namePascalCase}}.html
                 {{/fieldDescriptors}}
                 
                 {{#fieldDescriptors}}
-                {{#if isKey}}
-                const No = document.getElementById('{{nameCamelCase}}').value;
-                {{/if}}
                 {{#isDefaultParameter className}}
                 const {{nameCamelCase}} = document.getElementById('{{nameCamelCase}}').value;
                 {{/isDefaultParameter}}
@@ -665,9 +659,6 @@ fileName: {{namePascalCase}}.html
                 {{/fieldDescriptors}}
                 
                 {{#fieldDescriptors}}
-                {{#if isKey}}
-                const No = document.getElementById('{{nameCamelCase}}').value;
-                {{/if}}
                 {{#isDefaultParameter className}}
                 const {{nameCamelCase}} = document.getElementById('{{nameCamelCase}}').value;
                 {{/isDefaultParameter}}

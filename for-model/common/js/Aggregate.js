@@ -138,8 +138,6 @@ function deleteData(){
 
 function save(data){
     var rows = data;
-    rows.{{#aggregateRoot.fieldDescriptors}}{{#if isKey}}{{nameCamelCase}}{{/if}}{{/aggregateRoot.fieldDescriptors}} = rows.No
-    delete rows.No
 
     $.ajax({
         url: "/{{namePlural}}",
