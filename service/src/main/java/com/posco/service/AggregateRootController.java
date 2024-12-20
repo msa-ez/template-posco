@@ -71,7 +71,7 @@ public class {{namePascalCase}}Controller {
     {{/ifEquals}}
     
     {{else}}
-    @PostMapping(path = "/{{../namePlural}}/{{nameCamelCase}}/{{#addMustache ../keyFieldDescriptor.nameCamelCase}}{{/addMustache}}")
+    @{{pascalCase restRepositoryInfo.method}}Mapping(path = "/{{../namePlural}}/{{nameCamelCase}}/{{#addMustache ../keyFieldDescriptor.nameCamelCase}}{{/addMustache}}")
     public ResponseEntity<{{../namePascalCase}}> {{nameCamelCase}}(
         @PathVariable("{{../keyFieldDescriptor.nameCamelCase}}") {{../keyFieldDescriptor.className}} {{../keyFieldDescriptor.nameCamelCase}},
         @Valid @RequestBody {{namePascalCase}}Command command) {
