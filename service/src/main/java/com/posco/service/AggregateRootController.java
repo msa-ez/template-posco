@@ -71,7 +71,7 @@ public class {{namePascalCase}}Controller {
     {{/ifEquals}}
     
     {{else}}
-    @{{pascalCase restRepositoryInfo.method}}Mapping(path = "/{{../namePlural}}/{{nameCamelCase}}/{{#addMustache ../keyFieldDescriptor.nameCamelCase}}{{/addMustache}}")
+    @{{#changeMethodName controllerInfo.method}}{{/changeMethodName}}Mapping(path = "/{{../namePlural}}/{{nameCamelCase}}/{{#addMustache ../keyFieldDescriptor.nameCamelCase}}{{/addMustache}}")
     public ResponseEntity<{{../namePascalCase}}> {{nameCamelCase}}(
         @PathVariable("{{../keyFieldDescriptor.nameCamelCase}}") {{../keyFieldDescriptor.className}} {{../keyFieldDescriptor.nameCamelCase}},
         @Valid @RequestBody {{namePascalCase}}Command command) {
@@ -102,6 +102,11 @@ public class {{namePascalCase}}Controller {
 window.$HandleBars.registerHelper('addMustache', function (id) {
     var result = '';
     result = "{" + id + "}"
+    return result;
+});
+window.$HandleBars.registerHelper('changeMethodName', function (method) {
+    var result = '';
+    result = method.toUpperCase();
     return result;
 });
 </function>
