@@ -105,8 +105,8 @@ window.$HandleBars.registerHelper('addMustache', function (id) {
     return result;
 });
 window.$HandleBars.registerHelper('changeMethodName', function (method) {
-    var result = '';
-    result = method.toUpperCase();
+    var result = method.toLowerCase();
+    return result.charAt(0).toUpperCase() + result.slice(1);
     return result;
 });
 </function>
