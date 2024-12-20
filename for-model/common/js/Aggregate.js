@@ -274,29 +274,12 @@ function searchResult(params) {
 {{/isQuery}}
 {{/attached}}  
 function searchMultiple(data, path) {
-    // Convert data object to query parameters
-    const queryParams = new URLSearchParams();
-    
-    function flattenObject(obj, prefix = '') {
-        Object.keys(obj).forEach(key => {
-            const value = obj[key];
-            const newKey = prefix ? `${prefix}.${key}` : key;
-            
-            if (value && typeof value === 'object' && !Array.isArray(value)) {
-                flattenObject(value, newKey);
-            } else {
-                queryParams.append(newKey, value);
-            }
-        });
-    }
-    
-    flattenObject(data);
-    
-    fetch(`/{{namePlural}}/${path}?${queryParams.toString()}`, {
+    fetch(`/{{namePlural}}/${path}`, {
         method: 'GET',
         headers: {
             'Accept': 'application/json'
-        }
+        },
+        data: JSON.stringify(data)
     })
     .then(response => {
         if (!response.ok) {
