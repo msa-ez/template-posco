@@ -741,8 +741,7 @@ fileName: {{namePascalCase}}.html
             {{/commands}}
 
             {{#commands}}
-            {{#isRestRepository}}
-            {{#checkUpdate controllerInfo.method}}
+            {{#checkUpdate restRepositoryInfo.method}}
             function update{{namePascalCase}}(){
                 {{#fieldDescriptors}}
                 {{#if isList}}
@@ -779,7 +778,6 @@ fileName: {{namePascalCase}}.html
                 closeDialog('{{nameCamelCase}}Dialog');
             }
             {{/checkUpdate}}
-            {{/isRestRepository}}
             {{/commands}}
 
             {{#commands}}

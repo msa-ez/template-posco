@@ -77,14 +77,10 @@ http {
         # 모델에 의해 생성된 common하위 경로의 실제 html 파일에 대한 설정 추가
         # root: 프로젝트가 위치한 경로
         # try_files: 접근할 html 파일 위치
-        location /common/dispatchRequests {
+        # 생성된 Aggregate html만큼 추가
+        location /common/{생성된 Aggregate이름의 경로} {
             root "C:/Users/cp246678/Desktop/cartest";
-            try_files /common/DispatchRequest.html =404;
-        }
-
-        location /common/dispatchStatuses {
-            root "C:/Users/cp246678/Desktop/cartest";
-            try_files /common/DispatchStatus.html =404;
+            try_files /common/{생성된 Aggregate.js파일이름}.html =404;
         }
     }
 }
