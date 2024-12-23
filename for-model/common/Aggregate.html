@@ -454,6 +454,7 @@ fileName: {{namePascalCase}}.html
             {{/commands}}
 
             {{#commands}}
+            {{#if isRestRepository}}
             {{#checkUpdate restRepositoryInfo.method}}
             <!-- Update Dialog -->
             <div id="{{nameCamelCase}}Dialog" class="modal">
@@ -510,6 +511,7 @@ fileName: {{namePascalCase}}.html
                 </div>
             </div>
             {{/checkUpdate}}
+            {{/if}}
             {{/commands}}
 
             {{#commands}}
