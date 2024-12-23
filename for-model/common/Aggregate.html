@@ -466,13 +466,13 @@ fileName: {{namePascalCase}}.html
                     <form id="{{nameCamelCase}}Form">
                         {{#fieldDescriptors}}
                         {{#isDefaultType className namePascalCase isVO isList}}
-                        <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
-                        <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
+                        <label for="update{{namePascalCase}}">{{namePascalCase}}:</label>
+                        <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="update{{namePascalCase}}" name="update{{namePascalCase}}"><br><br>
                         {{/isDefaultType}}
                         {{#checkEnumParameter className ../aggregate.aggregateRoot.entities.relations}}
                         <div class="select-container">
-                            <label for="{{camelCase name}}">{{pascalCase name}}:</label>
-                            <select id="{{camelCase name}}" name="{{camelCase name}}">
+                            <label for="update{{pascalCase name}}">{{pascalCase name}}:</label>
+                            <select id="update{{pascalCase name}}" name="update{{pascalCase name}}">
                                 {{#enumName.items}}
                                 <option value="{{value}}">{{value}}</option>
                                 {{/enumName.items}}
@@ -482,18 +482,18 @@ fileName: {{namePascalCase}}.html
                         {{/checkEnumParameter}}
                         {{#checkVOParameter className ../aggregate.aggregateRoot.entities.relations}}
                         <div class="vue-card" style="margin-bottom:10px;">
-                            <label for="{{voName.nameCamelCase}}">{{voName.nameCamelCase}}</label><br><br>
+                            <label for="update{{voName.namePascalCase}}">{{voName.namePascalCase}}</label><br><br>
                             {{#voName.fieldDescriptors}}
-                            <label for="{{nameCamelCase}}">{{nameCamelCase}}:</label>
-                            <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
+                            <label for="update{{namePascalCase}}">{{namePascalCase}}:</label>
+                            <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="update{{namePascalCase}}" name="update{{namePascalCase}}"><br><br>
                             {{/voName.fieldDescriptors}}
                         </div>
                         {{/checkVOParameter}}
                         {{#if isList}}
-                        <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
+                        <label for="update{{namePascalCase}}">{{namePascalCase}}:</label>
                         <div id="inputList">
                             <div class="input-container">
-                                <input type="text" name="{{nameCamelCase}}[]" placeholder="{{namePascalCase}}"><br>
+                                <input type="text" name="update{{namePascalCase}}[]" placeholder="{{namePascalCase}}"><br>
                             </div>
                         </div>
                         <div class="default-row">
@@ -745,25 +745,25 @@ fileName: {{namePascalCase}}.html
             function update{{namePascalCase}}(){
                 {{#fieldDescriptors}}
                 {{#if isList}}
-                const {{nameCamelCase}}Elements = document.getElementsByName('{{nameCamelCase}}[]');
-                const {{nameCamelCase}}Fields = Array.from(requesterNameElements).map(input => input.value);
+                const {{nameCamelCase}}Elements = document.getElementsByName('update{{namePascalCase}}[]');
+                const {{nameCamelCase}}Fields = Array.from(update{{namePascalCase}}Elements).map(input => input.value);
                 {{/if}}
                 {{/fieldDescriptors}}
                 
                 {{#fieldDescriptors}}
                 {{#isDefaultParameter className}}
-                const {{nameCamelCase}} = document.getElementById('{{nameCamelCase}}').value;
+                const {{nameCamelCase}} = document.getElementById('update{{namePascalCase}}').value;
                 {{/isDefaultParameter}}
                 {{#isBooleanParameter className}}
-                const {{nameCamelCase}} = document.getElementById('{{nameCamelCase}}').checked;
+                const {{nameCamelCase}} = document.getElementById('update{{namePascalCase}}').checked;
                 {{/isBooleanParameter}}
                 {{#isEnumParameter className ../aggregate.aggregateRoot.entities.relations}}
-                const {{camelCase enumName}} = document.getElementById('{{camelCase enumName}}').value;
+                const {{camelCase enumName}} = document.getElementById('update{{pascalCase enumName}}').value;
                 {{/isEnumParameter}}
                 {{#isVOParameter className ../aggregate.aggregateRoot.entities.relations}}
                 const {{camelCase voName}} = {
                     {{#voField.fieldDescriptors}}
-                    {{nameCamelCase}}: document.getElementById('{{nameCamelCase}}').value,
+                    {{nameCamelCase}}: document.getElementById('update{{nameCamelCase}}').value,
                     {{/voField.fieldDescriptors}}
                 };
                 {{/isVOParameter}}
