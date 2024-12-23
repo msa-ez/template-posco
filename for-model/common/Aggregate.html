@@ -55,7 +55,10 @@ fileName: {{namePascalCase}}.html
                 max-height: 100%; /* form 최대 높이 */
             }
             {{/checkRegister}}
-            {{#checkUpdate controllerInfo.method}}
+            {{/isRestRepository}}
+            {{/commands}}
+            {{#commands}}
+            {{#checkUpdate restRepositoryInfo.method}}
             #{{nameCamelCase}}Form {
                 overflow: auto; /* 내부 스크롤 활성화 */
                 flex: 1; /* form이 나머지 공간 차지 */
@@ -63,7 +66,6 @@ fileName: {{namePascalCase}}.html
                 max-height: 100%; /* form 최대 높이 */
             }
             {{/checkUpdate}}
-            {{/isRestRepository}}
             {{/commands}}
 
             {{#commands}}
@@ -357,7 +359,7 @@ fileName: {{namePascalCase}}.html
             <button type="button" class='buttonLabelSearch' onclick="retrieve()">조회</button>
             <button type="button" class='buttonLabelSave' onclick="saveRow()">저장</button>
             {{#commands}}{{#isRestRepository}}{{#checkRegister controllerInfo.method}}<button type="button" class='buttonLabelAddRow' onclick="openDialog('{{nameCamelCase}}Dialog')">등록</button>{{/checkRegister}}{{/isRestRepository}}{{/commands}}
-            {{#commands}}{{#isRestRepository}}{{#checkUpdate controllerInfo.method}}<button type="button" class='buttonLabelAddRow' onclick="openDialog('{{nameCamelCase}}Dialog')">수정</button>{{/checkUpdate}}{{/isRestRepository}}{{/commands}}
+            {{#commands}}{{#checkUpdate restRepositoryInfo.method}}<button type="button" class='buttonLabelAddRow' onclick="openDialog('{{nameCamelCase}}Dialog')">수정</button>{{/checkUpdate}}{{/commands}}
             <button type="button" class='buttonLabelDeleteRow' onclick="deleteData()">삭제</button>
             {{#commands}}
             {{^isRestRepository}}
@@ -452,8 +454,7 @@ fileName: {{namePascalCase}}.html
             {{/commands}}
 
             {{#commands}}
-            {{#isRestRepository}}
-            {{#checkUpdate controllerInfo.method}}
+            {{#checkUpdate restRepositoryInfo.method}}
             <!-- Update Dialog -->
             <div id="{{nameCamelCase}}Dialog" class="modal">
                 <div class="modal-content">
@@ -509,7 +510,6 @@ fileName: {{namePascalCase}}.html
                 </div>
             </div>
             {{/checkUpdate}}
-            {{/isRestRepository}}
             {{/commands}}
 
             {{#commands}}
