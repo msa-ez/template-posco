@@ -159,7 +159,7 @@ function save(data){
 {{#isRestRepository}}
 {{#checkUpdate controllerInfo.method}}
 function update(data){
-    var id = data.{{#fieldDescriptors}}{{#if isKey}}{{nameCamelCase}}{{/if}}{{/fieldDescriptors}}
+    {{#fieldDescriptors}}{{#if isKey}}var id = data.{{nameCamelCase}}{{/if}}{{/fieldDescriptors}}
     $.ajax({
         url: `/{{aggregate.namePlural}}/${id}`,
         method: "{{controllerInfo.method}}",
