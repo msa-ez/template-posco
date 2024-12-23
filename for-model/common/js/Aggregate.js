@@ -45,6 +45,7 @@ $(document).ready(function(){
         ],
         Events: {
             onClick: function(evtParam) {
+                selectedId = evtParam.row.No;
                 var originalRowData = rowData.find(item => item.No === evtParam.row.No);
                 var detailData = [];
                 {{#aggregateRoot.fieldDescriptors}}
@@ -128,13 +129,6 @@ function retrieve(){
     });
 }
 
-function addData(){
-   sheet.addRow();
-}
-
-function deleteData(){
-    sheet.deleteRow(sheet.getFocusedRow());
-}
 {{#commands}}
 {{#isRestRepository}}
 {{#checkRegister controllerInfo.method}}
@@ -159,7 +153,7 @@ function save(data){
 {{#isRestRepository}}
 {{#checkUpdate restRepositoryInfo.method}}
 function update(data){
-    {{#fieldDescriptors}}{{#if isKey}}var id = data.{{nameCamelCase}}{{/if}}{{/fieldDescriptors}}
+    var id = selectedId
     $.ajax({
         url: `/{{aggregate.namePlural}}/${id}`,
         method: "{{restRepositoryInfo.method}}",
@@ -174,45 +168,20 @@ function update(data){
 {{/isRestRepository}}
 {{/commands}}
 
-function saveRow(){
-    var rows = sheet.getSaveJson()?.data;
-    for(var i = 0; i < rows.length; i++){
-        rows[i].{{#aggregateRoot.fieldDescriptors}}{{#if isKey}}{{nameCamelCase}}{{/if}}{{/aggregateRoot.fieldDescriptors}} = rows[i].No
-        delete rows[i].No
-
-        {{#aggregateRoot.entities.relations}}
-        {{#if targetElement.isVO}}
-        {{#combineVO this}}{{/combineVO}}
-        {{/if}}
-        {{/aggregateRoot.entities.relations}}
-    }
-    
-    rowData = rows;
-
-    for(var i=0; i<rows.length;i++){
-        switch(rows[i].STATUS){
-            case "Changed":
-                var rowObj = sheet.getRowById(rows[i].id);
-                var changedData = JSON.parse(sheet.getChangedData(rowObj))["Changes"][0];
-                changedData.id = rows[i].{{#aggregateRoot.fieldDescriptors}}{{#if isKey}}{{nameCamelCase}}{{/if}}{{/aggregateRoot.fieldDescriptors}}
-                var id = changedData.id 
-                $.ajax({
-                    url: `/{{namePlural}}/${id}`,
-                    method: "PATCH",
-                    contentType: "application/json",
-                    data: JSON.stringify(changedData)
-                });
-                break;
-            case "Deleted":
-                var id = rows[i].{{#aggregateRoot.fieldDescriptors}}{{#if isKey}}{{nameCamelCase}}{{/if}}{{/aggregateRoot.fieldDescriptors}}
-                $.ajax({
-                    url: `/{{namePlural}}/${id}`,
-                    method: "DELETE",
-                });
-                break;
-        }     
-    }           
+{{#commands}}
+{{#isRestRepository}}
+{{#checkDelete restRepositoryInfo.method}}
+function deleteData(){
+    var id = selectedId
+    $.ajax({
+        url: `/{{aggregate.namePlural}}/${id}`,
+        method: "DELETE",
+    });
 }
+{{/checkUpdate}}
+{{/isRestRepository}}
+{{/commands}}
+
 {{#commands}}
 {{^isRestRepository}}
 function submit{{namePascalCase}}(data){
@@ -239,6 +208,7 @@ function submit{{namePascalCase}}(data){
 }           
 {{/isRestRepository}}
 {{/commands}}
+
 {{#attached 'View' this}}
 {{#isQuery dataProjection}}
 function searchResult(params) {
@@ -294,7 +264,8 @@ function searchResult(params) {
     });
 }
 {{/isQuery}}
-{{/attached}}  
+{{/attached}}
+  
 function searchMultiple(data, path) {
     fetch(`/{{namePlural}}/${path}`, {
         method: 'GET',
@@ -331,6 +302,13 @@ window.$HandleBars.registerHelper('checkRegister', function (type, options) {
 });
 window.$HandleBars.registerHelper('checkUpdate', function (type, options) {
     if(type == 'PUT' || type == 'PATCH'){
+        return options.fn(this);
+    }else{
+        return options.inverse(this);
+    }
+});
+window.$HandleBars.registerHelper('checkDelete', function (type, options) {
+    if(type == 'DELETE'){
         return options.fn(this);
     }else{
         return options.inverse(this);
