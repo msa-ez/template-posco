@@ -178,7 +178,7 @@ function deleteData(){
         method: "DELETE",
     });
 }
-{{/checkUpdate}}
+{{/checkDelete}}
 {{/isRestRepository}}
 {{/commands}}
 
@@ -265,7 +265,7 @@ function searchResult(params) {
 }
 {{/isQuery}}
 {{/attached}}
-  
+
 function searchMultiple(data, path) {
     fetch(`/{{namePlural}}/${path}`, {
         method: 'GET',
