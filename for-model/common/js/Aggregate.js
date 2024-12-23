@@ -162,7 +162,7 @@ function update(data){
     {{#fieldDescriptors}}{{#if isKey}}var id = data.{{nameCamelCase}}{{/if}}{{/fieldDescriptors}}
     $.ajax({
         url: `/{{aggregate.namePlural}}/${id}`,
-        method: "{{restRepository.method}}",
+        method: "{{restRepositoryInfo.method}}",
         contentType: "application/json",
         data: JSON.stringify(data),
         success: function() {
