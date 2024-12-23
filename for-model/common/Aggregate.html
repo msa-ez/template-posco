@@ -743,6 +743,7 @@ fileName: {{namePascalCase}}.html
             {{/commands}}
 
             {{#commands}}
+            {{#isRestRepository}}
             {{#checkUpdate restRepositoryInfo.method}}
             function update{{namePascalCase}}(){
                 {{#fieldDescriptors}}
@@ -780,6 +781,7 @@ fileName: {{namePascalCase}}.html
                 closeDialog('{{nameCamelCase}}Dialog');
             }
             {{/checkUpdate}}
+            {{/isRestRepository}}
             {{/commands}}
 
             {{#commands}}
