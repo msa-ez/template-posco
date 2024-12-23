@@ -159,27 +159,12 @@ function save(data){
 {{#isRestRepository}}
 {{#checkUpdate controllerInfo.method}}
 function update(data){
-    var rows = sheet.getSaveJson()?.data;
-    for(var i = 0; i < rows.length; i++){
-        {{#fieldDescriptors}}{{#if isKey}}
-        rows[i].{{nameCamelCase}} = rows[i].No
-        delete rows[i].No
-        {{/if}}{{/fieldDescriptors}}
-
-        {{#aggregate.aggregateRoot.entities.relations}}
-        {{#if targetElement.isVO}}
-        {{#combineVO this}}{{/combineVO}}
-        {{/if}}
-        {{/aggregate.aggregateRoot.entities.relations}}
-    }
-    
-    rowData = rows;
-
+    var id = data.{{#fieldDescriptors}}{{#if isKey}}{{nameCamelCase}}{{/if}}{{/fieldDescriptors}}
     $.ajax({
-        url: "/{{aggregate.namePlural}}",
-        method: "PUT",
+        url: `/{{aggregate.namePlural}}/${id}`,
+        method: "{{controllerInfo.method}}",
         contentType: "application/json",
-        data: JSON.stringify(rows),
+        data: JSON.stringify(data),
         success: function() {
             retrieve();
         }
