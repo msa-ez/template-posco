@@ -157,7 +157,7 @@ function save(data){
 
 {{#commands}}
 {{#isRestRepository}}
-{{#checkUpdate controllerInfo.method}}
+{{#checkUpdate restRepositoryInfo.method}}
 function update(data){
     {{#fieldDescriptors}}{{#if isKey}}var id = data.{{nameCamelCase}}{{/if}}{{/fieldDescriptors}}
     $.ajax({
