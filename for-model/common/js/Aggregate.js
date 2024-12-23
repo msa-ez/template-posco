@@ -135,12 +135,14 @@ function addData(){
 function deleteData(){
     sheet.deleteRow(sheet.getFocusedRow());
 }
-
+{{#commands}}
+{{#isRestRepository}}
+{{#checkRegister controllerInfo.method}}
 function save(data){
     var rows = data;
 
     $.ajax({
-        url: "/{{namePlural}}",
+        url: "/{{aggregate.namePlural}}",
         method: "POST",
         contentType: "application/json",
         data: JSON.stringify(rows),
@@ -148,9 +150,44 @@ function save(data){
             retrieve();
         }
     });
-    
-
 }
+{{/checkRegister}}
+{{/isRestRepository}}
+{{/commands}}
+
+{{#commands}}
+{{#isRestRepository}}
+{{#checkUpdate controllerInfo.method}}
+function update(data){
+    var rows = sheet.getSaveJson()?.data;
+    for(var i = 0; i < rows.length; i++){
+        {{#fieldDescriptors}}{{#if isKey}}
+        rows[i].{{nameCamelCase}} = rows[i].No
+        delete rows[i].No
+        {{/if}}{{/fieldDescriptors}}
+
+        {{#aggregate.aggregateRoot.entities.relations}}
+        {{#if targetElement.isVO}}
+        {{#combineVO this}}{{/combineVO}}
+        {{/if}}
+        {{/aggregate.aggregateRoot.entities.relations}}
+    }
+    
+    rowData = rows;
+
+    $.ajax({
+        url: "/{{aggregate.namePlural}}",
+        method: "PUT",
+        contentType: "application/json",
+        data: JSON.stringify(rows),
+        success: function() {
+            retrieve();
+        }
+    });
+}
+{{/checkUpdate}}
+{{/isRestRepository}}
+{{/commands}}
 
 function saveRow(){
     var rows = sheet.getSaveJson()?.data;
@@ -300,6 +337,20 @@ function searchMultiple(data, path) {
 }
 
 <function>
+window.$HandleBars.registerHelper('checkRegister', function (type, options) {
+    if(type == 'POST'){
+        return options.fn(this);
+    }else{
+        return options.inverse(this);
+    }
+});
+window.$HandleBars.registerHelper('checkUpdate', function (type, options) {
+    if(type == 'PUT' || type == 'PATCH'){
+        return options.fn(this);
+    }else{
+        return options.inverse(this);
+    }
+});
 window.$HandleBars.registerHelper('isQueryMultiple', function (mode, options) {
     if(mode == 'query-for-multiple-aggregate'){
         return options.fn(this);

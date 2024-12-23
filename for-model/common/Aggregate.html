@@ -47,14 +47,22 @@ fileName: {{namePascalCase}}.html
 
             {{#commands}}
             {{#isRestRepository}}
-            {{#checkMethod controllerInfo.method}}
+            {{#checkRegister controllerInfo.method}}
             #{{nameCamelCase}}Form {
                 overflow: auto; /* 내부 스크롤 활성화 */
                 flex: 1; /* form이 나머지 공간 차지 */
                 padding: 10px; /* form 내부 여백 */
                 max-height: 100%; /* form 최대 높이 */
             }
-            {{/checkMethod}}
+            {{/checkRegister}}
+            {{#checkUpdate controllerInfo.method}}
+            #{{nameCamelCase}}Form {
+                overflow: auto; /* 내부 스크롤 활성화 */
+                flex: 1; /* form이 나머지 공간 차지 */
+                padding: 10px; /* form 내부 여백 */
+                max-height: 100%; /* form 최대 높이 */
+            }
+            {{/checkUpdate}}
             {{/isRestRepository}}
             {{/commands}}
 
@@ -348,7 +356,8 @@ fileName: {{namePascalCase}}.html
         <div style="padding:10px;">
             <button type="button" class='buttonLabelSearch' onclick="retrieve()">조회</button>
             <button type="button" class='buttonLabelSave' onclick="saveRow()">저장</button>
-            <button type="button" class='buttonLabelAddRow' onclick="openDialog('{{#commands}}{{#isRestRepository}}{{#checkMethod controllerInfo.method}}{{nameCamelCase}}Dialog{{/checkMethod}}{{/isRestRepository}}{{/commands}}')">신규</button>
+            {{#commands}}{{#isRestRepository}}{{#checkRegister controllerInfo.method}}<button type="button" class='buttonLabelAddRow' onclick="openDialog('{{nameCamelCase}}Dialog')">등록</button>{{/checkRegister}}{{/isRestRepository}}{{/commands}}
+            {{#commands}}{{#isRestRepository}}{{#checkUpdate controllerInfo.method}}<button type="button" class='buttonLabelAddRow' onclick="openDialog('{{nameCamelCase}}Dialog')">수정</button>{{/checkUpdate}}{{/isRestRepository}}{{/commands}}
             <button type="button" class='buttonLabelDeleteRow' onclick="deleteData()">삭제</button>
             {{#commands}}
             {{^isRestRepository}}
@@ -383,8 +392,8 @@ fileName: {{namePascalCase}}.html
 
             {{#commands}}
             {{#isRestRepository}}
-            {{#checkMethod controllerInfo.method}}
-            <!-- Command POST Dialog -->
+            {{#checkRegister controllerInfo.method}}
+            <!-- Register Dialog -->
             <div id="{{nameCamelCase}}Dialog" class="modal">
                 <div class="modal-content">
                     <div class="default-row">
@@ -438,9 +447,71 @@ fileName: {{namePascalCase}}.html
                     </form>
                 </div>
             </div>
-            {{/checkMethod}}
+            {{/checkRegister}}
             {{/isRestRepository}}
             {{/commands}}
+
+            {{#commands}}
+            {{#isRestRepository}}
+            {{#checkUpdate controllerInfo.method}}
+            <!-- Update Dialog -->
+            <div id="{{nameCamelCase}}Dialog" class="modal">
+                <div class="modal-content">
+                    <div class="default-row">
+                        <h2>{{namePascalCase}}</h2>
+                        <div class="v-space"></div>
+                        <span class="close" onclick="closeDialog('{{nameCamelCase}}Dialog')">&times;</span>
+                    </div>
+                    <form id="{{nameCamelCase}}Form">
+                        {{#fieldDescriptors}}
+                        {{#isDefaultType className namePascalCase isVO isList}}
+                        <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
+                        <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
+                        {{/isDefaultType}}
+                        {{#checkEnumParameter className ../aggregate.aggregateRoot.entities.relations}}
+                        <div class="select-container">
+                            <label for="{{camelCase name}}">{{pascalCase name}}:</label>
+                            <select id="{{camelCase name}}" name="{{camelCase name}}">
+                                {{#enumName.items}}
+                                <option value="{{value}}">{{value}}</option>
+                                {{/enumName.items}}
+                            </select>
+                            <br><br>
+                        </div>
+                        {{/checkEnumParameter}}
+                        {{#checkVOParameter className ../aggregate.aggregateRoot.entities.relations}}
+                        <div class="vue-card" style="margin-bottom:10px;">
+                            <label for="{{voName.nameCamelCase}}">{{voName.nameCamelCase}}</label><br><br>
+                            {{#voName.fieldDescriptors}}
+                            <label for="{{nameCamelCase}}">{{nameCamelCase}}:</label>
+                            <input type="{{#checkParameterType className}}{{/checkParameterType}}" id="{{nameCamelCase}}" name="{{nameCamelCase}}"><br><br>
+                            {{/voName.fieldDescriptors}}
+                        </div>
+                        {{/checkVOParameter}}
+                        {{#if isList}}
+                        <label for="{{nameCamelCase}}">{{namePascalCase}}:</label>
+                        <div id="inputList">
+                            <div class="input-container">
+                                <input type="text" name="{{nameCamelCase}}[]" placeholder="{{namePascalCase}}"><br>
+                            </div>
+                        </div>
+                        <div class="default-row">
+                            <div class="v-space"></div>
+                            <button type="button" onclick="addInput('{{nameCamelCase}}')">Add</button><br><br>
+                        </div>
+                        {{/if}}
+                        {{/fieldDescriptors}}
+                        <div class="default-row">
+                            <div class="v-space"></div>
+                            <button type="button" onclick="save{{namePascalCase}}()">Register</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {{/checkUpdate}}
+            {{/isRestRepository}}
+            {{/commands}}
+
             {{#commands}}
             {{^isRestRepository}}
             <!-- Extend Command Dialog -->
@@ -488,6 +559,7 @@ fileName: {{namePascalCase}}.html
         </div>
         {{/isRestRepository}}
         {{/commands}}
+
         <!-- Query Multiple Aggregate Dialog -->
         {{#attached 'View' this}}
         {{#isQueryMultiple dataProjection}}
@@ -670,7 +742,49 @@ fileName: {{namePascalCase}}.html
 
             {{#commands}}
             {{#isRestRepository}}
-            {{#checkMethod controllerInfo.method}}
+            {{#checkUpdate controllerInfo.method}}
+            function update{{namePascalCase}}(){
+                {{#fieldDescriptors}}
+                {{#if isList}}
+                const {{nameCamelCase}}Elements = document.getElementsByName('{{nameCamelCase}}[]');
+                const {{nameCamelCase}}Fields = Array.from(requesterNameElements).map(input => input.value);
+                {{/if}}
+                {{/fieldDescriptors}}
+                
+                {{#fieldDescriptors}}
+                {{#isDefaultParameter className}}
+                const {{nameCamelCase}} = document.getElementById('{{nameCamelCase}}').value;
+                {{/isDefaultParameter}}
+                {{#isBooleanParameter className}}
+                const {{nameCamelCase}} = document.getElementById('{{nameCamelCase}}').checked;
+                {{/isBooleanParameter}}
+                {{#isEnumParameter className ../aggregate.aggregateRoot.entities.relations}}
+                const {{camelCase enumName}} = document.getElementById('{{camelCase enumName}}').value;
+                {{/isEnumParameter}}
+                {{#isVOParameter className ../aggregate.aggregateRoot.entities.relations}}
+                const {{camelCase voName}} = {
+                    {{#voField.fieldDescriptors}}
+                    {{nameCamelCase}}: document.getElementById('{{nameCamelCase}}').value,
+                    {{/voField.fieldDescriptors}}
+                };
+                {{/isVOParameter}}
+                {{/fieldDescriptors}}
+                // JSON 객체 생성
+                const data = {
+                    {{#fieldDescriptors}}
+                    {{nameCamelCase}}: {{nameCamelCase}},
+                    {{/fieldDescriptors}}
+                };
+                update(data);
+                closeDialog('{{nameCamelCase}}Dialog');
+            }
+            {{/checkUpdate}}
+            {{/isRestRepository}}
+            {{/commands}}
+
+            {{#commands}}
+            {{#isRestRepository}}
+            {{#checkRegister controllerInfo.method}}
             function save{{namePascalCase}}(){
                 {{#fieldDescriptors}}
                 {{#if isList}}
@@ -706,15 +820,22 @@ fileName: {{namePascalCase}}.html
                 save(data);
                 closeDialog('{{nameCamelCase}}Dialog');
             }
-            {{/checkMethod}}
+            {{/checkRegister}}
             {{/isRestRepository}}
             {{/commands}}
         </script>
     </body>
 </html>
 <function>
-    window.$HandleBars.registerHelper('checkMethod', function (type, options) {
+    window.$HandleBars.registerHelper('checkRegister', function (type, options) {
         if(type == 'POST'){
+            return options.fn(this);
+        }else{
+            return options.inverse(this);
+        }
+    });
+    window.$HandleBars.registerHelper('checkUpdate', function (type, options) {
+        if(type == 'PUT' || type == 'PATCH'){
             return options.fn(this);
         }else{
             return options.inverse(this);
