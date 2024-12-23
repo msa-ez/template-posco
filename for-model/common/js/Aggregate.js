@@ -185,11 +185,7 @@ function deleteData(){
 {{#commands}}
 {{^isRestRepository}}
 function submit{{namePascalCase}}(data){
-    {{#fieldDescriptors}}
-    {{#if isKey}}
-    const id = data.{{nameCamelCase}};
-    {{/if}}
-    {{/fieldDescriptors}}
+    var id = selectedId;
     fetch(`/{{../namePlural}}/{{nameCamelCase}}/${id}`, {
         method: '{{controllerInfo.method}}',
         headers: {
